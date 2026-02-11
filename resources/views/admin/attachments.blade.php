@@ -120,9 +120,9 @@
                                     @endif
 
                                     <!-- View/Download - All authorized roles -->
-                                    <a href="#" class="btn btn-sm btn-outline-primary" title="View">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
+{{--                                    <a href="#" class="btn btn-sm btn-outline-primary" title="View">--}}
+{{--                                        <i class="bi bi-eye"></i>--}}
+{{--                                    </a>--}}
                                 </td>
                             </tr>
                         @endforeach

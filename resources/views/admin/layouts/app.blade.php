@@ -22,15 +22,13 @@
                     <div>
                         <h5 class="mb-0">Admin Panel</h5>
                         <small class="text-white-50">
-                            @role('Admin')
-                            <span class="badge bg-danger">Admin</span>
-                            @endrole
-                            @role('Manager')
-                            <span class="badge bg-warning">Manager</span>
-                            @endrole
-                            @role('Staff')
-                            <span class="badge bg-info">Staff</span>
-                            @endrole
+                            @if(auth()->user()->hasRole('Admin'))
+                                <span class="badge bg-danger">Admin</span>
+                            @elseif(auth()->user()->hasRole('Manager'))
+                                <span class="badge bg-warning">Manager</span>
+                            @elseif(auth()->user()->hasRole('Staff'))
+                                <span class="badge bg-info">Staff</span>
+                            @endif
                         </small>
                     </div>
                 </div>

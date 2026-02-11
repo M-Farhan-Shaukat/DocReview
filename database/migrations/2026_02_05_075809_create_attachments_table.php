@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('original_name');
             $table->string('mime_type');
             $table->unsignedBigInteger('file_size');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('file_path');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

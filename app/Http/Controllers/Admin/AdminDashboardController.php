@@ -16,10 +16,11 @@ class AdminDashboardController extends Controller
     public function index()
     {
         // Get statistics
-        $totalFiles = Attachment::count();
-        $activeFiles = Attachment::where('is_active', true)->count();
-        $inactiveFiles = Attachment::where('is_active', false)->count();
-        $totalUsers = User::count();
+        $attachments = Attachment::whereNull('user_id');
+        $totalFiles = (clone $attachments)->count();
+        $activeFiles = (clone $attachments)->where('is_active', true)->count();
+        $inactiveFiles = (clone $attachments)->where('is_active', false)->count();
+        $totalUsers = User::where('role_id','!=', 1)->count();
 
         // Get users by role
         $usersByRole = [];

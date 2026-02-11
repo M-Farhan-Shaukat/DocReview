@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class AdminAttachmentController extends Controller
@@ -65,5 +66,41 @@ class AdminAttachmentController extends Controller
         $attachment->delete();
 
         return redirect()->back()->with('success', 'Attachment deleted successfully.');
+    }
+    /**
+     * Preview attachment in browser modal.
+     */
+    public function preview($id)
+    {
+        $attachment = Attachment::findOrFail($id);
+
+        // Check if file exists
+        if (!Storage::exists($attachment->file_path)) {
+            abort(404, 'File not found.');
+        }
+
+        // Get file content
+        $fileContent = Storage::get($attachment->file_path);
+        $mimeType = $attachment->mime_type;
+
+        // Return file for inline preview
+        return Response::make($fileContent, 200, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $attachment->original_name . '"',
+        ]);
+    }
+    /**
+     * Download attachment.
+     */
+    public function download($id)
+    {
+        $attachment = Attachment::findOrFail($id);
+
+        // Check if file exists
+        if (!Storage::exists($attachment->file_path)) {
+            abort(404, 'File not found.');
+        }
+
+        return Storage::download($attachment->file_path, $attachment->original_name);
     }
 }

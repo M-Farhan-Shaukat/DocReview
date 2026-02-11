@@ -19,23 +19,26 @@ class Attachment extends Model
         'file_size' => 'integer',
         'is_active' => 'boolean'
     ];
-
+public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function getFormattedSizeAttribute()
     {
         $bytes = $this->file_size;
         $units = ['B', 'KB', 'MB', 'GB'];
-        
+
         for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
-        
+
         return round($bytes, 1) . ' ' . $units[$i];
     }
 
     public function getFileIconAttribute()
     {
         $extension = pathinfo($this->original_name, PATHINFO_EXTENSION);
-        
+
         return match(strtolower($extension)) {
             'pdf' => 'bi-file-earmark-pdf',
             'doc', 'docx' => 'bi-file-earmark-word',
@@ -50,7 +53,7 @@ class Attachment extends Model
     public function getFileColorAttribute()
     {
         $extension = pathinfo($this->original_name, PATHINFO_EXTENSION);
-        
+
         return match(strtolower($extension)) {
             'pdf' => 'primary',
             'doc', 'docx' => 'primary',

@@ -45,7 +45,7 @@
                     @if(auth()->user()->hasPermission('upload_documents'))
                         <li class="nav-item mb-2">
                             <a href="{{ route('admin.attachments') }}" class="nav-link text-white">
-                                <i class="bi bi-cloud-upload me-2"></i> Upload Attachments
+                                <i class="bi bi-cloud-upload me-2"></i>Attachments
                             </a>
                         </li>
                     @endif
@@ -53,7 +53,7 @@
                     <!-- Manage Users - Admin only -->
                     @if(auth()->user()->hasPermission('manage_users'))
                         <li class="nav-item mb-2">
-                            <a href="#" class="nav-link text-white">
+                            <a href="{{ route('admin.users') }}" class="nav-link text-white">
                                 <i class="bi bi-people me-2"></i> Manage Users
                             </a>
                         </li>

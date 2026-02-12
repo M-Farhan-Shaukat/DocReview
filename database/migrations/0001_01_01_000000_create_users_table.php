@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('city')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('cnic')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('password');
             $table->string('is_active')->default(true);
             $table->rememberToken();

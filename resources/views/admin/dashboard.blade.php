@@ -332,7 +332,7 @@
                             </a>
                         @endif
 
-                        <a href="{{ route('admin.settings') }}" class="btn btn-outline-secondary text-start py-2">
+                        <a href="#" class="btn btn-outline-secondary text-start py-2">
                             <i class="bi bi-gear me-2"></i>
                             System Settings
                         </a>

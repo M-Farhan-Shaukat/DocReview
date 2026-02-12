@@ -1,18 +1,18 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid px-3">
+    <div class="container-fluid px-2 px-md-3">
         <!-- Header -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
             <div>
-                <h4 class="fw-bold mb-0 fs-5">Edit User</h4>
-                <p class="text-muted mb-0 small">Update user information and settings</p>
+                <h4 class="fw-bold mb-0 fs-6 fs-md-5">Edit User</h4>
+                <p class="text-muted mb-0 small d-none d-sm-block">Update user information and settings</p>
             </div>
-            <div class="d-flex gap-2">
-                <span class="badge bg-info bg-opacity-10 text-info px-2 py-1 rounded-pill">
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge bg-info bg-opacity-10 text-info px-2 py-1 rounded-pill small">
                     <i class="bi bi-pencil-square me-1"></i> Editing
                 </span>
-                <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }} bg-opacity-10 px-2 py-1 rounded-pill"
+                <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }} bg-opacity-10 px-2 py-1 rounded-pill small"
                       style="color: {{ $user->is_active ? '#198754' : '#dc3545' }} !important;">
                     <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>
                     {{ $user->is_active ? 'Active' : 'Inactive' }}
@@ -22,25 +22,25 @@
 
         <!-- Form Card - Compact -->
         <div class="row">
-            <div class="col-12 col-lg-11 col-xl-10">
+            <div class="col-12">
                 <div class="card shadow-sm border-0">
-                    <div class="card-body p-3 p-md-4">
+                    <div class="card-body p-3">
                         <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
                             @csrf
                             @method('PUT')
 
-                            <!-- Two column layout for better space utilization -->
+                            <!-- Single column on mobile, two on desktop -->
                             <div class="row g-3">
                                 <!-- Left Column -->
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label small fw-semibold text-secondary mb-1">
-                                            <i class="bi bi-person"></i> Full Name <span class="text-danger">*</span>
+                                            <i class="bi bi-person"></i> Name <span class="text-danger">*</span>
                                         </label>
                                         <input type="text"
                                                class="form-control form-control-sm @error('name') is-invalid @enderror"
                                                name="name"
-                                               placeholder="Enter full name"
+                                               placeholder="Full name"
                                                value="{{ old('name', $user->name) }}"
                                                required>
                                         @error('name')
@@ -62,8 +62,8 @@
                                         <div class="invalid-feedback small">{{ $message }}</div>
                                         @enderror
                                         @if($user->email_verified_at)
-                                            <small class="text-success d-block mt-1">
-                                                <i class="bi bi-check-circle-fill me-1" style="font-size: 0.7rem;"></i>
+                                            <small class="text-success d-block mt-1 small">
+                                                <i class="bi bi-check-circle-fill me-1"></i>
                                                 Verified: {{ $user->email_verified_at->format('M d, Y') }}
                                             </small>
                                         @endif
@@ -173,7 +173,7 @@
                                             <input type="password"
                                                    class="form-control @error('password') is-invalid @enderror"
                                                    name="password"
-                                                   placeholder="Leave empty to keep current"
+                                                   placeholder="Leave empty"
                                                    id="password">
                                             <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
                                                 <i class="bi bi-eye" id="passwordIcon"></i>
@@ -182,7 +182,7 @@
                                             <div class="invalid-feedback small">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <small class="text-muted">Min 8 characters. Leave empty to keep current password.</small>
+                                        <small class="text-muted small">Min 8 chars. Leave empty to keep current.</small>
                                     </div>
 
                                     <div class="mb-3">
@@ -197,28 +197,28 @@
                                     </div>
                                 </div>
 
-                                <!-- Account Status Controls - Full Width -->
+                                <!-- Account Status Controls -->
                                 <div class="col-12">
                                     <div class="d-flex flex-wrap align-items-center bg-light p-2 rounded-3 mt-2">
-                                        <div class="form-check form-switch me-4">
+                                        <div class="form-check form-switch me-3">
                                             <input class="form-check-input" type="checkbox" name="is_active" id="isActive"
                                                 {{ old('is_active', $user->is_active) ? 'checked' : '' }}>
                                             <label class="form-check-label small fw-semibold" for="isActive">
-                                                <i class="bi bi-check-circle text-success me-1"></i> Active Account
+                                                Active Account
                                             </label>
                                         </div>
 
                                         @if(!$user->email_verified_at)
-                                            <div class="form-check form-switch me-4">
+                                            <div class="form-check form-switch me-3">
                                                 <input class="form-check-input" type="checkbox" name="email_verified" id="emailVerified">
                                                 <label class="form-check-label small fw-semibold" for="emailVerified">
-                                                    <i class="bi bi-envelope-check text-info me-1"></i> Mark Email Verified
+                                                    Mark Email Verified
                                                 </label>
                                             </div>
                                         @endif
 
-                                        <div class="ms-auto">
-                                            <small class="text-muted">
+                                        <div class="ms-auto mt-2 mt-sm-0">
+                                            <small class="text-muted small">
                                                 <i class="bi bi-clock-history me-1"></i>
                                                 Updated: {{ $user->updated_at->diffForHumans() }}
                                             </small>
@@ -230,32 +230,19 @@
                                 <div class="col-12">
                                     <div id="passwordMatch" class="small"></div>
                                 </div>
-
-                                <!-- User Meta Info -->
-                                <div class="col-12">
-                                    <div class="d-flex flex-wrap gap-3 mt-1 small text-muted">
-                                        <span><i class="bi bi-calendar-plus me-1"></i> Created: {{ $user->created_at->format('M d, Y') }}</span>
-                                        @if($user->email_verified_at)
-                                            <span><i class="bi bi-envelope-check me-1 text-success"></i> Email verified</span>
-                                        @else
-                                            <span><i class="bi bi-envelope me-1 text-warning"></i> Email not verified</span>
-                                        @endif
-                                        <span><i class="bi bi-fingerprint me-1"></i> ID: {{ $user->id }}</span>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Form Actions -->
-                            <div class="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
-                                <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-secondary">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center mt-4 pt-3 border-top gap-2">
+                                <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-secondary order-2 order-sm-1">
                                     <i class="bi bi-arrow-left"></i> Back to Users
                                 </a>
-                                <div>
-                                    <button type="reset" class="btn btn-sm btn-outline-secondary me-2">
-                                        <i class="bi bi-eraser"></i> Reset Changes
+                                <div class="d-flex gap-2 order-1 order-sm-2">
+                                    <button type="reset" class="btn btn-sm btn-outline-secondary flex-fill flex-sm-grow-0">
+                                        <i class="bi bi-eraser"></i> Reset
                                     </button>
-                                    <button type="submit" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-check-circle"></i> Update User
+                                    <button type="submit" class="btn btn-sm btn-primary flex-fill flex-sm-grow-0">
+                                        <i class="bi bi-check-circle"></i> Update
                                     </button>
                                 </div>
                             </div>
@@ -267,15 +254,15 @@
                 @if(auth()->user()->hasPermission('delete_users') && auth()->user()->id !== $user->id)
                     <div class="card border-0 bg-danger bg-opacity-10 mt-3">
                         <div class="card-body p-3">
-                            <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
                                 <div>
-                                    <h6 class="fw-semibold text-danger mb-1">
+                                    <h6 class="fw-semibold text-danger mb-1 small">
                                         <i class="bi bi-exclamation-triangle-fill me-1"></i> Danger Zone
                                     </h6>
                                     <p class="small text-muted mb-0">Once you delete a user, there is no going back.</p>
                                 </div>
                                 <button type="button"
-                                        class="btn btn-sm btn-outline-danger"
+                                        class="btn btn-sm btn-outline-danger w-100 w-sm-auto"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteUserModal">
                                     <i class="bi bi-trash"></i> Delete User
@@ -284,12 +271,12 @@
                         </div>
                     </div>
 
-                    <!-- Delete Modal -->
+                    <!-- Delete Modal - Responsive -->
                     <div class="modal fade" id="deleteUserModal" tabindex="-1">
-                        <div class="modal-dialog modal-sm">
+                        <div class="modal-dialog modal-dialog-centered modal-sm mx-2 mx-md-auto">
                             <div class="modal-content">
                                 <div class="modal-header border-0 pb-0">
-                                    <h6 class="modal-title text-danger fw-semibold">
+                                    <h6 class="modal-title text-danger fw-semibold small">
                                         <i class="bi bi-exclamation-triangle-fill me-1"></i> Delete User
                                     </h6>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -319,106 +306,34 @@
 
 @push('styles')
     <style>
-        /* Compact form styling - respects sidebar */
-        .container-fluid {
-            max-width: 100%;
-            overflow-x: hidden;
+        /* Mobile optimizations */
+        @media (max-width: 575.98px) {
+            .container-fluid {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+            .form-label {
+                font-size: 0.7rem;
+            }
+            .btn-sm {
+                padding: 0.3rem 0.7rem;
+            }
         }
-
-        .card {
-            border-radius: 0.75rem;
-            border: none;
-        }
-
         .form-control-sm, .form-select-sm {
-            padding: 0.35rem 0.75rem;
             font-size: 0.875rem;
             border-radius: 0.5rem;
-            border: 1px solid #dee2e6;
         }
-
-        .form-control-sm:focus, .form-select-sm:focus {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
-        }
-
-        .input-group-sm .form-control {
-            border-radius: 0.5rem 0 0 0.5rem;
-        }
-
-        .input-group-sm .btn {
-            border-radius: 0 0.5rem 0.5rem 0;
-            padding: 0.35rem 0.75rem;
-        }
-
-        .form-label {
-            margin-bottom: 0.2rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .bg-opacity-10 {
-            --bs-bg-opacity: 0.1;
-        }
-
-        .btn-sm {
-            padding: 0.35rem 0.9rem;
-            font-size: 0.8rem;
-            border-radius: 0.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(145deg, #0d6efd, #0b5ed7);
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(145deg, #0b5ed7, #0a58ca);
-        }
-
-        .form-check-input {
-            cursor: pointer;
-        }
-
         .form-check-input:checked {
             background-color: #0d6efd;
             border-color: #0d6efd;
         }
-
-        /* Compact spacing */
-        .mb-3 {
-            margin-bottom: 0.75rem !important;
+        .w-sm-auto {
+            width: auto !important;
         }
-
-        .row.g-3 {
-            --bs-gutter-y: 0.75rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .col-lg-11, .col-xl-10 {
-                width: 100%;
+        @media (min-width: 576px) {
+            .w-sm-auto {
+                width: auto !important;
             }
-
-            .card-body {
-                padding: 1rem !important;
-            }
-        }
-
-        /* Password match indicator */
-        .text-success small, .text-danger small {
-            font-size: 0.75rem;
-        }
-
-        /* Danger zone styling */
-        .bg-opacity-10.bg-danger {
-            background-color: rgba(220, 53, 69, 0.05) !important;
-        }
-
-        /* Tooltip customization */
-        .small {
-            font-size: 0.75rem;
         }
     </style>
 @endpush
@@ -449,48 +364,18 @@
                     }
                 });
             }
-        });
 
-        // Auto-format CNIC
-        document.getElementById('cnic')?.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 5) {
-                value = value.slice(0, 5) + '-' + value.slice(5);
-            }
-            if (value.length > 13) {
-                value = value.slice(0, 13) + '-' + value.slice(13, 14);
-            }
-            e.target.value = value;
-        });
-
-        // Warn before leaving with unsaved changes
-        (function() {
-            const form = document.querySelector('form');
-            const resetButton = document.querySelector('button[type="reset"]');
-            let formChanged = false;
-
-            if (form) {
-                form.addEventListener('input', function() {
-                    formChanged = true;
-                });
-
-                if (resetButton) {
-                    resetButton.addEventListener('click', function() {
-                        formChanged = false;
-                    });
+            // Auto-format CNIC
+            document.getElementById('cnic')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
                 }
-
-                window.addEventListener('beforeunload', function(e) {
-                    if (formChanged) {
-                        e.preventDefault();
-                        e.returnValue = '';
-                    }
-                });
-
-                form.addEventListener('submit', function() {
-                    formChanged = false;
-                });
-            }
-        })();
+                if (value.length > 13) {
+                    value = value.slice(0, 13) + '-' + value.slice(13, 14);
+                }
+                e.target.value = value;
+            });
+        });
     </script>
 @endpush

@@ -1,27 +1,27 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid px-3">
+    <div class="container-fluid px-2 px-md-3">
         <!-- Header -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
             <div>
-                <h4 class="fw-bold mb-0 fs-5">Create New User</h4>
-                <p class="text-muted mb-0 small">Add a new user to the system</p>
+                <h4 class="fw-bold mb-0 fs-6 fs-md-5">Create New User</h4>
+                <p class="text-muted mb-0 small d-none d-sm-block">Add a new user to the system</p>
             </div>
-            <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-pill">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-pill small">
                 <i class="bi bi-person-plus-fill me-1"></i> New
             </span>
         </div>
 
-        <!-- Form Card - Compact -->
+        <!-- Form Card -->
         <div class="row">
-            <div class="col-12 col-lg-11 col-xl-10">
+            <div class="col-12">
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-3 p-md-4">
                         <form method="POST" action="{{ route('admin.users.store') }}">
                             @csrf
 
-                            <!-- Two column layout for better space utilization -->
+                            <!-- Single column on mobile, two on desktop -->
                             <div class="row g-3">
                                 <!-- Left Column -->
                                 <div class="col-md-6">
@@ -166,7 +166,7 @@
                                             <div class="invalid-feedback small">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <small class="text-muted">Min 8 characters</small>
+                                        <small class="text-muted small">Min 8 characters</small>
                                     </div>
 
                                     <div class="mb-3">
@@ -181,23 +181,19 @@
                                     </div>
                                 </div>
 
-                                <!-- Account Status - Full Width -->
+                                <!-- Account Status -->
                                 <div class="col-12">
-                                    <div class="d-flex align-items-center bg-light p-2 rounded-3 mt-2">
-                                        <div class="form-check form-switch me-3">
+                                    <div class="d-flex flex-wrap align-items-center bg-light p-2 rounded-3 mt-2 gap-2">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="is_active" id="isActive" checked>
-                                            <label class="form-check-label small fw-semibold" for="isActive">
-                                                Active
-                                            </label>
+                                            <label class="form-check-label small fw-semibold" for="isActive">Active</label>
                                         </div>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="email_verified" id="emailVerified">
-                                            <label class="form-check-label small fw-semibold" for="emailVerified">
-                                                Verify Email
-                                            </label>
+                                            <label class="form-check-label small fw-semibold" for="emailVerified">Verify Email</label>
                                         </div>
-                                        <small class="text-muted ms-auto">
-                                            <i class="bi bi-info-circle"></i> User will receive welcome email
+                                        <small class="text-muted ms-auto small">
+                                            <i class="bi bi-info-circle"></i> Welcome email will be sent
                                         </small>
                                     </div>
                                 </div>
@@ -209,15 +205,15 @@
                             </div>
 
                             <!-- Form Actions -->
-                            <div class="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
-                                <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-secondary">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center mt-4 pt-3 border-top gap-2">
+                                <a href="{{ route('admin.users') }}" class="btn btn-sm btn-outline-secondary order-2 order-sm-1">
                                     <i class="bi bi-arrow-left"></i> Back
                                 </a>
-                                <div>
-                                    <button type="reset" class="btn btn-sm btn-outline-secondary me-2">
+                                <div class="d-flex gap-2 order-1 order-sm-2">
+                                    <button type="reset" class="btn btn-sm btn-outline-secondary flex-fill flex-sm-grow-0">
                                         <i class="bi bi-eraser"></i> Reset
                                     </button>
-                                    <button type="submit" class="btn btn-sm btn-success">
+                                    <button type="submit" class="btn btn-sm btn-success flex-fill flex-sm-grow-0">
                                         <i class="bi bi-check-circle"></i> Save User
                                     </button>
                                 </div>
@@ -226,11 +222,11 @@
                     </div>
                 </div>
 
-                <!-- Quick Tips - Compact -->
+                <!-- Quick Tips -->
                 <div class="alert alert-info bg-opacity-10 border-0 mt-3 p-2 small">
                     <i class="bi bi-info-circle me-1"></i>
-                    <span class="fw-semibold">Quick tips:</span>
-                    <span class="text-muted">Required fields marked with * | Password must be 8+ chars | CNIC auto-formats</span>
+                    <span class="fw-semibold">Tips:</span>
+                    <span class="text-muted">Required fields marked * | Password: 8+ chars | CNIC auto-formats</span>
                 </div>
             </div>
         </div>
@@ -239,114 +235,39 @@
 
 @push('styles')
     <style>
-        /* Compact form styling - respects sidebar */
-        .container-fluid {
-            max-width: 100%;
-            overflow-x: hidden;
+        @media (max-width: 575.98px) {
+            .container-fluid {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+            .form-label {
+                font-size: 0.7rem;
+            }
+            .btn-sm {
+                padding: 0.3rem 0.7rem;
+            }
         }
-
-        .card {
-            border-radius: 0.75rem;
-            border: none;
-        }
-
         .form-control-sm, .form-select-sm {
-            padding: 0.35rem 0.75rem;
             font-size: 0.875rem;
             border-radius: 0.5rem;
-            border: 1px solid #dee2e6;
         }
-
-        .form-control-sm:focus, .form-select-sm:focus {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
-        }
-
         .input-group-sm .form-control {
             border-radius: 0.5rem 0 0 0.5rem;
         }
-
         .input-group-sm .btn {
             border-radius: 0 0.5rem 0.5rem 0;
-            padding: 0.35rem 0.75rem;
         }
-
-        .form-label {
-            margin-bottom: 0.2rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .bg-opacity-10 {
-            --bs-bg-opacity: 0.1;
-        }
-
-        .btn-sm {
-            padding: 0.35rem 0.9rem;
-            font-size: 0.8rem;
-            border-radius: 0.5rem;
-        }
-
-        .btn-success {
-            background: linear-gradient(145deg, #198754, #146c43);
-            border: none;
-        }
-
-        .btn-success:hover {
-            background: linear-gradient(145deg, #146c43, #0f5735);
-        }
-
-        .form-check-input {
-            cursor: pointer;
-        }
-
         .form-check-input:checked {
             background-color: #198754;
             border-color: #198754;
-        }
-
-        /* Compact spacing */
-        .mb-3 {
-            margin-bottom: 0.75rem !important;
-        }
-
-        .row.g-3 {
-            --bs-gutter-y: 0.75rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .col-lg-11, .col-xl-10 {
-                width: 100%;
-            }
-
-            .card-body {
-                padding: 1rem !important;
-            }
-        }
-
-        /* Password match indicator */
-        .text-success small, .text-danger small {
-            font-size: 0.75rem;
-        }
-
-        /* Ensure sidebar stays intact */
-        .d-flex {
-            align-items: stretch;
-        }
-
-        .flex-grow-1 {
-            min-width: 0; /* Prevents flex item from overflowing */
-            overflow-x: hidden;
         }
     </style>
 @endpush
 
 @push('scripts')
     <script>
-        // Password match checker
         document.addEventListener('DOMContentLoaded', function() {
+            // Password match checker
             const password = document.getElementById('password');
             const confirm = document.getElementById('password_confirmation');
             const matchDiv = document.getElementById('passwordMatch');
@@ -369,18 +290,18 @@
                     }
                 });
             }
-        });
 
-        // Auto-format CNIC
-        document.getElementById('cnic')?.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 5) {
-                value = value.slice(0, 5) + '-' + value.slice(5);
-            }
-            if (value.length > 13) {
-                value = value.slice(0, 13) + '-' + value.slice(13, 14);
-            }
-            e.target.value = value;
+            // Auto-format CNIC
+            document.getElementById('cnic')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
+                }
+                if (value.length > 13) {
+                    value = value.slice(0, 13) + '-' + value.slice(13, 14);
+                }
+                e.target.value = value;
+            });
         });
     </script>
 @endpush

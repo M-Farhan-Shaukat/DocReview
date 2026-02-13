@@ -262,6 +262,14 @@
                                                     class="btn btn-sm btn-primary preview-btn"
                                                     data-url="{{ route('user.attachments.view', $attachment->id) }}"
                                                     data-mime="{{ $attachment->mime_type }}"
+                                                    {{ !in_array($attachment->mime_type, [
+        'application/pdf',
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+        'image/svg+xml'
+    ]) ? 'disabled' : '' }}
                                                 >
                                                     Preview
                                                 </button>

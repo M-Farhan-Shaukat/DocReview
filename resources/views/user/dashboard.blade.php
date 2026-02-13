@@ -378,14 +378,14 @@
                 <div class="card-body p-3 p-md-4">
                     <div class="d-grid gap-2">
                         @if(auth()->user()->hasPermission('upload_documents'))
-                            <a href="{{ route('user.documents.upload') }}" class="btn btn-primary py-3 d-flex align-items-center justify-content-start">
+                            <a href="{{ route('user.documents.index') }}" class="btn btn-primary py-3 d-flex align-items-center justify-content-start">
                                 <i class="bi bi-cloud-upload fs-5 me-3"></i>
                                 <span class="flex-grow-1 text-start">Upload Documents</span>
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                         @endif
 
-                        <a href="{{ route('user.documents') }}" class="btn btn-outline-info py-3 d-flex align-items-center justify-content-start">
+                        <a href="{{ route('user.documents.index') }}" class="btn btn-outline-info py-3 d-flex align-items-center justify-content-start">
                             <i class="bi bi-folder fs-5 me-3"></i>
                             <span class="flex-grow-1 text-start">My Documents</span>
                             <i class="bi bi-arrow-right"></i>
@@ -444,7 +444,7 @@
                             <h6 class="fw-semibold mb-2 small">No Uploads Yet</h6>
                             <p class="text-muted small mb-3">Start by uploading your first document</p>
                             @if(auth()->user()->hasPermission('upload_documents'))
-                                <a href="{{ route('user.documents.upload') }}" class="btn btn-primary btn-sm px-4">
+                                <a href="{{ route('user.documents.index') }}" class="btn btn-primary btn-sm px-4">
                                     Upload Now
                                 </a>
                             @endif

@@ -2,13 +2,12 @@
 
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\User\DocumentController;
 use App\Http\Controllers\User\AttachmentController;
 use Illuminate\Support\Facades\Route;
 
 
 
-    // Dashboard
+// Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('role:User')
         ->name('dashboard');
@@ -22,18 +21,7 @@ use Illuminate\Support\Facades\Route;
         ->name('profile.update');
 
     // Document Management
-    Route::get('/documents', [DocumentController::class, 'index'])
-        ->middleware('role:User')
-        ->name('documents');
-    Route::get('/documents/upload', [DocumentController::class, 'create'])
-        ->middleware('role:User')
-        ->name('documents.upload');
-    Route::post('/documents/upload', [DocumentController::class, 'store'])
-        ->middleware('role:User')
-        ->name('documents.store');
-    Route::delete('/documents/{id}', [DocumentController::class, 'destroy'])
-        ->middleware('role:User')
-        ->name('documents.delete');
+
 
     // Application Status
     Route::get('/application/status', [DashboardController::class, 'status'])

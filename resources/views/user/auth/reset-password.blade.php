@@ -3,96 +3,90 @@
 @section('title', 'Reset Password')
 
 @section('content')
-    <div class="container py-3 py-md-5">
+    <div class="container py-4 py-md-5">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                 <!-- Reset Password Card -->
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-body p-3 p-sm-4 p-md-5">
-                        <!-- Header -->
-                        <div class="text-center mb-3 mb-md-4">
-                            <div
-                                class="icon-circle bg-success bg-opacity-10 text-success d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
-                                style="width: 55px; height: 55px;">
-                                <i class="bi bi-shield-lock fs-3"></i>
+                <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 28px;">
+                    <!-- Decorative Header -->
+                    <div class="card-header bg-transparent border-0 pt-5 pb-0 px-4 px-md-5 text-center position-relative">
+                        <div class="position-absolute top-0 start-0 w-100 h-25" style="background: linear-gradient(135deg, #20c997 0%, #198754 100%); opacity: 0.1;"></div>
+                        <div class="icon-circle-wrapper bg-white shadow-lg mx-auto mb-4" style="width: 90px; height: 90px; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 70px; height: 70px; border-radius: 25px; background: linear-gradient(135deg, #20c997 0%, #198754 100%); display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-shield-lock fs-2 text-white"></i>
                             </div>
-                            <h3 class="fw-bold mb-1 fs-4 fs-md-3">Set New Password</h3>
-                            <p class="text-muted small mb-0">Create a strong, secure password</p>
                         </div>
+                        <h3 class="fw-bold mb-1">Set New Password</h3>
+                        <p class="text-muted small">Create a strong, secure password</p>
+                    </div>
 
+                    <div class="card-body p-4 p-md-5 pt-0">
                         <!-- Error Messages -->
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-4" role="alert" style="border-radius: 16px;">
                                 <div class="d-flex align-items-start">
-                                    <i class="bi bi-exclamation-triangle me-2 flex-shrink-0 mt-1"></i>
-                                    <div class="flex-grow-1">
+                                    <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0 mt-1"></i>
+                                    <div class="small flex-grow-1">
                                         @foreach ($errors->all() as $error)
                                             <div>{{ $error }}</div>
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
 
                         <!-- Session Status -->
                         @if (session('status'))
-                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle me-2 flex-shrink-0"></i>
-                                    <span class="flex-grow-1">{{ session('status') }}</span>
-                                </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center py-2 px-3 mb-4" role="alert" style="border-radius: 16px;">
+                                <i class="bi bi-check-circle-fill me-2 flex-shrink-0"></i>
+                                <span class="small flex-grow-1">{{ session('status') }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
 
                         <!-- Password Reset Form -->
-                        <form method="POST" action="{{ route('password.update') }}">
+                        <form method="POST" action="{{ route('password.update') }}" id="resetForm">
                             @csrf
 
                             <!-- Token -->
                             <input type="hidden" name="token" value="{{ $token ?? '' }}">
 
-                            <!-- Email -->
-                            <div class="form-group mb-3">
-                                <label class="form-label fw-medium small text-secondary mb-1">Email Address</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0 ps-3">
-                                        <i class="bi bi-envelope text-muted"></i>
+                            <!-- Email (Readonly) -->
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-medium text-secondary mb-2">
+                                    <i class="bi bi-envelope me-1"></i>Email Address
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 ps-3">
+                                        <i class="bi bi-envelope fs-5 text-primary"></i>
                                     </span>
                                     <input type="email" name="email"
-                                           class="form-control border-start-0 @error('email') is-invalid @enderror"
+                                           class="form-control bg-light border-0 @error('email') is-invalid @enderror"
                                            value="{{ $email ?? old('email') }}"
-                                           required
                                            readonly
-                                           style="background-color: #f8f9fa;">
-                                    @error('email')
-                                    <div class="invalid-feedback small">{{ $message }}</div>
-                                    @enderror
+                                           required
+                                           style="padding: 0.9rem 1rem; background-color: #eef2f6 !important;">
                                 </div>
                             </div>
 
                             <!-- New Password -->
-                            <div class="form-group mb-3">
-                                <label class="form-label fw-medium small text-secondary mb-1">New Password</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0 ps-3">
-                                        <i class="bi bi-lock text-muted"></i>
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-medium text-secondary mb-2">
+                                    <i class="bi bi-lock me-1"></i>New Password
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 ps-3">
+                                        <i class="bi bi-lock fs-5 text-primary"></i>
                                     </span>
                                     <input type="password" name="password"
-                                           class="form-control border-start-0 @error('password') is-invalid @enderror"
+                                           class="form-control bg-light border-0 @error('password') is-invalid @enderror"
                                            placeholder="Enter new password"
                                            id="password"
                                            required
-                                           autofocus>
-                                    <button class="btn btn-outline-secondary bg-light border"
-                                            type="button"
-                                            onclick="togglePassword(this, 'new')"
-                                            style="border-top-right-radius: 0.375rem; border-bottom-right-radius: 0.375rem;">
+                                           autofocus
+                                           style="padding: 0.9rem 1rem;">
+                                    <button class="btn btn-light border-0" type="button" onclick="togglePassword('password', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     @error('password')
@@ -102,54 +96,47 @@
                             </div>
 
                             <!-- Confirm Password -->
-                            <div class="form-group mb-3">
-                                <label class="form-label fw-medium small text-secondary mb-1">Confirm Password</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0 ps-3">
-                                        <i class="bi bi-lock-fill text-muted"></i>
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-medium text-secondary mb-2">
+                                    <i class="bi bi-check-circle me-1"></i>Confirm Password
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 ps-3">
+                                        <i class="bi bi-check-circle fs-5 text-primary"></i>
                                     </span>
                                     <input type="password" name="password_confirmation"
-                                           class="form-control border-start-0"
+                                           class="form-control bg-light border-0"
                                            placeholder="Confirm new password"
                                            id="password_confirmation"
-                                           required>
-                                    <button class="btn btn-outline-secondary bg-light border"
-                                            type="button"
-                                            onclick="togglePassword(this, 'confirm')"
-                                            style="border-top-right-radius: 0.375rem; border-bottom-right-radius: 0.375rem;">
+                                           required
+                                           style="padding: 0.9rem 1rem;">
+                                    <button class="btn btn-light border-0" type="button" onclick="togglePassword('password_confirmation', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Password Strength Meter -->
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small class="text-muted">Password strength</small>
-                                    <small class="text-muted fw-medium" id="password-strength-text">Weak</small>
+                            <div class="mb-4" id="passwordStrengthSection">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <small class="text-muted fw-medium">Password Strength</small>
+                                    <small class="text-muted fw-medium" id="passwordStrengthText">Weak</small>
                                 </div>
-                                <div class="progress" style="height: 6px; border-radius: 10px;">
-                                    <div class="progress-bar bg-danger" id="password-strength-bar"
-                                         style="width: 25%; border-radius: 10px;"></div>
+                                <div class="progress" style="height: 8px; border-radius: 10px;">
+                                    <div class="progress-bar bg-danger" id="passwordStrengthBar" style="width: 25%; border-radius: 10px;"></div>
                                 </div>
                             </div>
 
                             <!-- Password Match Indicator -->
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <div id="passwordMatch" class="small"></div>
                             </div>
 
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-success w-100 py-2 fw-medium rounded-3 mb-3">
-                                <i class="bi bi-check-circle me-2"></i>
-                                Reset Password
-                            </button>
-
                             <!-- Password Requirements -->
-                            <div class="alert alert-light border-0 bg-light py-2 px-3 rounded-3 mb-3">
+                            <div class="alert alert-light bg-light border-0 py-3 px-3 rounded-3 mb-4">
                                 <small class="text-muted d-flex flex-column gap-1">
-                                    <span class="fw-semibold">
-                                        <i class="bi bi-shield-check me-1 text-success"></i>Password Requirements:
+                                    <span class="fw-semibold text-success">
+                                        <i class="bi bi-shield-check me-1"></i>Password Requirements:
                                     </span>
                                     <span class="ms-3">• Minimum 8 characters</span>
                                     <span class="ms-3">• At least one uppercase letter</span>
@@ -158,12 +145,19 @@
                                 </small>
                             </div>
 
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-success w-100 py-3 fw-medium rounded-3 mb-4 position-relative overflow-hidden">
+                                <span class="position-relative z-index-1">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Reset Password
+                                </span>
+                            </button>
+
                             <!-- Back to Login -->
-                            <div class="text-center mt-3">
-                                <a href="{{ route('login') }}"
-                                   class="text-decoration-none d-inline-flex align-items-center small">
+                            <div class="text-center">
+                                <a href="{{ route('login') }}" class="text-decoration-none d-inline-flex align-items-center text-muted">
                                     <i class="bi bi-arrow-left me-2"></i>
-                                    Return to Login
+                                    <span class="small">Return to Login</span>
                                 </a>
                             </div>
                         </form>
@@ -171,9 +165,9 @@
                 </div>
 
                 <!-- Security Note -->
-                <div class="text-center mt-3">
+                <div class="text-center mt-4">
                     <small class="text-muted">
-                        <i class="bi bi-shield-lock me-1"></i>
+                        <i class="bi bi-shield-lock-check me-1"></i>
                         This is a secure, encrypted connection
                     </small>
                 </div>
@@ -182,57 +176,41 @@
     </div>
 
     <script>
-        function togglePassword(element, type) {
-            let inputName = type === 'confirm' ? 'password_confirmation' : 'password';
-            const passwordInput = element.closest('.input-group').querySelector(`input[name="${inputName}"]`);
-            const icon = element.querySelector('i');
+        function togglePassword(fieldId, btn) {
+            const field = document.getElementById(fieldId);
+            const icon = btn.querySelector('i');
 
-            if (passwordInput) {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    icon.classList.remove('bi-eye');
-                    icon.classList.add('bi-eye-slash');
-                } else {
-                    passwordInput.type = 'password';
-                    icon.classList.remove('bi-eye-slash');
-                    icon.classList.add('bi-eye');
-                }
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
             }
         }
 
-        // Password strength checker
-        document.addEventListener('DOMContentLoaded', function () {
-            const passwordInput = document.querySelector('input[name="password"]');
-            const confirmInput = document.getElementById('password_confirmation');
+        // Password strength checker and match validator
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('password');
+            const confirm = document.getElementById('password_confirmation');
             const matchDiv = document.getElementById('passwordMatch');
-            const strengthBar = document.getElementById('password-strength-bar');
-            const strengthText = document.getElementById('password-strength-text');
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
 
-            if (passwordInput) {
-                passwordInput.addEventListener('input', function () {
-                    const password = this.value;
+            if (password) {
+                password.addEventListener('input', function() {
+                    const value = this.value;
+
+                    // Calculate strength
                     let strength = 0;
-                    let criteria = 0;
+                    if (value.length >= 8) strength += 25;
+                    if (/[A-Z]/.test(value)) strength += 25;
+                    if (/[0-9]/.test(value)) strength += 25;
+                    if (/[!@#$%^&*]/.test(value)) strength += 25;
 
-                    // Check password criteria
-                    if (password.length >= 8) {
-                        strength += 25;
-                        criteria++;
-                    }
-                    if (/[A-Z]/.test(password)) {
-                        strength += 25;
-                        criteria++;
-                    }
-                    if (/[0-9]/.test(password)) {
-                        strength += 25;
-                        criteria++;
-                    }
-                    if (/[!@#$%^&*]/.test(password)) {
-                        strength += 25;
-                        criteria++;
-                    }
-
-                    // Update progress bar
+                    // Update bar
                     strengthBar.style.width = strength + '%';
 
                     // Update color and text
@@ -253,111 +231,135 @@
                         strengthText.textContent = 'Strong';
                         strengthText.className = 'text-muted fw-medium text-success';
                     }
+
+                    // Check match if confirm has value
+                    if (confirm && confirm.value.length > 0) {
+                        checkPasswordMatch();
+                    }
                 });
             }
 
-            // Password match checker
-            if (confirmInput) {
-                confirmInput.addEventListener('input', function () {
-                    if (this.value.length > 0) {
-                        if (passwordInput.value === this.value) {
-                            matchDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i> Passwords match</span>';
-                            this.classList.remove('is-invalid');
-                            this.classList.add('is-valid');
-                        } else {
-                            matchDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle-fill me-1"></i> Passwords do not match</span>';
-                            this.classList.remove('is-valid');
-                            this.classList.add('is-invalid');
-                        }
+            if (confirm) {
+                confirm.addEventListener('input', checkPasswordMatch);
+            }
+
+            function checkPasswordMatch() {
+                if (confirm.value.length > 0) {
+                    if (password.value === confirm.value) {
+                        matchDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i> Passwords match</span>';
+                        confirm.classList.remove('is-invalid');
+                        confirm.classList.add('is-valid');
                     } else {
-                        matchDiv.innerHTML = '';
-                        this.classList.remove('is-valid', 'is-invalid');
+                        matchDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle-fill me-1"></i> Passwords do not match</span>';
+                        confirm.classList.remove('is-valid');
+                        confirm.classList.add('is-invalid');
                     }
-                });
+                } else {
+                    matchDiv.innerHTML = '';
+                    confirm.classList.remove('is-valid', 'is-invalid');
+                }
             }
         });
     </script>
 
     <style>
+        /* Modern Reset Password Styles */
         .card {
-            border-radius: 20px !important;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .icon-circle {
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(32, 201, 151, 0.2) !important;
+        }
+
+        .icon-circle-wrapper {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .form-control, .input-group-text {
+            border-radius: 16px !important;
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
-            border-color: #20c997;
+            box-shadow: none;
+            background-color: #eef2f6 !important;
+        }
+
+        input[readonly] {
+            cursor: not-allowed;
+            opacity: 0.9;
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+            background: linear-gradient(135deg, #20c997 0%, #198754 100%);
             border: none;
-            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-success::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
         }
 
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+            box-shadow: 0 10px 20px rgba(32, 201, 151, 0.3);
         }
 
-        .btn-success:active {
-            transform: translateY(0);
-        }
-
-        .input-group-text {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-        }
-
-        .input-group .btn {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            border: 1px solid #dee2e6;
-            border-left: none;
+        .btn-success:hover::before {
+            left: 100%;
         }
 
         .progress {
             background-color: #e9ecef;
-            border-radius: 10px;
+            overflow: hidden;
         }
 
         .progress-bar {
-            border-radius: 10px;
             transition: width 0.3s ease;
         }
 
-        input[readonly] {
-            background-color: #f8f9fa;
-            cursor: not-allowed;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
+        /* Mobile Optimizations */
         @media (max-width: 575.98px) {
             .card-body {
                 padding: 1.5rem !important;
             }
 
-            .icon-circle {
-                width: 50px !important;
-                height: 50px !important;
+            .icon-circle-wrapper {
+                width: 70px !important;
+                height: 70px !important;
             }
 
-            .icon-circle i {
+            .icon-circle-wrapper > div {
+                width: 55px !important;
+                height: 55px !important;
+            }
+
+            .icon-circle-wrapper i {
                 font-size: 1.5rem !important;
             }
 
             h3 {
-                font-size: 1.35rem !important;
+                font-size: 1.4rem !important;
             }
 
-            .progress {
-                height: 5px !important;
+            .form-control, .btn {
+                padding: 0.7rem !important;
             }
         }
 
@@ -367,29 +369,10 @@
             }
         }
 
-        .alert {
-            border-radius: 12px;
-        }
-
-        .alert-success {
-            background-color: rgba(25, 135, 84, 0.1);
-            border-color: rgba(25, 135, 84, 0.2);
-            color: #198754;
-        }
-
-        .alert-danger {
-            background-color: rgba(220, 53, 69, 0.1);
-            border-color: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-        }
-
-        .alert-light {
-            background-color: #f8f9fa;
-        }
-
-        .badge {
-            font-weight: 500;
-            padding: 0.35em 0.65em;
+        /* Touch-friendly improvements */
+        .btn, a {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 @endsection

@@ -3,48 +3,47 @@
 @section('title', 'Forgot Password')
 
 @section('content')
-    <div class="container py-3 py-md-5">
+    <div class="container py-4 py-md-5">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                 <!-- Forgot Password Card -->
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-body p-3 p-sm-4 p-md-5">
-                        <!-- Header -->
-                        <div class="text-center mb-3 mb-md-4">
-                            <div
-                                class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
-                                style="width: 55px; height: 55px;">
-                                <i class="bi bi-key fs-3"></i>
+                <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 28px;">
+                    <!-- Decorative Header -->
+                    <div class="card-header bg-transparent border-0 pt-5 pb-0 px-4 px-md-5 text-center position-relative">
+                        <div class="position-absolute top-0 start-0 w-100 h-25" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); opacity: 0.1;"></div>
+                        <div class="icon-circle-wrapper bg-white shadow-lg mx-auto mb-4" style="width: 90px; height: 90px; border-radius: 30px; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 70px; height: 70px; border-radius: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-key fs-2 text-white"></i>
                             </div>
-                            <h3 class="fw-bold mb-1 fs-4 fs-md-3">Reset Password</h3>
-                            <p class="text-muted small mb-0">Enter your email to receive a reset link</p>
                         </div>
+                        <h3 class="fw-bold mb-1">Reset Password</h3>
+                        <p class="text-muted small">We'll send you a reset link</p>
+                    </div>
 
+                    <div class="card-body p-4 p-md-5 pt-0">
                         <!-- Success Message -->
                         @if (session('status'))
-                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle-fill me-2 flex-shrink-0"></i>
-                                    <span class="flex-grow-1">{{ session('status') }}</span>
-                                </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center py-2 px-3 mb-4" role="alert" style="border-radius: 16px;">
+                                <i class="bi bi-check-circle-fill me-2 flex-shrink-0"></i>
+                                <span class="small flex-grow-1">{{ session('status') }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
 
                         <!-- Error Messages -->
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-exclamation-triangle me-2 flex-shrink-0"></i>
-                                    <span class="flex-grow-1">{{ $errors->first() }}</span>
-                                </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center py-2 px-3 mb-4" role="alert" style="border-radius: 16px;">
+                                <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+                                <span class="small flex-grow-1">{{ $errors->first() }}</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
+
+                        <!-- Info Alert -->
+                        <div class="alert alert-info bg-opacity-10 d-flex align-items-center py-2 px-3 mb-4" style="border-radius: 16px; border: none;">
+                            <i class="bi bi-info-circle-fill text-info me-2 flex-shrink-0"></i>
+                            <small class="text-info">Enter your email and we'll send you instructions to reset your password.</small>
+                        </div>
 
                         <!-- Password Reset Form -->
                         <form method="POST" action="{{ route('password.email') }}">
@@ -52,52 +51,39 @@
 
                             <!-- Email Input -->
                             <div class="form-group mb-4">
-                                <label class="form-label fw-medium small text-secondary mb-1">Email Address</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0 ps-3">
-                                        <i class="bi bi-envelope text-muted"></i>
+                                <label class="form-label fw-medium text-secondary mb-2">
+                                    <i class="bi bi-envelope me-1"></i>Email Address
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 ps-3">
+                                        <i class="bi bi-envelope fs-5 text-primary"></i>
                                     </span>
                                     <input type="email" name="email"
-                                           class="form-control border-start-0 @error('email') is-invalid @enderror"
+                                           class="form-control bg-light border-0 @error('email') is-invalid @enderror"
                                            placeholder="your@email.com"
                                            value="{{ old('email') }}"
                                            required
-                                           autofocus>
+                                           autofocus
+                                           style="padding: 0.9rem 1rem;">
                                     @error('email')
                                     <div class="invalid-feedback small">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <small class="text-muted d-block mt-2 small">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    We'll send a password reset link to this email
-                                </small>
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-medium rounded-3 mb-4">
-                                <i class="bi bi-send me-2"></i>
-                                Send Reset Link
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-medium rounded-3 mb-4 position-relative overflow-hidden">
+                                <span class="position-relative z-index-1">
+                                    <i class="bi bi-send me-2"></i>
+                                    Send Reset Link
+                                </span>
                             </button>
-
-                            <!-- Instructions -->
-                            <div class="alert alert-light border-0 bg-light py-2 px-3 rounded-3 mb-3">
-                                <small class="text-muted d-flex flex-column gap-1">
-                                    <span class="fw-semibold">
-                                        <i class="bi bi-info-circle me-1 text-primary"></i>Instructions:
-                                    </span>
-                                    <span class="ms-3">• Enter your registered email address</span>
-                                    <span class="ms-3">• Check your inbox for the reset link</span>
-                                    <span class="ms-3">• Click the link to set a new password</span>
-                                    <span class="ms-3">• Link expires in 60 minutes</span>
-                                </small>
-                            </div>
 
                             <!-- Back to Login -->
                             <div class="text-center mt-3">
-                                <a href="{{ route('login') }}"
-                                   class="text-decoration-none d-inline-flex align-items-center small">
+                                <a href="{{ route('login') }}" class="text-decoration-none d-inline-flex align-items-center text-muted">
                                     <i class="bi bi-arrow-left me-2"></i>
-                                    Back to Login
+                                    <span class="small">Back to Login</span>
                                 </a>
                             </div>
                         </form>
@@ -105,10 +91,10 @@
                 </div>
 
                 <!-- Support Info -->
-                <div class="text-center mt-3">
+                <div class="text-center mt-4">
                     <small class="text-muted">
                         <i class="bi bi-headset me-1"></i>
-                        Need help? <a href="#" class="text-decoration-none">Contact Support</a>
+                        Need help? <a href="#" class="text-decoration-none fw-medium">Contact Support</a>
                     </small>
                 </div>
             </div>
@@ -116,68 +102,93 @@
     </div>
 
     <style>
+        /* Modern Forgot Password Styles */
         .card {
-            border-radius: 20px !important;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .icon-circle {
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2) !important;
+        }
+
+        .icon-circle-wrapper {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .form-control, .input-group-text {
+            border-radius: 16px !important;
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-            border-color: #667eea;
+            box-shadow: none;
+            background-color: #eef2f6 !important;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
-        .input-group-text {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
+        .alert-info {
+            background-color: rgba(13, 202, 240, 0.1);
         }
 
-        .input-group .form-control {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        .alert {
-            border-radius: 12px;
-        }
-
+        /* Mobile Optimizations */
         @media (max-width: 575.98px) {
             .card-body {
                 padding: 1.5rem !important;
             }
 
-            .icon-circle {
-                width: 50px !important;
-                height: 50px !important;
+            .icon-circle-wrapper {
+                width: 70px !important;
+                height: 70px !important;
             }
 
-            .icon-circle i {
+            .icon-circle-wrapper > div {
+                width: 55px !important;
+                height: 55px !important;
+            }
+
+            .icon-circle-wrapper i {
                 font-size: 1.5rem !important;
             }
 
             h3 {
-                font-size: 1.35rem !important;
+                font-size: 1.4rem !important;
+            }
+
+            .form-control, .btn {
+                padding: 0.7rem !important;
             }
         }
 
@@ -187,20 +198,10 @@
             }
         }
 
-        .alert-success {
-            background-color: rgba(25, 135, 84, 0.1);
-            border-color: rgba(25, 135, 84, 0.2);
-            color: #198754;
-        }
-
-        .alert-danger {
-            background-color: rgba(220, 53, 69, 0.1);
-            border-color: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-        }
-
-        .alert-light {
-            background-color: #f8f9fa;
+        /* Touch-friendly improvements */
+        .btn, a {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 @endsection

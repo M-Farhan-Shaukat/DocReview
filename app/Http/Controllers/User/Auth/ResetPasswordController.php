@@ -11,7 +11,7 @@ class ResetPasswordController extends Controller
 {
     public function showForgotPassword()
     {
-        return view('auth.forgot-password');
+        return view('user.auth.forgot-password');
     }
 
     public function send(Request $request)
@@ -31,7 +31,7 @@ class ResetPasswordController extends Controller
 
     public function showResetPassword(string $token)
     {
-        return view('auth.reset-password', ['token' => $token]);
+        return view('user.auth.reset-password', ['token' => $token]);
     }
 
     public function reset(Request $request)

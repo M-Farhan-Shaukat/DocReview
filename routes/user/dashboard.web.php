@@ -57,13 +57,13 @@ use Illuminate\Support\Facades\Route;
         ->middleware('role:User')
         ->name('payment.store');
 
-    // Attachment Downloads
-    Route::get('/download/{file}', [AttachmentController::class, 'download'])
-        ->middleware('role:User')
-        ->name('download');
-    Route::get('/view/{file}', [AttachmentController::class, 'view'])
-        ->middleware('role:User')
-        ->name('view');
+//    // Attachment Downloads
+//    Route::get('/download/{file}', [AttachmentController::class, 'download'])
+//        ->middleware('role:User')
+//        ->name('download');
+//    Route::get('/view/{file}', [AttachmentController::class, 'view'])
+//        ->middleware('role:User')
+//        ->name('view');
 
 
 // Public attachment download (still requires auth)

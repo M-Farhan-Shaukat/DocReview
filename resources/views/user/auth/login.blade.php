@@ -11,9 +11,8 @@
                     <div class="card-body p-3 p-sm-4 p-md-5">
                         <!-- Header -->
                         <div class="text-center mb-3 mb-md-4">
-                            <div
-                                class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
-                                style="width: 55px; height: 55px;">
+                            <div class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
+                                 style="width: 55px; height: 55px;">
                                 <i class="bi bi-shield-lock fs-3"></i>
                             </div>
                             <h3 class="fw-bold mb-1 fs-4 fs-md-3">Welcome Back</h3>
@@ -22,27 +21,23 @@
 
                         <!-- Error Messages -->
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small" role="alert">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-exclamation-triangle me-2 flex-shrink-0"></i>
                                     <span class="flex-grow-1">{{ $errors->first() }}</span>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
 
                         <!-- Session Messages -->
                         @if (session('status'))
-                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small"
-                                 role="alert">
+                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small" role="alert">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle me-2 flex-shrink-0"></i>
                                     <span class="flex-grow-1">{{ session('status') }}</span>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -93,11 +88,9 @@
                             </div>
 
                             <!-- Remember & Forgot -->
-                            <div
-                                class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
                                 <div class="form-check">
-                                    <input type="checkbox" name="remember" class="form-check-input"
-                                           id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input type="checkbox" name="remember" class="form-check-input" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label small text-muted" for="remember">
                                         Remember me
                                     </label>
@@ -117,8 +110,7 @@
                         <!-- Divider -->
                         <div class="position-relative my-4">
                             <hr class="opacity-25">
-                            <div
-                                class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">
+                            <div class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">
                                 or
                             </div>
                         </div>
@@ -126,8 +118,7 @@
                         <!-- Register Link -->
                         <div class="text-center">
                             <p class="text-muted small mb-1">Don't have an account?</p>
-                            <a href="{{ route('register') }}"
-                               class="btn btn-outline-primary btn-sm py-2 px-4 rounded-3">
+                            <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm py-2 px-4 rounded-3">
                                 <i class="bi bi-person-plus me-1"></i>
                                 Create Account
                             </a>

@@ -50,7 +50,7 @@
                                 <input type="file" name="attachment" class="form-control form-control-sm" required>
                                 <div class="form-text small">Max: 10MB. Allowed: PDF, DOC, JPG, PNG</div>
                             </div>
-                            <button type="submit" class="btn btn-dark btn-sm w-100 w-sm-auto">
+                            <button type="submit" class="btn btn-dark btn-sm w-10 w-sm-auto">
                                 <i class="bi bi-upload me-1"></i> Upload
                             </button>
                         </form>
@@ -109,26 +109,126 @@
                                 <td class="d-none d-md-table-cell">{{ $attachment->created_at->format('M d, Y') }}</td>
                                 <td class="d-block d-md-table-cell border-0 pt-2 pt-md-3" data-label="Actions">
                                     <div class="d-flex gap-2">
-                                        <!-- Toggle Active/Inactive - Admin only -->
-                                        @if(auth()->user()->hasRole('Admin'))
-                                            <form action="{{ route('admin.attachments.toggle', $attachment->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button class="btn btn-sm btn-{{ $attachment->is_active ? 'success' : 'secondary' }}" title="{{ $attachment->is_active ? 'Deactivate' : 'Activate' }}">
-                                                    <i class="bi bi-power"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+                                        <!-- Toggle Status Button -->
+                                        <button type="button"
+                                                class="btn btn-sm {{ $attachment->is_active ? 'btn-outline-warning' : 'btn-outline-success' }} border-0"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#statusModal{{ $attachment->id }}"
+                                                title="{{ $attachment->is_active ? 'Deactivate' : 'Activate' }}
+                                                Attachment">
+                                            <i class="bi bi-{{ $attachment->is_active ? 'slash-circle' : 'check-circle' }}"></i>
+                                        </button>
+                                        <!-- Delete Button -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger border-0"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $attachment->id }}"
+                                                title="Delete Attachment">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
 
-                                        <!-- Delete - Admin only -->
-                                        @if(auth()->user()->hasRole('Admin'))
-                                            <form action="{{ route('admin.attachments.destroy', $attachment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-danger" title="Delete">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+
+                                        <!-- Delete Modal for Desktop -->
+                                        <div class="modal fade" id="deleteModal{{ $attachment->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                <div class="modal-content border-0 shadow">
+                                                    <div class="modal-body p-4 text-center position-relative">
+                                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+
+                                                        <div class="d-flex justify-content-center mb-3">
+                                                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center p-3 bg-danger bg-opacity-10"
+                                                                 style="width: 64px; height: 64px;">
+                                                                <i class="bi bi-trash3 text-danger fs-3"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <h5 class="fw-bold text-danger mb-1">Delete Attachment</h5>
+                                                        <p class="small text-muted mb-3">This action cannot be undone</p>
+
+                                                        <div class="bg-light rounded-3 p-3 mb-3 text-start">
+                                                            <div class="d-flex align-items-center gap-3">
+                                                                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-sm"
+                                                                     style="width: 40px; height: 40px;">
+                                                                    <span class="fw-bold text-primary">{{ strtoupper(substr($attachment->name, 0, 1)) }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-semibold">{{ $attachment->name }}</div>
+                                                                    <small class="text-muted">ID: #{{ $attachment->id }}</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <p class="small fw-medium text-danger mb-3">
+                                                            Are you sure you want to delete this attachment?
+                                                        </p>
+
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <button type="button" class="btn btn-sm btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                                                            <form action="{{ route('admin.attachments.destroy', $attachment->id)}}" method="POST">
+                                                                @csrf @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger px-4">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Status Modal for Desktop -->
+                                        <div class="modal fade" id="statusModal{{ $attachment->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                <div class="modal-content border-0 shadow">
+                                                    <div class="modal-body p-4 text-center">
+                                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+
+                                                        <div class="d-flex justify-content-center mb-3">
+                                                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center p-3
+                                                        {{ $attachment->is_active ? 'bg-warning bg-opacity-10' : 'bg-success bg-opacity-10' }}"
+                                                                 style="width: 64px; height: 64px;">
+                                                                <i class="bi bi-{{ $attachment->is_active ? 'exclamation-triangle' : 'check-circle' }}
+                                                            {{ $attachment->is_active ? 'text-warning' : 'text-success' }} fs-3"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <h5 class="fw-bold mb-1 {{ $attachment->is_active ? 'text-warning' : 'text-success' }}">
+                                                            {{ $attachment->is_active ? 'Deactivate' : 'Activate' }} Attachment
+                                                        </h5>
+                                                        <p class="small text-muted mb-3">
+                                                            {{ $attachment->is_active ? 'This will revoke system access' : 'This will grant system access' }}
+                                                        </p>
+
+                                                        <div class="bg-light rounded-3 p-3 mb-3 text-start">
+                                                            <div class="d-flex align-items-center gap-3">
+                                                                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-sm"
+                                                                     style="width: 40px; height: 40px;">
+                                                                    <span class="fw-bold text-primary">{{ strtoupper(substr($attachment->name, 0, 1)) }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-semibold">{{ $attachment->name }}</div>
+                                                                    <small class="text-muted">ID: #{{ $attachment->id }}</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <p class="small fw-medium mb-3">
+                                                            Are you sure you want to {{ $attachment->is_active ? 'deactivate' : 'activate' }} this Attachment?
+                                                        </p>
+
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <button type="button" class="btn btn-sm btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                                                            <form action="{{ route('admin.attachments.toggle', $attachment->id) }}" method="POST">
+                                                                @csrf @method('POST')
+                                                                <button type="submit" class="btn btn-sm px-4 {{ $attachment->is_active ? 'btn-warning' : 'btn-success' }} text-white">
+                                                                    Yes, {{ $attachment->is_active ? 'Deactivate' : 'Activate' }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
                                 </td>
                             </tr>

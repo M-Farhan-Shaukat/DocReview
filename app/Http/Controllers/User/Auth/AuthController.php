@@ -44,10 +44,12 @@ class AuthController extends Controller
                     'email' => 'Account not properly configured. Please contact administrator.',
                 ]);
             }
-
             // Redirect based on role
             if ($user->hasRole('Admin') || $user->hasRole('Manager') || $user->hasRole('Staff')) {
-                return redirect()->route('admin.dashboard');
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'You do not have permission to access the User panel.',
+                ]);
             }
 
             if ($user->hasRole('User')) {

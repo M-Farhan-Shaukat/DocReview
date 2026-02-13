@@ -378,7 +378,7 @@
                 <div class="card-body p-3 p-md-4">
                     <div class="d-grid gap-2">
                         @if(auth()->user()->hasPermission('upload_documents'))
-                            <a href="{{ route('user.documents.index') }}" class="btn btn-primary py-3 d-flex align-items-center justify-content-start">
+                            <a href="{{ route('user.documents.create') }}" class="btn btn-primary py-3 d-flex align-items-center justify-content-start">
                                 <i class="bi bi-cloud-upload fs-5 me-3"></i>
                                 <span class="flex-grow-1 text-start">Upload Documents</span>
                                 <i class="bi bi-arrow-right"></i>

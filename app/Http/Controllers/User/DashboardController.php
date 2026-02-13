@@ -33,7 +33,7 @@ class DashboardController extends Controller
                 $approvedCount = $userDocuments->where('status', 'approved')->count();
             }
 
-            return view('/dashboard', compact(
+            return view('user.dashboard', compact(
                 'attachments',
                 'userDocuments',
                 'uploadedCount',

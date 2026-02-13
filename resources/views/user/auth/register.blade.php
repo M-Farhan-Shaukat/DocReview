@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('user.layouts.app')
 
 @section('title', 'Sign Up')
 
@@ -11,8 +11,9 @@
                     <div class="card-body p-3 p-sm-4 p-md-5">
                         <!-- Header -->
                         <div class="text-center mb-3 mb-md-4">
-                            <div class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
-                                 style="width: 55px; height: 55px;">
+                            <div
+                                class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
+                                style="width: 55px; height: 55px;">
                                 <i class="bi bi-person-plus fs-3"></i>
                             </div>
                             <h3 class="fw-bold mb-1 fs-4 fs-md-3">Create Account</h3>
@@ -21,12 +22,14 @@
 
                         <!-- Success Message -->
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small"
+                                 role="alert">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle me-2 flex-shrink-0"></i>
                                     <span class="flex-grow-1">{{ session('success') }}</span>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -100,7 +103,8 @@
 
                                 <!-- Confirm Password -->
                                 <div class="col-12 col-md-6 mb-3 mb-md-4">
-                                    <label class="form-label fw-medium small text-secondary mb-1">Confirm Password</label>
+                                    <label class="form-label fw-medium small text-secondary mb-1">Confirm
+                                        Password</label>
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text bg-light border-end-0 ps-3">
                                             <i class="bi bi-lock-fill text-muted"></i>
@@ -147,14 +151,16 @@
                             <div class="alert alert-light border-0 bg-light py-2 px-3 rounded-3 mb-3">
                                 <small class="text-muted d-flex align-items-center">
                                     <i class="bi bi-info-circle me-2 text-primary"></i>
-                                    <span>All new registrations receive the <span class="badge bg-info bg-opacity-10 text-info px-2 py-1">User</span> role by default.</span>
+                                    <span>All new registrations receive the <span
+                                            class="badge bg-info bg-opacity-10 text-info px-2 py-1">User</span> role by default.</span>
                                 </small>
                             </div>
 
                             <!-- Login Link -->
                             <div class="text-center mt-3">
                                 <p class="text-muted small mb-1">Already have an account?</p>
-                                <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm py-2 px-4 rounded-3">
+                                <a href="{{ route('login') }}"
+                                   class="btn btn-outline-secondary btn-sm py-2 px-4 rounded-3">
                                     <i class="bi bi-box-arrow-in-right me-1"></i>
                                     Sign In
                                 </a>
@@ -186,13 +192,13 @@
         }
 
         // Password match checker
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const password = document.getElementById('password');
             const confirm = document.getElementById('password_confirmation');
             const matchDiv = document.getElementById('passwordMatch');
 
             if (confirm) {
-                confirm.addEventListener('input', function() {
+                confirm.addEventListener('input', function () {
                     if (this.value.length > 0) {
                         if (password.value === this.value) {
                             matchDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i> Passwords match</span>';

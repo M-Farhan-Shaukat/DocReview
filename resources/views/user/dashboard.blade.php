@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('user.layouts.app')
 
 @section('title', 'User Dashboard')
 
@@ -25,9 +25,11 @@
                                 </div>
                             </div>
                             <div class="col-12 col-lg-4 text-lg-end mt-2 mt-lg-0">
-                                <div class="badge bg-primary bg-opacity-10 text-primary p-2 rounded-pill d-inline-flex align-items-center">
+                                <div
+                                    class="badge bg-primary bg-opacity-10 text-primary p-2 rounded-pill d-inline-flex align-items-center">
                                     <i class="bi bi-shield-check me-1"></i>
-                                    <span class="small">Role: <span class="fw-medium">{{ auth()->user()->role->name ?? 'User' }}</span></span>
+                                    <span class="small">Role: <span
+                                            class="fw-medium">{{ auth()->user()->role->name ?? 'User' }}</span></span>
                                 </div>
                             </div>
                         </div>
@@ -157,10 +159,12 @@
                             <div class="col-12">
                                 <div class="d-flex justify-content-between">
                                     <span class="badge bg-success bg-opacity-10 text-success">Registration ✓</span>
-                                    <span class="badge {{ $uploadedCount > 0 ? 'bg-primary text-white' : 'bg-secondary bg-opacity-10 text-secondary' }}">
+                                    <span
+                                        class="badge {{ $uploadedCount > 0 ? 'bg-primary text-white' : 'bg-secondary bg-opacity-10 text-secondary' }}">
                                         Upload {{ $uploadedCount > 0 ? '✓' : '' }}
                                     </span>
-                                    <span class="badge {{ $approvedCount > 0 ? 'bg-primary text-white' : 'bg-secondary bg-opacity-10 text-secondary' }}">
+                                    <span
+                                        class="badge {{ $approvedCount > 0 ? 'bg-primary text-white' : 'bg-secondary bg-opacity-10 text-secondary' }}">
                                         Review {{ $approvedCount > 0 ? '⋯' : '' }}
                                     </span>
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary">Payment</span>
@@ -179,7 +183,8 @@
         <!-- Available Forms -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm h-100" id="available-forms">
-                <div class="card-header bg-white border-0 pt-3 pt-md-4 pb-2 px-3 px-md-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
+                <div
+                    class="card-header bg-white border-0 pt-3 pt-md-4 pb-2 px-3 px-md-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                     <h5 class="card-title mb-0 fs-6 fs-md-5">
                         <i class="bi bi-file-earmark-text text-info me-2"></i>
                         Available Forms & Documents
@@ -206,8 +211,10 @@
                                             <div class="d-flex align-items-center">
                                                 <i class="bi {{ $attachment->file_icon }} fs-4 text-{{ $attachment->file_color }} me-2"></i>
                                                 <div>
-                                                    <div class="fw-medium">{{ Str::limit($attachment->original_name, 30) }}</div>
-                                                    <small class="text-muted">Uploaded: {{ $attachment->created_at->format('M d, Y') }}</small>
+                                                    <div
+                                                        class="fw-medium">{{ Str::limit($attachment->original_name, 30) }}</div>
+                                                    <small
+                                                        class="text-muted">Uploaded: {{ $attachment->created_at->format('M d, Y') }}</small>
                                                 </div>
                                             </div>
                                         </td>
@@ -248,9 +255,11 @@
                                         <div class="d-flex align-items-start mb-2">
                                             <i class="bi {{ $attachment->file_icon }} fs-3 text-{{ $attachment->file_color }} me-2"></i>
                                             <div class="flex-grow-1">
-                                                <div class="fw-medium small">{{ Str::limit($attachment->original_name, 35) }}</div>
+                                                <div
+                                                    class="fw-medium small">{{ Str::limit($attachment->original_name, 35) }}</div>
                                                 <small class="text-muted d-block">
-                                                    {{ $attachment->formatted_size }} • {{ $attachment->created_at->format('M d, Y') }}
+                                                    {{ $attachment->formatted_size }}
+                                                    • {{ $attachment->created_at->format('M d, Y') }}
                                                 </small>
                                             </div>
                                         </div>
@@ -329,13 +338,16 @@
                                             <i class="bi bi-file-earmark-text fs-4 text-{{ $document->status_color ?? 'secondary' }}"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-2 ms-md-3">
-                                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-1">
+                                            <div
+                                                class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-1">
                                                 <h6 class="mb-0 small">{{ Str::limit($document->original_name, 18) }}</h6>
-                                                <span class="badge bg-{{ $document->status_color ?? 'secondary' }} bg-opacity-10 text-{{ $document->status_color ?? 'secondary' }}">
+                                                <span
+                                                    class="badge bg-{{ $document->status_color ?? 'secondary' }} bg-opacity-10 text-{{ $document->status_color ?? 'secondary' }}">
                                                     {{ ucfirst($document->status ?? 'Pending') }}
                                                 </span>
                                             </div>
-                                            <small class="text-muted d-block mt-1">{{ $document->created_at->diffForHumans() }}</small>
+                                            <small
+                                                class="text-muted d-block mt-1">{{ $document->created_at->diffForHumans() }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -526,9 +538,15 @@
 
         /* Animation */
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(13, 110, 253, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(13, 110, 253, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+            }
         }
 
         .step.active .step-icon {

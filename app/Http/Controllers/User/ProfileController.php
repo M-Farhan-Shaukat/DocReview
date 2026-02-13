@@ -4,52 +4,78 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 
 class ProfileController extends Controller
 {
     public function show()
     {
-        return view('user.profile', [
-            'user' => auth()->user()
-        ]);
+        $user = Auth::user();
+
+        return view('user.profile.index', compact('user'));
     }
 
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'city' => 'nullable|string|max:100',
-            'address' => 'nullable|string|max:255',
-            'current_password' => 'nullable|required_with:new_password',
-            'new_password' => 'nullable|min:8|confirmed',
-        ]);
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'age' => 'required|integer|min:1|max:120',
+            'city' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'cnic' => 'required|string|max:20',
+            'postal_code' => 'required|string|max:20',
+        ];
 
-        // Update basic info
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? $user->phone,
-            'city' => $validated['city'] ?? $user->city,
-            'address' => $validated['address'] ?? $user->address,
-        ]);
+        // If change password switch is ON
+        if ($request->change_password) {
 
-        // Update password if provided
-        if ($request->filled('current_password') && $request->filled('new_password')) {
+            $rules['current_password'] = 'required';
+            $rules['password'] = 'required|min:8|confirmed';
+
+            $request->validate($rules);
+
+            // check current password
             if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors(['current_password' => 'Current password is incorrect']);
+
+                return response()->json([
+                    'errors' => [
+                        'current_password' => ['Current password is incorrect']
+                    ]
+                ], 422);
+
             }
 
+        } else {
+            $request->validate($rules);
+        }
+
+        // update profile
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'age' => $request->age,
+            'city' => $request->city,
+            'phone' => $request->phone,
+            'cnic' => $request->cnic,
+            'postal_code' => $request->postal_code,
+        ]);
+
+        // update password
+        if ($request->change_password) {
+
             $user->update([
-                'password' => Hash::make($validated['new_password'])
+                'password' => Hash::make($request->password)
             ]);
         }
 
-        return back()->with('success', 'Profile updated successfully!');
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile updated successfully'
+        ]);
     }
+
 }

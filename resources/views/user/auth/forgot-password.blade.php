@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('user.layouts.app')
 
 @section('title', 'Forgot Password')
 
@@ -11,8 +11,9 @@
                     <div class="card-body p-3 p-sm-4 p-md-5">
                         <!-- Header -->
                         <div class="text-center mb-3 mb-md-4">
-                            <div class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
-                                 style="width: 55px; height: 55px;">
+                            <div
+                                class="icon-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-2 mb-md-3"
+                                style="width: 55px; height: 55px;">
                                 <i class="bi bi-key fs-3"></i>
                             </div>
                             <h3 class="fw-bold mb-1 fs-4 fs-md-3">Reset Password</h3>
@@ -21,23 +22,27 @@
 
                         <!-- Success Message -->
                         @if (session('status'))
-                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small" role="alert">
+                            <div class="alert alert-success alert-dismissible fade show py-2 px-3 mb-3 small"
+                                 role="alert">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-check-circle-fill me-2 flex-shrink-0"></i>
                                     <span class="flex-grow-1">{{ session('status') }}</span>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         @endif
 
                         <!-- Error Messages -->
                         @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small" role="alert">
+                            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3 small"
+                                 role="alert">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-exclamation-triangle me-2 flex-shrink-0"></i>
                                     <span class="flex-grow-1">{{ $errors->first() }}</span>
                                 </div>
-                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -89,7 +94,8 @@
 
                             <!-- Back to Login -->
                             <div class="text-center mt-3">
-                                <a href="{{ route('login') }}" class="text-decoration-none d-inline-flex align-items-center small">
+                                <a href="{{ route('login') }}"
+                                   class="text-decoration-none d-inline-flex align-items-center small">
                                     <i class="bi bi-arrow-left me-2"></i>
                                     Back to Login
                                 </a>

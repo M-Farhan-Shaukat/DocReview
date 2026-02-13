@@ -6,8 +6,7 @@ use App\Http\Controllers\User\DocumentController;
 use App\Http\Controllers\User\AttachmentController;
 use Illuminate\Support\Facades\Route;
 
-// All user routes require authentication and User role
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -65,7 +64,7 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/view/{file}', [AttachmentController::class, 'view'])
         ->middleware('role:User')
         ->name('view');
-});
+
 
 // Public attachment download (still requires auth)
 Route::get('/user-attachments/{file}', [AttachmentController::class, 'downloadPublic'])

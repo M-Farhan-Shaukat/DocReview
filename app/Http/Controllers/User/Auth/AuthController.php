@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -25,11 +27,17 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             $user = Auth::user();
-
+            if (is_null($user->email_verified_at)) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Please verify your email first.',
+                ]);
+            }
             // Debug logging
             \Log::info('User login attempt', [
                 'email' => $user->email,
@@ -85,6 +93,7 @@ class AuthController extends Controller
             'postal_code' => 'required|string|max:20',
             'password'    => 'required|min:8',
         ]);
+        $token = Str::random(64);
 
         // Create user
         $user = User::create([
@@ -97,6 +106,7 @@ class AuthController extends Controller
             'postal_code' => $validated['postal_code'],
             'password'    => Hash::make($validated['password']),
             'is_active'   => true,
+            'email_verification_token' => $token,
         ]);
 
         // Assign "User" role by default
@@ -107,7 +117,7 @@ class AuthController extends Controller
         } else {
             \Log::error('User role not found during registration');
         }
-
+        $this->sendVerificationEmail($user);
         // Auto login after registration
 //        Auth::login($user);
 
@@ -125,4 +135,30 @@ class AuthController extends Controller
         return redirect()->route('login')
             ->with('success', 'Logout Successfully!');
     }
+    protected function sendVerificationEmail($user)
+    {
+        $verificationUrl = route('verify.email', $user->email_verification_token);
+
+        Mail::send('emails.verify-email', ['url' => $verificationUrl, 'user' => $user], function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Verify Your Email Address');
+        });
+    }
+    public function verifyEmail($token)
+    {
+        $user = User::where('email_verification_token', $token)->first();
+
+        if (!$user) {
+            return redirect()->route('login')
+                ->with('error', 'Invalid or expired verification link.');
+        }
+
+        $user->email_verified_at = now();
+        $user->email_verification_token = null;
+        $user->save();
+
+        return redirect()->route('login')
+            ->with('success', 'Email verified successfully. You can now login.');
+    }
+
 }

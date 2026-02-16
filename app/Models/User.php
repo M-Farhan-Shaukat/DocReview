@@ -28,6 +28,8 @@ class User extends Authenticatable
         'phone',
         'cnic',
         'postal_code',
+        'email_verification_token',
+        'email_verified_at'
     ];
 
     /**

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
+            $table->string('email_verification_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('age')->nullable();
             $table->string('city')->nullable();

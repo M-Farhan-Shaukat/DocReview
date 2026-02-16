@@ -76,6 +76,106 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <!-- age -->
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label fw-medium text-secondary mb-2">
+                                        <i class="bi bi-calendar me-1"></i>Age
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0 ps-3">
+                                            <i class="bi bi-calendar fs-5 text-primary"></i>
+                                        </span>
+                                        <input type="number" name="age"
+                                               class="form-control bg-light border-0 @error('age') is-invalid @enderror"
+                                               placeholder="25"
+                                               value="{{ old('age') }}"
+                                               required
+                                               style="padding: 0.9rem 1rem;">
+                                        @error('age')
+                                        <div class="invalid-feedback small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- phone -->
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label fw-medium text-secondary mb-2">
+                                        <i class="bi bi-telephone me-1"></i>Phone
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0 ps-3">
+                                            <i class="bi bi-telephone fs-5 text-primary"></i>
+                                        </span>
+                                        <input type="tel" name="phone"
+                                               class="form-control bg-light border-0 @error('phone') is-invalid @enderror"
+                                               placeholder="+1234567890"
+                                               value="{{ old('phone') }}"
+                                               required
+                                               style="padding: 0.9rem 1rem;">
+                                        @error('phone')
+                                        <div class="invalid-feedback small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- city -->
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label fw-medium text-secondary mb-2">
+                                        <i class="bi bi-building me-1"></i>City
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0 ps-3">
+                                            <i class="bi bi-building fs-5 text-primary"></i>
+                                        </span>
+                                        <input type="text" name="city"
+                                               class="form-control bg-light border-0 @error('city') is-invalid @enderror"
+                                               placeholder="Lahore"
+                                               value="{{ old('city') }}"
+                                               required
+                                               style="padding: 0.9rem 1rem;">
+                                        @error('city')
+                                        <div class="invalid-feedback small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- postal_code -->
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label fw-medium text-secondary mb-2">
+                                        <i class="bi bi-postcard me-1"></i>Postal Code
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0 ps-3">
+                                            <i class="bi bi-postcard fs-5 text-primary"></i>
+                                        </span>
+                                        <input type="text" name="postal_code"
+                                               class="form-control bg-light border-0 @error('postal_code') is-invalid @enderror"
+                                               placeholder="54000"
+                                               value="{{ old('postal_code') }}"
+                                               required
+                                               style="padding: 0.9rem 1rem;">
+                                        @error('postal_code')
+                                        <div class="invalid-feedback small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- cnic -->
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label fw-medium text-secondary mb-2">
+                                        <i class="bi bi-card-text me-1"></i>CNIC
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0 ps-3">
+                                            <i class="bi bi-card-text fs-5 text-primary"></i>
+                                        </span>
+                                        <input type="text" name="cnic"
+                                               class="form-control bg-light border-0 @error('cnic') is-invalid @enderror"
+                                               placeholder="12345-6789012-3"
+                                               value="{{ old('cnic') }}"
+                                               required
+                                               style="padding: 0.9rem 1rem;">
+                                        @error('cnic')
+                                        <div class="invalid-feedback small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <!-- Password -->
                                 <div class="col-12 col-md-6">

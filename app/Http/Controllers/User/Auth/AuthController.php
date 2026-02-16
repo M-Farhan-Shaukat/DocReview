@@ -75,16 +75,27 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|unique:users,email',
+            'age'         => 'required|integer|min:1',
+            'city'        => 'required|string|max:255',
+            'phone'       => 'required|string|max:20',
+            'cnic'        => 'required|string|max:20',
+            'postal_code' => 'required|string|max:20',
+            'password'    => 'required|min:8',
         ]);
 
         // Create user
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'name'        =>  $validated['name'],
+            'email'       => $validated['email'],
+            'age'         => $validated['age'],
+            'city'        => $validated['city'],
+            'phone'       => $validated['phone'],
+            'cnic'        => $validated['cnic'],
+            'postal_code' => $validated['postal_code'],
+            'password'    => Hash::make($validated['password']),
+            'is_active'   => true,
         ]);
 
         // Assign "User" role by default
@@ -97,10 +108,10 @@ class AuthController extends Controller
         }
 
         // Auto login after registration
-        Auth::login($user);
+//        Auth::login($user);
 
-        return redirect()->route('user.dashboard')
-            ->with('success', 'Account created successfully!');
+        return redirect()->route('login')
+            ->with('success', 'Account created successfully.please check your email for verification!');
     }
 
     // Handle logout

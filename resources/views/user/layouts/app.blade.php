@@ -612,6 +612,67 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('success') }}"
+            });
+        });
+    </script>
+@endif
+
+
+@if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+            });
+
+            Toast.fire({
+                icon: 'error',
+                title: "{{ session('error') }}"
+            });
+        });
+    </script>
+@endif
+
+
+@if($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            });
+
+            Toast.fire({
+                icon: 'error',
+                html: `{!! implode('<br>', $errors->all()) !!}`
+            });
+        });
+    </script>
+@endif
+
 
 <script>
     // Close mobile sidebar when clicking on nav links

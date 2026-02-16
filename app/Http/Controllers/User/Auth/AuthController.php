@@ -53,7 +53,8 @@ class AuthController extends Controller
             }
 
             if ($user->hasRole('User')) {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('user.dashboard')
+                    ->with('success', 'Login Successfully!');
             }
 
             // Fallback
@@ -121,6 +122,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')
+            ->with('success', 'Logout Successfully!');
     }
 }

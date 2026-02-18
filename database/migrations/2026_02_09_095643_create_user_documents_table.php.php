@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('attachment_id')->nullable()->constrained()->onDelete('set null');
-
+            $table->foreignId('application_id')->nullable()->constrained('applications')->onDelete('cascade');
             // Document details
             $table->string('original_name');
             $table->string('file_path');

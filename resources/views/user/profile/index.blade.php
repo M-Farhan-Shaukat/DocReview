@@ -483,6 +483,9 @@
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(function(){
             // Toggle password fields
@@ -492,7 +495,6 @@
                 } else {
                     $('#passwordFields').slideUp(300);
                     $('#passwordStrength').hide();
-                    // Clear password fields
                     $('#current_password, #password, #password_confirmation').val('');
                     $('.invalid-feedback').text('');
                     $('.form-control').removeClass('is-invalid');
@@ -529,75 +531,85 @@
                 }
             });
 
-            // Form submission
+            // CNIC auto-formatting
+            $('#cnic').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                if (value.length > 5) value = value.slice(0,5) + '-' + value.slice(5);
+                if (value.length > 13) value = value.slice(0,13) + '-' + value.slice(13,14);
+                $(this).val(value);
+            });
+
+            // Form submission with SweetAlert2
+            // Form submission with SweetAlert2 toast
             $('#profileForm').submit(function(e){
                 e.preventDefault();
 
-                // Clear previous errors
                 $('.invalid-feedback').text('');
                 $('.form-control').removeClass('is-invalid');
-                $('#successMsg').addClass('d-none');
 
                 $.ajax({
                     url: "{{ route('user.profile.update') }}",
                     type: "POST",
                     data: $(this).serialize(),
                     success: function(res){
-                        $('#successMsgText').text(res.message);
-                        $('#successMsg').removeClass('d-none').addClass('show');
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end', // top-right corner
+                            icon: 'success',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            background: '#f0f9ff',
+                            color: '#0f5132',
+                            iconColor: '#198754'
+                        });
 
                         // Clear password fields
                         $('#current_password, #password, #password_confirmation').val('');
                         $('#changePasswordSwitch').prop('checked', false);
                         $('#passwordFields').slideUp(300);
                         $('#passwordStrength').hide();
-
-                        // Auto hide success message
-                        setTimeout(function() {
-                            $('#successMsg').fadeOut(300, function() {
-                                $(this).addClass('d-none').removeClass('show').css('display', '');
-                            });
-                        }, 5000);
                     },
                     error: function(xhr){
                         if(xhr.status === 422){
                             let errors = xhr.responseJSON.errors;
 
-                            // Show password fields if password error exists
                             if(errors.current_password || errors.password){
                                 $('#changePasswordSwitch').prop('checked', true);
                                 $('#passwordFields').slideDown(300);
                             }
 
-                            // Display errors
                             $.each(errors, function(key, value){
                                 $('#' + key).addClass('is-invalid');
                                 $('#error_' + key).text(value[0]);
+                            });
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                background: '#fff5f5',
+                                color: '#842029',
+                                iconColor: '#dc3545'
                             });
                         }
                     }
                 });
             });
 
-            // CNIC auto-formatting
-            $('#cnic').on('input', function() {
-                let value = $(this).val().replace(/\D/g, '');
-                if (value.length > 5) {
-                    value = value.slice(0, 5) + '-' + value.slice(5);
-                }
-                if (value.length > 13) {
-                    value = value.slice(0, 13) + '-' + value.slice(13, 14);
-                }
-                $(this).val(value);
-            });
         });
 
         // Toggle password visibility
-        function togglePassword(fieldId, btn) {
+        function togglePassword(fieldId, btn){
             let field = document.getElementById(fieldId);
             let icon = btn.querySelector('i');
 
-            if (field.type === 'password') {
+            if(field.type === 'password'){
                 field.type = 'text';
                 icon.classList.remove('bi-eye');
                 icon.classList.add('bi-eye-slash');
@@ -608,4 +620,5 @@
             }
         }
     </script>
+
 @endsection

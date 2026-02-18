@@ -6,74 +6,141 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UserDocument;
 use App\Models\Attachment;
+use App\Models\Application;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
-    // List user documents
+
     public function index()
     {
-        $documents = UserDocument::where('user_id', Auth::id())
-            ->with('attachment')
+        $applications = Application::where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
 
-        return view('user.documents.index', compact('documents'));
+        return view('user.application.index', compact('applications'));
     }
-
-    // Show upload form
-    public function create()
+    public function show($id)
     {
-        $attachments = Attachment::where('is_active', true)->get();
-        return view('user.documents.upload', compact('attachments'));
-    }
-
-    // Store uploaded document
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'attachment_id' => 'required|exists:attachments,id',
-            'document' => 'required|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
-            'notes' => 'nullable|string|max:500',
-        ]);
-
-        $file = $request->file('document');
-        $path = $file->store('user_documents/' . Auth::id(), 'public');
-
-        UserDocument::create([
-            'user_id' => Auth::id(),
-            'attachment_id' => $validated['attachment_id'],
-            'original_name' => $file->getClientOriginalName(),
-            'file_path' => $path,
-            'file_size' => $file->getSize(),
-            'mime_type' => $file->getMimeType(),
-            'notes' => $validated['notes'] ?? null,
-            'status' => 'pending',
-        ]);
-
-        return redirect()->route('user.documents.index')
-            ->with('success', 'Document uploaded successfully!');
-    }
-
-    // Delete a document
-    public function destroy($id)
-    {
-        $document = UserDocument::where('user_id', Auth::id())
-            ->where('id', $id)
+        $application = Application::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->with('documents.attachment')
             ->firstOrFail();
 
-        Storage::disk('public')->delete($document->file_path);
+        return view('user.application.show', compact('application'));
+    }
+    // Show or create draft application
+    public function applicationForm()
+    {
+        $user = Auth::user();
 
-        $document->delete();
+        // Draft application create ya fetch
+        $application = Application::firstOrCreate(
+            [
+                'user_id' => $user->id,
+                'status' => 'draft',
+            ],
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                'age' => $user->age,
+                'city' => $user->city,
+                'phone' => $user->phone,
+                'cnic' => $user->cnic,
+                'postal_code' => $user->postal_code,
+            ]
+        );
 
-        return back()->with('success', 'Document deleted successfully!');
+        $attachments = Attachment::where('is_active', true)->get();
+
+        $documents = $application->documents()->get();
+
+        return view('user.application.create', compact('application', 'attachments', 'documents','user'));
     }
 
-    // Preview document in modal
+    // Final submit of application
+    public function submitApplication(Request $request, $applicationId)
+    {
+        $user = auth()->user();
+
+        // Fetch active admin attachments
+        $attachments = Attachment::where('is_active', true)->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validation
+        |--------------------------------------------------------------------------
+        */
+        $rules = [];
+
+        foreach ($attachments as $attachment) {
+            $rules['documents.' . $attachment->id] = 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240';
+        }
+
+        $request->validate($rules);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Create or Update Application
+        |--------------------------------------------------------------------------
+        */
+
+
+            $application = Application::create([
+                'user_id'     => $user->id,
+                'name'        => $user->name,
+                'email'       => $user->email,
+                'age'         => $user->age,
+                'city'        => $user->city,
+                'phone'       => $user->phone,
+                'cnic'        => $user->cnic,
+                'postal_code' => $user->postal_code,
+                'status'      => 'pending'
+            ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Store Documents Against Admin Attachments
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->hasFile('documents')) {
+
+            foreach ($request->file('documents') as $attachmentId => $file) {
+
+                $path = $file->store(
+                    'applications/' . $application->id,
+                    'public'
+                );
+
+                UserDocument::updateOrCreate(
+                    [
+                        'application_id' => $application->id,
+                        'attachment_id'  => $attachmentId
+                    ],
+                    [
+                        'user_id'       => $user->id,
+                        'original_name' => $file->getClientOriginalName(),
+                        'file_path'     => $path,
+                        'file_size'     => $file->getSize(),
+                        'mime_type'     => $file->getMimeType(),
+                        'status'        => 'pending'
+                    ]
+                );
+            }
+        }
+
+        return redirect()
+            ->route('user.application.index')
+            ->with('success', 'Application submitted successfully.');
+    }
+
+    // Preview document
     public function preview($id)
     {
-        $document = UserDocument::where('user_id', auth()->id())->findOrFail($id);
+        $document = UserDocument::where('user_id', Auth::id())->findOrFail($id);
 
         $path = storage_path('app/public/' . $document->file_path);
 
@@ -88,88 +155,8 @@ class DocumentController extends Controller
             return response('Preview not available for this file type.', 403);
         }
 
-        // For images, return a direct file response
-        if (in_array($extension, ['jpg','jpeg','png'])) {
-            return response()->file($path, [
-                'Content-Type' => $document->mime_type,
-            ]);
-        }
-
-        // For PDF, also use file response (works in iframe)
-        if ($extension === 'pdf') {
-            return response()->file($path, [
-                'Content-Type' => $document->mime_type,
-            ]);
-        }
-    }
-
-
-    // Show agreement
-    public function agreement()
-    {
-        $agreement = Attachment::where('type', 'agreement')->where('is_active', true)->first();
-        return view('user.documents.agreement', compact('agreement'));
-    }
-
-    // Sign agreement (upload signed copy)
-    public function signAgreement(Request $request)
-    {
-        $request->validate([
-            'signed_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120'
+        return response()->file($path, [
+            'Content-Type' => $document->mime_type,
         ]);
-
-        $file = $request->file('signed_file');
-        $path = $file->store('signed_agreements/' . Auth::id(), 'public');
-
-        UserDocument::updateOrCreate(
-            [
-                'user_id' => Auth::id(),
-                'attachment_id' => $request->attachment_id
-            ],
-            [
-                'original_name' => $file->getClientOriginalName(),
-                'file_path' => $path,
-                'file_size' => $file->getSize(),
-                'mime_type' => $file->getMimeType(),
-                'status' => 'pending',
-            ]
-        );
-
-        return redirect()->route('user.dashboard')
-            ->with('success', 'Agreement signed successfully!');
-    }
-
-    // Show payment upload form
-    public function paymentForm()
-    {
-        return view('user.documents.payment');
-    }
-
-    // Upload payment slip
-    public function uploadPayment(Request $request)
-    {
-        $validated = $request->validate([
-            'payment_slip' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'transaction_id' => 'required|string|max:100',
-            'amount' => 'required|numeric',
-            'payment_date' => 'required|date',
-        ]);
-
-        $file = $request->file('payment_slip');
-        $path = $file->store('payment_slips/' . Auth::id(), 'public');
-
-        UserDocument::create([
-            'user_id' => Auth::id(),
-            'attachment_id' => null,
-            'original_name' => $file->getClientOriginalName(),
-            'file_path' => $path,
-            'file_size' => $file->getSize(),
-            'mime_type' => $file->getMimeType(),
-            'notes' => 'Payment slip',
-            'status' => 'pending',
-        ]);
-
-        return redirect()->route('user.dashboard')
-            ->with('success', 'Payment slip uploaded successfully!');
     }
 }

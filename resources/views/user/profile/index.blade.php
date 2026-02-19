@@ -86,41 +86,6 @@
                                         <div class="invalid-feedback" id="error_email"></div>
                                     </div>
                                 </div>
-
-                                <!-- Age -->
-                                <div class="col-md-4">
-                                    <label class="form-label fw-medium text-secondary mb-2">
-                                        <i class="bi bi-calendar me-1"></i>Age
-                                    </label>
-                                    <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <i class="bi bi-calendar text-primary"></i>
-                                    </span>
-                                        <input type="number" name="age" id="age"
-                                               class="form-control border-start-0 @error('age') is-invalid @enderror"
-                                               value="{{ old('age', auth()->user()->age) }}"
-                                               placeholder="25">
-                                        <div class="invalid-feedback" id="error_age"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="col-md-4">
-                                    <label class="form-label fw-medium text-secondary mb-2">
-                                        <i class="bi bi-telephone me-1"></i>Phone
-                                    </label>
-                                    <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <i class="bi bi-telephone text-primary"></i>
-                                    </span>
-                                        <input type="text" name="phone" id="phone"
-                                               class="form-control border-start-0 @error('phone') is-invalid @enderror"
-                                               value="{{ old('phone', auth()->user()->phone) }}"
-                                               placeholder="+1234567890">
-                                        <div class="invalid-feedback" id="error_phone"></div>
-                                    </div>
-                                </div>
-
                                 <!-- City -->
                                 <div class="col-md-4">
                                     <label class="form-label fw-medium text-secondary mb-2">
@@ -156,23 +121,6 @@
                                     <small class="text-muted mt-1 d-block">
                                         <i class="bi bi-info-circle me-1"></i>Format: 12345-6789012-3
                                     </small>
-                                </div>
-
-                                <!-- Postal Code -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium text-secondary mb-2">
-                                        <i class="bi bi-postcard me-1"></i>Postal Code
-                                    </label>
-                                    <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <i class="bi bi-postcard text-primary"></i>
-                                    </span>
-                                        <input type="text" name="postal_code" id="postal_code"
-                                               class="form-control border-start-0 @error('postal_code') is-invalid @enderror"
-                                               value="{{ old('postal_code', auth()->user()->postal_code) }}"
-                                               placeholder="10001">
-                                        <div class="invalid-feedback" id="error_postal_code"></div>
-                                    </div>
                                 </div>
                             </div>
 

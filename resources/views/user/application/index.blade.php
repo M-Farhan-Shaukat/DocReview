@@ -142,7 +142,7 @@
                             <thead class="bg-light">
                             <tr>
                                 <th class="ps-4">#</th>
-                                <th>Application ID</th>
+                                <th>Application unique Id</th>
                                 <th>Status</th>
                                 <th>Submitted At</th>
                                 <th class="text-center">Action</th>
@@ -153,7 +153,7 @@
                                 <tr>
                                     <td class="ps-4 fw-medium">{{ $applications->firstItem() + $index }}</td>
                                     <td>
-                                        <span class="fw-semibold">#{{ $application->id }}</span>
+                                        <span class="fw-semibold">{{ $application->unique_id }}</span>
                                     </td>
                                     <td>
                                         @if($application->status == 'pending')

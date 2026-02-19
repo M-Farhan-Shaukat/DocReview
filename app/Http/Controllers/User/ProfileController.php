@@ -23,11 +23,8 @@ class ProfileController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'age' => 'required|integer|min:1|max:120',
             'city' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
             'cnic' => 'required|string|max:20',
-            'postal_code' => 'required|string|max:20',
         ];
 
         // If change password switch is ON
@@ -57,11 +54,8 @@ class ProfileController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'age' => $request->age,
             'city' => $request->city,
-            'phone' => $request->phone,
             'cnic' => $request->cnic,
-            'postal_code' => $request->postal_code,
         ]);
 
         // update password

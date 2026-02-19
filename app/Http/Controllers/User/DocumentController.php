@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\UserDocument;
 use App\Models\Attachment;
 use App\Models\Application;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,12 +37,15 @@ class DocumentController extends Controller
     public function applicationForm()
     {
         $user = Auth::user();
-
+        $userDownloadedDocument = UserDownloadedDocuments::where(['user_id'=>auth()->id(),'document_type' => 'challan'])->first();
+        if(!$userDownloadedDocument){
+            return redirect()->route('user.dashboard')
+                ->with('error', 'Please Download Challan Document.');
+        }
         // Draft application create ya fetch
         $application = Application::firstOrCreate(
             [
-                'user_id' => $user->id,
-                'status' => 'draft',
+                'user_id' => $user->id
             ],
             [
                 'name' => $user->name,
@@ -74,52 +78,33 @@ class DocumentController extends Controller
             ->where('is_active', true)
             ->orderBy('created_at','desc')
             ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Validation
-        |--------------------------------------------------------------------------
-        */
         $rules = [];
-
         foreach ($attachments as $attachment) {
             $rules['documents.' . $attachment->id] = 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240';
         }
-
         $request->validate($rules);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Create or Update Application
-        |--------------------------------------------------------------------------
-        */
-
         $uniqueId = UserDownloadedDocuments::where(['user_id'=>auth()->id(),'document_type' => 'challan'])->first()->unique_id;
-            $application = Application::create([
+        DB::beginTransaction();
+            $application = Application::updateOrCreate(
+                [
+                    'user_id' => $user->id
+                ],
+                [
                 'user_id'     => $user->id,
                 'name'        => $user->name,
                 'email'       => $user->email,
                 'city'        => $user->city,
                 'cnic'        => $user->cnic,
+                'unique_id'   => $uniqueId,
                 'status'      => 'pending'
             ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Store documents Against Admin Attachments
-        |--------------------------------------------------------------------------
-        */
-
         if ($request->hasFile('documents')) {
-
             foreach ($request->file('documents') as $attachmentId => $file) {
-
                 $path = $file->store(
                     'applications/' . $application->id,
                     'public'
                 );
-
                 UserDocument::updateOrCreate(
                     [
                         'application_id' => $application->id,
@@ -137,7 +122,7 @@ class DocumentController extends Controller
                 );
             }
         }
-
+DB::commit();
         return redirect()
             ->route('user.applications.index')
             ->with('success', 'Application submitted successfully.');

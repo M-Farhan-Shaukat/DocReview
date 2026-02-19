@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('cnic')->nullable();
+            $table->string('unique_id')->nullable();
             $table->string('postal_code')->nullable();
 
             $table->string('status')->default('draft'); // draft, pending, approved, rejected

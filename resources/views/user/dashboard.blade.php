@@ -288,12 +288,12 @@
                                                        title="Preview">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('user.document.download', $doc->id) }}"
-                                                       class="btn btn-sm btn-success rounded-pill px-3"
-                                                       data-bs-toggle="tooltip"
-                                                       title="Download">
-                                                        <i class="bi bi-download"></i>
-                                                    </a>
+{{--                                                    <a href="{{ route('user.document.download', $doc->id) }}"--}}
+{{--                                                       class="btn btn-sm btn-success rounded-pill px-3"--}}
+{{--                                                       data-bs-toggle="tooltip"--}}
+{{--                                                       title="Download">--}}
+{{--                                                        <i class="bi bi-download"></i>--}}
+{{--                                                    </a>--}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -329,9 +329,9 @@
                                                 <a href="{{ route('user.document.preview', $doc->id) }}" target="_blank" class="btn btn-sm btn-primary rounded-circle p-2 me-1">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('user.document.download', $doc->id) }}" class="btn btn-sm btn-success rounded-circle p-2">
-                                                    <i class="bi bi-download"></i>
-                                                </a>
+{{--                                                <a href="{{ route('user.document.download', $doc->id) }}" class="btn btn-sm btn-success rounded-circle p-2">--}}
+{{--                                                    <i class="bi bi-download"></i>--}}
+{{--                                                </a>--}}
                                             </div>
                                         </div>
                                     </div>

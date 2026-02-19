@@ -19,6 +19,7 @@ class Application extends Model
         'city',
         'phone',
         'cnic',
+        'unique_id',
         'postal_code',
         'status',
     ];

@@ -27,25 +27,6 @@ class RoleSeeder extends Seeder
                 'is_active' => true
             ],
             [
-                'name' => 'Manager',
-                'permissions' => [
-                    'view_dashboard',
-                    'verify_payment',
-                    'view_reports',
-                    'view_all_applications'
-                ],
-                'is_active' => true
-            ],
-            [
-                'name' => 'Staff',
-                'permissions' => [
-                    'view_dashboard',
-                    'approve_agreement',
-                    'view_all_applications'
-                ],
-                'is_active' => true
-            ],
-            [
                 'name' => 'User',
                 'permissions' => [
                     'view_dashboard',

@@ -76,7 +76,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <!-- age -->
+                           {{--     <!-- age -->
                                 <div class="col-12 col-md-6">
                                     <label class="form-label fw-medium text-secondary mb-2">
                                         <i class="bi bi-calendar me-1"></i>Age
@@ -115,7 +115,7 @@
                                         <div class="invalid-feedback small">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
+                                </div>--}}
                                 <!-- city -->
                                 <div class="col-12 col-md-6">
                                     <label class="form-label fw-medium text-secondary mb-2">
@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                                 <!-- postal_code -->
-                                <div class="col-12 col-md-6">
+                                {{--<div class="col-12 col-md-6">
                                     <label class="form-label fw-medium text-secondary mb-2">
                                         <i class="bi bi-postcard me-1"></i>Postal Code
                                     </label>
@@ -155,7 +155,7 @@
                                         <div class="invalid-feedback small">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
+                                </div>--}}
                                 <!-- cnic -->
                                 <div class="col-12 col-md-6">
                                     <label class="form-label fw-medium text-secondary mb-2">
@@ -224,6 +224,7 @@
                             </div>
 
                             <!-- Password Strength Meter -->
+{{--
                             <div class="mt-4" id="passwordStrengthSection" style="display: none;">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted fw-medium">Password Strength</small>
@@ -237,6 +238,7 @@
                                     Use 8+ characters with uppercase, number & special character
                                 </small>
                             </div>
+--}}
 
                             <!-- Password Match Indicator -->
                             <div class="mt-3">
@@ -244,6 +246,7 @@
                             </div>
 
                             <!-- Terms & Conditions -->
+{{--
                             <div class="form-check my-4">
                                 <input class="form-check-input" type="checkbox" name="terms" id="terms" required>
                                 <label class="form-check-label small text-muted" for="terms">
@@ -254,6 +257,7 @@
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
+--}}
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary w-100 py-3 fw-medium rounded-3 mb-4 position-relative overflow-hidden">
@@ -263,14 +267,6 @@
                                 </span>
                             </button>
 
-                            <!-- Role Assignment Note -->
-                            <div class="alert alert-light border-0 bg-light py-3 px-3 rounded-3 mb-4 d-flex align-items-center">
-                                <i class="bi bi-info-circle text-primary fs-4 me-3"></i>
-                                <small class="text-muted">
-                                    All new registrations receive the <span class="badge bg-info bg-opacity-10 text-info px-2 py-1">User</span> role by default.
-                                    Additional permissions can be requested from admin.
-                                </small>
-                            </div>
 
                             <!-- Divider -->
                             <div class="position-relative my-4">
@@ -290,12 +286,12 @@
                 </div>
 
                 <!-- Security Note -->
-                <div class="text-center mt-4">
+                {{--<div class="text-center mt-4">
                     <small class="text-muted">
                         <i class="bi bi-shield-lock-check me-1"></i>
                         Your information is protected with 256-bit encryption
                     </small>
-                </div>
+                </div>--}}
             </div>
         </div>
     </div>

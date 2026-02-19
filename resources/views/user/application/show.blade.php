@@ -151,7 +151,7 @@
                     </div>
                 </div>
 
-                <!-- Documents Section -->
+                <!-- documents Section -->
                 <div>
                     <div class="d-flex align-items-center mb-3">
                         <div class="bg-success bg-opacity-10 rounded-2 p-2 me-2">

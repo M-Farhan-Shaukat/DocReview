@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('filename');
             $table->string('original_name');
             $table->string('mime_type');
+            $table->enum('type', ['agreement', 'challan']);
             $table->unsignedBigInteger('file_size');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('file_path');

@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Route;
         ->middleware('role:User')
         ->name('dashboard');
 
-    // Profile Management
+// Admin documents
+Route::get('/agreement/download', [DashboardController::class,'downloadAgreement'])->name('agreement.download');
+Route::get('/challan/download', [DashboardController::class,'downloadChallan'])->name('challan.download');
+
+
+
+// Profile Management
     Route::get('/profile', [ProfileController::class, 'show'])
         ->middleware('role:User')
         ->name('profile');

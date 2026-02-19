@@ -86,11 +86,11 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|unique:users,email',
-            'age'         => 'required|integer|min:1',
+//            'age'         => 'required|integer|min:1',
             'city'        => 'required|string|max:255',
-            'phone'       => 'required|string|max:20',
+//            'phone'       => 'required|string|max:20',
             'cnic'        => 'required|string|max:20',
-            'postal_code' => 'required|string|max:20',
+//            'postal_code' => 'required|string|max:20',
             'password'    => 'required|min:8',
         ]);
         $token = Str::random(64);
@@ -99,11 +99,11 @@ class AuthController extends Controller
         $user = User::create([
             'name'        =>  $validated['name'],
             'email'       => $validated['email'],
-            'age'         => $validated['age'],
+//            'age'         => $validated['age'],
             'city'        => $validated['city'],
-            'phone'       => $validated['phone'],
+//            'phone'       => $validated['phone'],
             'cnic'        => $validated['cnic'],
-            'postal_code' => $validated['postal_code'],
+//            'postal_code' => $validated['postal_code'],
             'password'    => Hash::make($validated['password']),
             'is_active'   => true,
             'email_verification_token' => $token,

@@ -32,7 +32,7 @@ class Application extends Model
     }
 
     /**
-     * Documents attached to this application
+     * documents attached to this application
      */
     public function documents()
     {

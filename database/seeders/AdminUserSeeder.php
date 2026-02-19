@@ -21,31 +21,11 @@ class AdminUserSeeder extends Seeder
             ]
         );
         User::updateOrCreate(
-            ['email' => 'manager@gmail.com'],
-            [
-                'name'     => 'Manager',
-                'password' => Hash::make('Temp123!'),
-                'role_id'     => 2,
-                'email_verified_at' => now(),
-                'is_active' => true,
-            ]
-        );
-        User::updateOrCreate(
-            ['email' => 'staff@gmail.com'],
-            [
-                'name'     => 'Staff',
-                'password' => Hash::make('Temp123!'),
-                'role_id'     => 3,
-                'email_verified_at' => now(),
-                'is_active' => true,
-            ]
-        );
-        User::updateOrCreate(
             ['email' => 'user@gmail.com'],
             [
                 'name'     => 'User',
                 'password' => Hash::make('Temp123!'),
-                'role_id'     => 4,
+                'role_id'     => 2,
                 'email_verified_at' => now(),
                 'is_active' => true,
             ]

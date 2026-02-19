@@ -594,17 +594,6 @@
         <!-- Main Content -->
         <div class="main-content @if(auth()->check() && auth()->user()->hasRole('User')) col-md-9 col-lg-10 @else col-12 @endif p-4 p-md-5">
             <!-- Role Alert -->
-            @auth
-                @if(auth()->user()->hasRole('User'))
-                    <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
-                        <i class="bi bi-info-circle-fill me-3 fs-5"></i>
-                        <div class="flex-grow-1">
-                            <strong>User Account:</strong> You have limited access. Contact admin for elevated permissions.
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-            @endauth
 
             @yield('content')
         </div>

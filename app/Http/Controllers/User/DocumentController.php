@@ -102,7 +102,7 @@ class DocumentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Store Documents Against Admin Attachments
+        | Store documents Against Admin Attachments
         |--------------------------------------------------------------------------
         */
 

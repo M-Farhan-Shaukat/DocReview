@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeneralDocuments;
 use Illuminate\Http\Request;
 use App\Models\Attachment;
 use App\Models\User;
@@ -16,7 +17,10 @@ class AdminDashboardController extends Controller
     public function index()
     {
         // Get statistics
-        $attachments = Attachment::whereNull('user_id');
+        $attachments = GeneralDocuments::whereIn('type', ['agreement','challan'])
+            ->where('is_active', true)
+            ->orderBy('created_at','desc');
+
         $totalFiles = (clone $attachments)->count();
         $activeFiles = (clone $attachments)->where('is_active', true)->count();
         $inactiveFiles = (clone $attachments)->where('is_active', false)->count();
@@ -30,10 +34,7 @@ class AdminDashboardController extends Controller
         }
 
         // Get recent files
-        $recentFiles = Attachment::with('user')
-            ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
+        $recentFiles = $attachments->get();
 
         // Get recent users
         $recentUsers = User::with('role')

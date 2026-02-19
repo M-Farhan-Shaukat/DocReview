@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attachment;
+use App\Models\GeneralDocuments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,9 @@ class AdminAttachmentController extends Controller
     public function index()
     {
         // Fetch all attachments for admin to manage if you want
-        $attachments = Attachment::orderBy('created_at', 'desc')->get();
+        $attachments = GeneralDocuments::whereIn('type', ['agreement','challan'])
+            ->where('is_active', true)
+            ->orderBy('created_at','desc')->get();
 
         return view('admin.attachments', compact('attachments'));
     }

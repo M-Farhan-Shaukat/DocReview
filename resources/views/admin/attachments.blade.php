@@ -37,25 +37,25 @@
 
             <!-- Upload Form: Only for users with upload permission -->
             @if(auth()->user()->hasPermission('upload_documents'))
-                <div class="card border-dashed mb-4">
-                    <div class="card-body p-3">
-                        <h5 class="card-title fs-6">
-                            <i class="bi bi-cloud-arrow-up text-primary me-2"></i>
-                            Upload New File
-                        </h5>
-                        <form action="{{ route('admin.attachments.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="form-label small">Choose File</label>
-                                <input type="file" name="attachment" class="form-control form-control-sm" required>
-                                <div class="form-text small">Max: 10MB. Allowed: PDF, DOC, JPG, PNG</div>
-                            </div>
-                            <button type="submit" class="btn btn-dark btn-sm w-10 w-sm-auto">
-                                <i class="bi bi-upload me-1"></i> Upload
-                            </button>
-                        </form>
-                    </div>
-                </div>
+{{--                <div class="card border-dashed mb-4">--}}
+{{--                    <div class="card-body p-3">--}}
+{{--                        <h5 class="card-title fs-6">--}}
+{{--                            <i class="bi bi-cloud-arrow-up text-primary me-2"></i>--}}
+{{--                            Upload New File--}}
+{{--                        </h5>--}}
+{{--                        <form action="{{ route('admin.attachments.store') }}" method="POST" enctype="multipart/form-data">--}}
+{{--                            @csrf--}}
+{{--                            <div class="mb-3">--}}
+{{--                                <label class="form-label small">Choose File</label>--}}
+{{--                                <input type="file" name="attachment" class="form-control form-control-sm" required>--}}
+{{--                                <div class="form-text small">Max: 10MB. Allowed: PDF, DOC, JPG, PNG</div>--}}
+{{--                            </div>--}}
+{{--                            <button type="submit" class="btn btn-dark btn-sm w-10 w-sm-auto">--}}
+{{--                                <i class="bi bi-upload me-1"></i> Upload--}}
+{{--                            </button>--}}
+{{--                        </form>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <hr class="my-4">
             @else
                 <div class="alert alert-warning py-2 small">
@@ -89,7 +89,7 @@
                                     <div class="d-flex align-items-center">
                                         <i class="bi {{ $attachment->file_icon }} text-{{ $attachment->file_color }} me-2 fs-5"></i>
                                         <div>
-                                            <span class="fw-medium">{{ $attachment->original_name }}</span>
+                                            <span class="fw-medium">{{ $attachment->name }}</span>
                                             <div class="d-block d-md-none small text-muted mt-1">
                                                 <span>{{ $attachment->formatted_size }}</span> •
                                                 <span class="badge bg-{{ $attachment->is_active ? 'success' : 'secondary' }} bg-opacity-10 text-{{ $attachment->is_active ? 'success' : 'secondary' }}">

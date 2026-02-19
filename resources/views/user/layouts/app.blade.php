@@ -570,7 +570,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('user.documents.index') }}" class="nav-link-user d-flex align-items-center" onclick="closeMobileSidebar()">
+                                        <a href="{{ route('user.applications.index') }}" class="nav-link-user d-flex align-items-center" onclick="closeMobileSidebar()">
                                             <i class="bi bi-folder me-2"></i>
                                             My Documents
                                         </a>

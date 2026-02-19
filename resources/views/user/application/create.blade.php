@@ -82,26 +82,26 @@
                                 <label class="form-label fw-medium text-secondary small text-uppercase">Email Address</label>
                                 <input type="text" value="{{ $user->email }}" name="email" class="form-control bg-light border-0" readonly>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-medium text-secondary small text-uppercase">Age</label>
-                                <input type="text" value="{{ $user->age }}" name="age" class="form-control bg-light border-0" readonly>
-                            </div>
+{{--                            <div class="col-md-4">--}}
+{{--                                <label class="form-label fw-medium text-secondary small text-uppercase">Age</label>--}}
+{{--                                <input type="text" value="{{ $user->age }}" name="age" class="form-control bg-light border-0" readonly>--}}
+{{--                            </div>--}}
                             <div class="col-md-4">
                                 <label class="form-label fw-medium text-secondary small text-uppercase">City</label>
                                 <input type="text" value="{{ $user->city }}" name="city" class="form-control bg-light border-0" readonly>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-medium text-secondary small text-uppercase">Phone Number</label>
-                                <input type="text" value="{{ $user->phone }}" name="phone" class="form-control bg-light border-0" readonly>
-                            </div>
+{{--                            <div class="col-md-4">--}}
+{{--                                <label class="form-label fw-medium text-secondary small text-uppercase">Phone Number</label>--}}
+{{--                                <input type="text" value="{{ $user->phone }}" name="phone" class="form-control bg-light border-0" readonly>--}}
+{{--                            </div>--}}
                             <div class="col-md-4">
                                 <label class="form-label fw-medium text-secondary small text-uppercase">CNIC</label>
                                 <input type="text" value="{{ $user->cnic }}" name="cnic" class="form-control bg-light border-0" readonly>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-medium text-secondary small text-uppercase">Postal Code</label>
-                                <input type="text" value="{{ $user->postal_code }}" name="postal_code" class="form-control bg-light border-0" readonly>
-                            </div>
+{{--                            <div class="col-md-4">--}}
+{{--                                <label class="form-label fw-medium text-secondary small text-uppercase">Postal Code</label>--}}
+{{--                                <input type="text" value="{{ $user->postal_code }}" name="postal_code" class="form-control bg-light border-0" readonly>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
 
@@ -122,7 +122,7 @@
                                 <div class="row align-items-center g-2">
                                     <div class="col-12 col-md-4">
                                         <label class="form-label fw-semibold mb-1">
-                                            {{ $attachment->filename }}
+                                            {{ $attachment->name }}
                                             <span class="badge bg-warning text-dark ms-2">required</span>
                                         </label>
                                         <p class="small text-muted mb-0">Admin requirement</p>

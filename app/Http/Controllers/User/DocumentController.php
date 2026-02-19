@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\GeneralDocuments;
+use App\Models\UserDownloadedDocuments;
 use Illuminate\Http\Request;
 use App\Models\UserDocument;
 use App\Models\Attachment;
@@ -52,7 +54,10 @@ class DocumentController extends Controller
             ]
         );
 
-        $attachments = Attachment::where('is_active', true)->get();
+        $attachments = GeneralDocuments::whereIn('type', ['agreement','challan'])
+            ->where('is_active', true)
+            ->orderBy('created_at','desc')
+            ->get();
 
         $documents = $application->documents()->get();
 
@@ -65,7 +70,10 @@ class DocumentController extends Controller
         $user = auth()->user();
 
         // Fetch active admin attachments
-        $attachments = Attachment::where('is_active', true)->get();
+        $attachments = GeneralDocuments::whereIn('type', ['agreement','challan'])
+            ->where('is_active', true)
+            ->orderBy('created_at','desc')
+            ->get();
 
         /*
         |--------------------------------------------------------------------------
@@ -86,16 +94,13 @@ class DocumentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-
+        $uniqueId = UserDownloadedDocuments::where(['user_id'=>auth()->id(),'document_type' => 'challan'])->first()->unique_id;
             $application = Application::create([
                 'user_id'     => $user->id,
                 'name'        => $user->name,
                 'email'       => $user->email,
-                'age'         => $user->age,
                 'city'        => $user->city,
-                'phone'       => $user->phone,
                 'cnic'        => $user->cnic,
-                'postal_code' => $user->postal_code,
                 'status'      => 'pending'
             ]);
 
@@ -118,9 +123,10 @@ class DocumentController extends Controller
                 UserDocument::updateOrCreate(
                     [
                         'application_id' => $application->id,
-                        'attachment_id'  => $attachmentId
+                        'general_document_id'  => $attachmentId
                     ],
                     [
+                        'unique_id'       => $uniqueId,
                         'user_id'       => $user->id,
                         'original_name' => $file->getClientOriginalName(),
                         'file_path'     => $path,
@@ -133,7 +139,7 @@ class DocumentController extends Controller
         }
 
         return redirect()
-            ->route('user.application.index')
+            ->route('user.applications.index')
             ->with('success', 'Application submitted successfully.');
     }
 

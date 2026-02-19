@@ -232,7 +232,7 @@
                         </h5>
                         <div>
                             <span class="badge bg-light text-dark me-2">{{ $userDocuments->count() }} Total</span>
-                            <a href="{{ route('user.documents.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                            <a href="{{ route('user.applications.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
                         </div>
                     </div>
                 </div>
@@ -347,7 +347,7 @@
                                 <h6 class="fw-semibold mb-2">No Documents Uploaded</h6>
                                 <p class="text-muted mb-3">Get started by uploading your first document</p>
                                 @if(auth()->user()->hasPermission('upload_documents'))
-                                    <a href="{{ route('user.documents.create') }}" class="btn btn-primary px-4 py-2 rounded-pill">
+                                    <a href="{{ route('user.application.create') }}" class="btn btn-primary px-4 py-2 rounded-pill">
                                         <i class="bi bi-cloud-upload me-2"></i>Upload Now
                                     </a>
                                 @endif
@@ -371,14 +371,14 @@
                 <div class="card-body p-4">
                     <div class="d-grid gap-3">
                         @if(auth()->user()->hasPermission('upload_documents'))
-                            <a href="{{ route('user.documents.create') }}"
+                            <a href="{{ route('user.application.create') }}"
                                class="btn btn-primary py-3 d-flex align-items-center justify-content-between rounded-3 shadow-sm">
                                 <span><i class="bi bi-cloud-upload fs-5 me-2"></i>Upload Documents</span>
                                 <i class="bi bi-arrow-right-circle"></i>
                             </a>
                         @endif
 
-                        <a href="{{ route('user.documents.index') }}"
+                        <a href="{{ route('user.applications.index') }}"
                            class="btn btn-outline-info py-3 d-flex align-items-center justify-content-between rounded-3">
                             <span><i class="bi bi-folder fs-5 me-2"></i>My Documents</span>
                             <i class="bi bi-arrow-right-circle"></i>
@@ -432,7 +432,7 @@
 
                         @if($userDocuments->count() > 3)
                             <div class="text-center mt-3">
-                                <a href="{{ route('user.documents.index') }}" class="btn btn-link text-decoration-none">
+                                <a href="{{ route('user.applications.index') }}" class="btn btn-link text-decoration-none">
                                     View All Uploads <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </div>
@@ -445,7 +445,7 @@
                             <h6 class="fw-semibold mb-2 small">No Uploads Yet</h6>
                             <p class="text-muted small mb-3">Your uploaded files will appear here</p>
                             @if(auth()->user()->hasPermission('upload_documents'))
-                                <a href="{{ route('user.documents.create') }}" class="btn btn-primary btn-sm px-4 rounded-pill">
+                                <a href="{{ route('user.application.create') }}" class="btn btn-primary btn-sm px-4 rounded-pill">
                                     Upload Now
                                 </a>
                             @endif

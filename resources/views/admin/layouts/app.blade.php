@@ -91,22 +91,15 @@
                         <!-- Reports - Admin & Manager -->
                         @if(auth()->user()->hasPermission('view_reports'))
                             <li class="nav-item mb-2">
-                                <a href="#" class="nav-link text-white">
-                                    <i class="bi bi-bar-chart me-2"></i> Reports
+                                <a href="{{ route('admin.applications.index') }}"
+                                   class="nav-link text-white {{ request()->routeIs('admin.applications.*') ? 'active' : '' }}">
+
+                                    <i class="bi bi-file me-2"></i>
+                                    <span>User Applications</span>
                                 </a>
                             </li>
                         @endif
-
-                        <!-- Agreement Approval - Admin & Staff -->
-                        @if(auth()->user()->hasPermission('approve_agreement'))
-                            <li class="nav-item mb-2">
-                                <a href="#" class="nav-link text-white">
-                                    <i class="bi bi-file-check me-2"></i> Approve Agreements
-                                </a>
-                            </li>
-                        @endif
-
-                        <!-- Payment Verification - Admin & Manager -->
+                       <!-- Payment Verification - Admin & Manager -->
                         @if(auth()->user()->hasPermission('verify_payment'))
                             <li class="nav-item mb-2">
                                 <a href="#" class="nav-link text-white">
@@ -133,25 +126,7 @@
 
     <!-- Main content -->
     <div class="flex-grow-1 p-3 p-md-4" style="min-width: 0; overflow-x: hidden;">
-        <!-- Role Indicator - Compact on mobile -->
-        @auth
-            <div class="alert alert-info d-flex align-items-center py-2 px-3 mb-3" style="font-size: 0.85rem;">
-                <i class="bi bi-info-circle me-2 flex-shrink-0"></i>
-                <span class="text-truncate">
-                    Logged in as: <strong>{{ auth()->user()->name }}</strong> |
-                    Role:
-                    <span class="badge ms-1
-                        @if(auth()->user()->hasRole('Admin')) bg-danger
-                        @elseif(auth()->user()->hasRole('Manager')) bg-warning
-                        @elseif(auth()->user()->hasRole('Staff')) bg-info
-                        @else bg-secondary @endif">
-                        {{ auth()->user()->role->name ?? 'No Role' }}
-                    </span>
-                </span>
-            </div>
-        @endauth
-
-        @yield('content')
+               @yield('content')
     </div>
 </div>
 

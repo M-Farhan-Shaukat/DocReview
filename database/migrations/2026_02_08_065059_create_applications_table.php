@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('cnic')->nullable();
             $table->string('unique_id')->nullable();
             $table->string('postal_code')->nullable();
+            $table->longText('rejection_reason')->nullable();
 
             $table->string('status')->default('draft'); // draft, pending, approved, rejected
             $table->timestamps();

@@ -21,6 +21,7 @@ class Application extends Model
         'cnic',
         'unique_id',
         'postal_code',
+        'rejection_reason',
         'status',
     ];
 

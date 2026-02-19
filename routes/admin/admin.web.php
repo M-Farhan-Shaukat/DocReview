@@ -9,6 +9,8 @@ Route::prefix('admin')->middleware(['auth', 'role:Admin,Manager,Staff'])->name('
 require __DIR__ . '/attachment.web.php';
 require __DIR__ . '/dashboard.web.php';
 require __DIR__ . '/AdminUsers.web.php';
+require __DIR__ . '/application.web.php';
+
 });
 
 

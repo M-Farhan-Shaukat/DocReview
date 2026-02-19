@@ -72,6 +72,7 @@
         $generalDocsCount = $generalDocuments->count() ?? 0;
     @endphp
 
+{{--
     <div class="row g-3 g-md-4 mb-4">
         <div class="col-6 col-md-3">
             <div class="card stat-card border-0 shadow-sm h-100">
@@ -149,6 +150,7 @@
             </div>
         </div>
     </div>
+--}}
 
     <!-- Main Content Grid -->
     <div class="row g-4">

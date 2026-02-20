@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -77,7 +78,10 @@ class AuthController extends Controller
     // Show registration form
     public function showRegister()
     {
-        return view('user.auth.register');
+
+        $cities = City::orderBy('city_name')->get();
+
+        return view('user.auth.register', compact('cities'));
     }
 
     // Handle registration
@@ -86,24 +90,30 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|unique:users,email',
-//            'age'         => 'required|integer|min:1',
-            'city'        => 'required|string|max:255',
-//            'phone'       => 'required|string|max:20',
+            'city_id'  => 'required|exists:cities,id',
             'cnic'        => 'required|string|max:20',
-//            'postal_code' => 'required|string|max:20',
             'password'    => 'required|min:8',
         ]);
+        $city = City::findOrFail($validated['city_id']);
+
+        // Count users in selected city
+        $cityUserCount = User::where('city_id', $city->id)->count();
+        if ($cityUserCount >= $city->application_limit) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'city_id' => 'Registration limit reached for this city.'
+                ]);
+        }
         $token = Str::random(64);
 
         // Create user
         $user = User::create([
             'name'        =>  $validated['name'],
             'email'       => $validated['email'],
-//            'age'         => $validated['age'],
-            'city'        => $validated['city'],
-//            'phone'       => $validated['phone'],
+            'city'     => $city->city_name,
+            'city_id'     => $validated['city_id'],
             'cnic'        => $validated['cnic'],
-//            'postal_code' => $validated['postal_code'],
             'password'    => Hash::make($validated['password']),
             'is_active'   => true,
             'email_verification_token' => $token,

@@ -16,6 +16,7 @@ class AdminUserSeeder extends Seeder
                 'name'     => 'Admin',
                 'password' => Hash::make('Temp123!'),
                 'role_id'     => 1,
+                "city_id" => 1,
                 'email_verified_at' => now(),
                 'is_active' => true,
             ]
@@ -28,6 +29,8 @@ class AdminUserSeeder extends Seeder
                 'role_id'     => 2,
                 'email_verified_at' => now(),
                 'is_active' => true,
+                "city_id" => 1
+
             ]
         );
     }

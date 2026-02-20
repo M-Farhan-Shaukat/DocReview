@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             $this->command->warn("Data cleared, starting from blank database.");
         }
         $this->call(RoleSeeder::class);
+        $this->call(CitySeeder::class);
         $this->call(AdminUserSeeder::class);
         $this->call(AttachmentSeeder::class);
         $this->call(GeneralDocumentsSeeder::class);

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'is_active',
         'age',
         'city',
+        'city_id',
         'phone',
         'cnic',
         'postal_code',
@@ -126,4 +127,10 @@ class User extends Authenticatable
 
         return $latestDocument->status;
     }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
 }

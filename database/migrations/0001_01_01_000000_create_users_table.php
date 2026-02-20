@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('age')->nullable();
             $table->string('city')->nullable();
+            $table->foreignId('city_id')->constrained('cities')->onDelete('restrict');
             $table->string('phone')->nullable();
             $table->string('cnic')->nullable();
             $table->string('postal_code')->nullable();

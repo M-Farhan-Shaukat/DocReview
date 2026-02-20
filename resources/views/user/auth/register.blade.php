@@ -121,20 +121,22 @@
                                     <label class="form-label fw-medium text-secondary mb-2">
                                         <i class="bi bi-building me-1"></i>City
                                     </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0 ps-3">
-                                            <i class="bi bi-building fs-5 text-primary"></i>
-                                        </span>
-                                        <input type="text" name="city"
-                                               class="form-control bg-light border-0 @error('city') is-invalid @enderror"
-                                               placeholder="Lahore"
-                                               value="{{ old('city') }}"
-                                               required
-                                               style="padding: 0.9rem 1rem;">
-                                        @error('city')
-                                        <div class="invalid-feedback small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
+                                    <select name="city_id"
+                                            class="form-select bg-light border-0 @error('city_id') is-invalid @enderror"
+                                            required>
+                                        <option value="">Select City</option>
+                                        @foreach($cities as $city)
+                                            <option value="{{ $city->id }}"
+                                                {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                                {{ $city->city_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('city_id')
+                                    <div class="invalid-feedback small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!-- postal_code -->
                                 {{--<div class="col-12 col-md-6">
@@ -389,6 +391,13 @@
                 }
             }
         });
+        $(document).ready(function() {
+            $('select[name="city_id"]').select2({
+                placeholder: "Select City",
+                width: '100%'
+            });
+        });
+
     </script>
 
     <style>
@@ -523,4 +532,5 @@
             transition: width 0.3s ease;
         }
     </style>
+
 @endsection

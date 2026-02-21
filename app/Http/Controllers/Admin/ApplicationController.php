@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\GeneralDocuments;
 use App\Models\UserDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -166,14 +167,33 @@ class ApplicationController extends Controller
     // 🔹 Approve
     public function approve($id)
     {
-        $application = Application::findOrFail($id);
+        $application = Application::with('user')->findOrFail($id);
 
         $application->status = 'approved';
         $application->save();
 
+        // Final document fetch
+        $finalDocument = GeneralDocuments::where('type', 'final')
+            ->where('is_active', true)
+            ->latest()
+            ->first();
+
+        if ($finalDocument && $application->user) {
+
+            $filePath = storage_path('app/public/' . $finalDocument->file_path);
+
+            if (file_exists($filePath)) {
+                Mail::to($application->user->email)
+                    ->send(new FinalDocumentMail(
+                        $application->user,
+                        $filePath
+                    ));
+            }
+        }
+
         return redirect()
             ->route('admin.applications.index')
-            ->with('success', 'Application approved successfully.');
+            ->with('success', 'Application approved successfully and final document sent.');
     }
 
     // 🔹 Reject

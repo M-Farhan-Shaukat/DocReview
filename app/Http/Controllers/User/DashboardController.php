@@ -38,8 +38,15 @@ class DashboardController extends Controller
                 $approvedCount = $userDocuments->where('status', 'approved')->count();
             }
             $disableChallanDownloadBtn = UserDownloadedDocuments::where(['user_id'=> auth()->id(),'document_type' => 'challan'])->exists();
-            $disableNewApplicationButton = Application::where('user_id', auth()->id())->exists();
-
+            $application = Application::where('user_id', auth()->id())->first();
+            $disableNewApplicationButton = $application ? true : false;
+            $finalDocument = null;
+            if($application && $application->status == 'approved') {
+                $finalDocument = GeneralDocuments::where('type', 'final')
+                    ->where('is_active', true)
+                    ->latest()
+                    ->first();
+            }
             return view('user.dashboard', compact(
                 'generalDocuments',
                 'userDocuments',
@@ -47,7 +54,8 @@ class DashboardController extends Controller
                 'pendingCount',
                 'approvedCount',
                 'disableChallanDownloadBtn',
-                'disableNewApplicationButton'
+                'disableNewApplicationButton',
+                'finalDocument'
             ));
 
         } catch (\Exception $e) {

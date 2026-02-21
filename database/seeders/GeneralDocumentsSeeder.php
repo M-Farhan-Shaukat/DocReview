@@ -42,5 +42,18 @@ class GeneralDocumentsSeeder extends Seeder
             GeneralDocuments::create($data);
             echo "Challan Document entry created :) \r\n";
         }
+        $finalFormDoc = DB::table('general_documents')->where(['type'=> 'final'])->first();
+        if(!$finalFormDoc){
+            $data = [
+                'name' => 'Final Form',
+                'slug' => 'final_form',
+                'type' => 'final',
+                'is_active' => true,
+                'sort_order' => '1',
+                'created_by' => 1,
+            ];
+            GeneralDocuments::create($data);
+            echo "Challan Document entry created :) \r\n";
+        }
     }
 }

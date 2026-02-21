@@ -152,6 +152,46 @@
     </div>
 --}}
 
+    @if($finalDocument)
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="mb-1 fw-bold">Final Approved Document</h5>
+                        <small class="text-muted">
+                            Your application has been approved. You can preview or download your final document below.
+                        </small>
+                    </div>
+                    <span class="badge bg-success">Approved</span>
+                </div>
+
+                <div class="border rounded p-3 mb-3 bg-light">
+                    <p class="mb-1 fw-semibold">
+                        {{ $finalDocument->title ?? 'Final Document' }}
+                    </p>
+                    <small class="text-muted">
+                        Uploaded on {{ $finalDocument->created_at->format('d M Y') }}
+                    </small>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ asset('storage/' . $finalDocument->file_path) }}"
+                       target="_blank"
+                       class="btn btn-primary btn-sm">
+                        Preview
+                    </a>
+
+                    <a href="{{ asset('storage/' . $finalDocument->file_path) }}"
+                       download
+                       class="btn btn-success btn-sm">
+                        Download
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    @endif
     <!-- Main Content Grid -->
     <div class="row g-4">
         <!-- Left Column - Documents & Forms -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
 use App\Models\GeneralDocuments;
 use App\Models\UserDownloadedDocuments;
 use Carbon\Carbon;
@@ -36,14 +37,17 @@ class DashboardController extends Controller
                 $pendingCount = $userDocuments->where('status', 'pending')->count();
                 $approvedCount = $userDocuments->where('status', 'approved')->count();
             }
-$disableChallanDownloadBtn = UserDownloadedDocuments::where(['user_id'=> auth()->id(),'document_type' => 'challan'])->exists();
+            $disableChallanDownloadBtn = UserDownloadedDocuments::where(['user_id'=> auth()->id(),'document_type' => 'challan'])->exists();
+            $disableNewApplicationButton = Application::where('user_id', auth()->id())->exists();
+
             return view('user.dashboard', compact(
                 'generalDocuments',
                 'userDocuments',
                 'uploadedCount',
                 'pendingCount',
                 'approvedCount',
-               'disableChallanDownloadBtn'
+                'disableChallanDownloadBtn',
+                'disableNewApplicationButton'
             ));
 
         } catch (\Exception $e) {

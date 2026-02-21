@@ -13,6 +13,6 @@ Route::get('/applications/{id}',[ApplicationController::class, 'show'])->name('a
 Route::post('/applications/{id}/approve',[ApplicationController::class, 'approve'])->name('applications.approve');
 
 // Reject
-Route::post('/applications/{id}/reject',[ApplicationController::class, 'reject'])->name('applications.reject');
+Route::post('/applications/{id}/reject',[ApplicationController::class, 'reject'])->name('applications.rejected');
 
 Route::get('/documents/{id}/preview',[ApplicationController::class, 'preview'])->name('document.preview');

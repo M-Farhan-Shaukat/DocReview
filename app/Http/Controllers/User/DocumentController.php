@@ -18,11 +18,22 @@ class DocumentController extends Controller
 
     public function index()
     {
-        $applications = Application::where('user_id', auth()->id())
-            ->latest()
+        $disableNewApplicationButton = false;
+        $applications = Application::where('user_id', auth()->id());
+        if(count($applications->get()) > 0){
+            $disableNewApplicationButton = true;
+        }
+        $applications=$applications->latest()
             ->paginate(10);
+        foreach ($applications as $application) {
+            $enableEditButton = false;
+            if($application->status != 'approved'){
+                $enableEditButton = true;
+            }
+            $application->show_edit_button = $enableEditButton;
+        }
 
-        return view('user.application.index', compact('applications'));
+        return view('user.application.index', compact('applications','disableNewApplicationButton'));
     }
     public function show($id)
     {

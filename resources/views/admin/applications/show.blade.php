@@ -153,7 +153,7 @@
                                 <!-- Reject Form with Reason -->
                                 <div class="card border-0 bg-light">
                                     <div class="card-body p-3">
-                                        <form action="{{ route('admin.applications.reject', $application->id) }}"
+                                        <form action="{{ route('admin.applications.rejected', $application->id) }}"
                                               method="POST"
                                               id="rejectForm">
                                             @csrf

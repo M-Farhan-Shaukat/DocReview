@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\GeneralDocuments;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +23,9 @@ class GeneralDocumentsSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => '0',
                 'created_by' => 1,
+
             ];
-            DB::table('general_documents')->insert($data);
+            GeneralDocuments::create($data);
             echo "Agreement Document entry created :) \r\n";
         }
 
@@ -37,7 +39,7 @@ class GeneralDocumentsSeeder extends Seeder
                 'sort_order' => '1',
                 'created_by' => 1,
             ];
-            DB::table('general_documents')->insert($data);
+            GeneralDocuments::create($data);
             echo "Challan Document entry created :) \r\n";
         }
     }

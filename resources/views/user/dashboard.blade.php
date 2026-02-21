@@ -374,7 +374,7 @@
                     <div class="d-grid gap-3">
                         @if(auth()->user()->hasPermission('upload_documents'))
                             <a href="{{ route('user.application.create') }}"
-                               class="btn btn-primary py-3 d-flex align-items-center justify-content-between rounded-3 shadow-sm">
+                               class="btn btn-primary py-3 d-flex align-items-center justify-content-between rounded-3 shadow-sm {{ $disableNewApplicationButton ? 'disabled' : '' }}"  {{ $disableNewApplicationButton  ? 'aria-disabled=true' : ''}}>
                                 <span><i class="bi bi-cloud-upload fs-5 me-2"></i>Upload Documents</span>
                                 <i class="bi bi-arrow-right-circle"></i>
                             </a>

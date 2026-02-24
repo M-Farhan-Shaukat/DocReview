@@ -39,25 +39,25 @@ class UserController extends Controller
         $request->validate([
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|unique:users,email',
-            'age'         => 'required|integer|min:1',
+//            'age'         => 'required|integer|min:1',
             'city'        => 'required|string|max:255',
-            'phone'       => 'required|string|max:20',
+//            'phone'       => 'required|string|max:20',
             'cnic'        => 'required|string|max:20',
-            'postal_code' => 'required|string|max:20',
+//            'postal_code' => 'required|string|max:20',
             'password'    => 'required|min:6',
-            'role_id'     => 'required|exists:roles,id',
+//            'role_id'     => 'required|exists:roles,id',
         ]);
 
         User::create([
             'name'        => $request->name,
             'email'       => $request->email,
-            'age'         => $request->age,
+//            'age'         => $request->age,
             'city'        => $request->city,
-            'phone'       => $request->phone,
+//            'phone'       => $request->phone,
             'cnic'        => $request->cnic,
-            'postal_code' => $request->postal_code,
+//            'postal_code' => $request->postal_code,
             'password'    => Hash::make($request->password),
-            'role_id'     => $request->role_id,
+//            'role_id'     => $request->role_id,
             'is_active'   => true,
         ]);
 
@@ -76,23 +76,23 @@ class UserController extends Controller
         $request->validate([
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|unique:users,email,' . $user->id,
-            'age'         => 'required|integer|min:1',
+//            'age'         => 'required|integer|min:1',
             'city'        => 'required|string|max:255',
-            'phone'       => 'required|string|max:20',
+//            'phone'       => 'required|string|max:20',
             'cnic'        => 'required|string|max:20',
-            'postal_code' => 'required|string|max:20',
-            'role_id'     => 'required|exists:roles,id',
+//            'postal_code' => 'required|string|max:20',
+//            'role_id'     => 'required|exists:roles,id',
         ]);
 
         $user->update([
             'name'        => $request->name,
             'email'       => $request->email,
-            'age'         => $request->age,
+//            'age'         => $request->age,
             'city'        => $request->city,
-            'phone'       => $request->phone,
+//            'phone'       => $request->phone,
             'cnic'        => $request->cnic,
-            'postal_code' => $request->postal_code,
-            'role_id'     => $request->role_id,
+//            'postal_code' => $request->postal_code,
+//            'role/_id'     => $request->role_id,
         ]);
 
         if ($request->filled('password')) {

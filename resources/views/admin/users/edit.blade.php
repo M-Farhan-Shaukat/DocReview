@@ -69,35 +69,7 @@
                                         @endif
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-semibold text-secondary mb-1">
-                                            <i class="bi bi-telephone"></i> Phone
-                                        </label>
-                                        <input type="tel"
-                                               class="form-control form-control-sm @error('phone') is-invalid @enderror"
-                                               name="phone"
-                                               placeholder="+1234567890"
-                                               value="{{ old('phone', $user->phone) }}">
-                                        @error('phone')
-                                        <div class="invalid-feedback small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-semibold text-secondary mb-1">
-                                            <i class="bi bi-calendar"></i> Age
-                                        </label>
-                                        <input type="number"
-                                               class="form-control form-control-sm @error('age') is-invalid @enderror"
-                                               name="age"
-                                               placeholder="25"
-                                               min="1"
-                                               max="120"
-                                               value="{{ old('age', $user->age) }}">
-                                        @error('age')
-                                        <div class="invalid-feedback small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
 
                                     <div class="mb-3">
                                         <label class="form-label small fw-semibold text-secondary mb-1">
@@ -116,19 +88,7 @@
 
                                 <!-- Right Column -->
                                 <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-semibold text-secondary mb-1">
-                                            <i class="bi bi-postcard"></i> Postal Code
-                                        </label>
-                                        <input type="text"
-                                               class="form-control form-control-sm @error('postal_code') is-invalid @enderror"
-                                               name="postal_code"
-                                               placeholder="10001"
-                                               value="{{ old('postal_code', $user->postal_code) }}">
-                                        @error('postal_code')
-                                        <div class="invalid-feedback small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
 
                                     <div class="mb-3">
                                         <label class="form-label small fw-semibold text-secondary mb-1">
@@ -145,25 +105,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-semibold text-secondary mb-1">
-                                            <i class="bi bi-shield"></i> Role <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="form-select form-select-sm @error('role_id') is-invalid @enderror"
-                                                name="role_id"
-                                                required>
-                                            <option value="" disabled>Select role</option>
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->id }}"
-                                                    {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                                                    {{ $role->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('role_id')
-                                        <div class="invalid-feedback small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
 
                                     <div class="mb-3">
                                         <label class="form-label small fw-semibold text-secondary mb-1">

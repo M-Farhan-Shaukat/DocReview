@@ -176,16 +176,9 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <a href="{{ asset('storage/' . $finalDocument->file_path) }}"
-                       target="_blank"
-                       class="btn btn-primary btn-sm">
-                        Preview
-                    </a>
-
-                    <a href="{{ asset('storage/' . $finalDocument->file_path) }}"
-                       download
-                       class="btn btn-success btn-sm">
-                        Download
+                    <a href="{{ route('user.final_form.create') }}"
+                       class="btn btn-primary">
+                        Submit Registration Form
                     </a>
                 </div>
 

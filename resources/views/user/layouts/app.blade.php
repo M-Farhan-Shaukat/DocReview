@@ -513,6 +513,12 @@
                                         My Applications
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('user.final_form.create') }}" class="nav-link-user d-flex align-items-center">
+                                        <i class="bi bi-folder me-2"></i>
+                                        Final Registration Form
+                                    </a>
+                                </li>
                                 <li class="nav-item mt-4">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf

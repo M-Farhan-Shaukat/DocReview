@@ -9,5 +9,6 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     require __DIR__ . '/profile.web.php';
     require __DIR__ . '/attachment.web.php';
     require __DIR__ . '/applications.web.php';
+    require __DIR__ . '/finalForm.web.php';
 
 });

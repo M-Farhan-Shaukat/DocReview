@@ -100,13 +100,11 @@
                             </li>
                         @endif
                        <!-- Payment Verification - Admin & Manager -->
-                        @if(auth()->user()->hasPermission('verify_payment'))
                             <li class="nav-item mb-2">
-                                <a href="#" class="nav-link text-white">
-                                    <i class="bi bi-credit-card me-2"></i> Verify Payments
+                                <a href="{{route('admin.final_form.index')}}" class="nav-link text-white">
+                                    <i class="bi bi-file me-2"></i> Final Registration Form
                                 </a>
                             </li>
-                        @endif
 
                         <hr class="text-white-50 my-3">
 

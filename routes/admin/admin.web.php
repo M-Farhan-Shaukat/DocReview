@@ -10,6 +10,7 @@ require __DIR__ . '/attachment.web.php';
 require __DIR__ . '/dashboard.web.php';
 require __DIR__ . '/AdminUsers.web.php';
 require __DIR__ . '/application.web.php';
+require __DIR__ . '/finalForm.web.php';
 
 });
 

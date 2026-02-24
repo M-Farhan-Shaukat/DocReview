@@ -514,7 +514,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('user.final_form.create') }}" class="nav-link-user d-flex align-items-center">
+                                    <a href="{{ route('user.final_form.index') }}" class="nav-link-user d-flex align-items-center">
                                         <i class="bi bi-folder me-2"></i>
                                         Final Registration Form
                                     </a>

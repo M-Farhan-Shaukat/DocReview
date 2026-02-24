@@ -15,7 +15,7 @@
                             </div>
                             <div>
                                 <h2 class="fw-bold mb-1 text-white">📋 Final Registration Form</h2>
-                                <p class="mb-0 text-white-50">Track and manage your submitted applications</p>
+                                <p class="mb-0 text-white-50">Track and manage your final registration form</p>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                             </svg>
-                            New Application
+                            Create
                         </a>
                     </div>
                 </div>
@@ -51,79 +51,6 @@
         @endif
 
         @if($applications->count() > 0)
-            <!-- Stats Cards Row -->
-            <div class="row g-3 mb-4">
-                <div class="col-6 col-md-3">
-                    <div class="card border-0 shadow-sm bg-primary bg-opacity-10">
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-primary bg-opacity-25 p-2 me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-files text-primary" viewBox="0 0 16 16">
-                                        <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h6 class="small text-muted mb-1">Total</h6>
-                                    <span class="h5 mb-0 fw-bold">{{ $applications->total() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="card border-0 shadow-sm bg-warning bg-opacity-10">
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-warning bg-opacity-25 p-2 me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-clock-history text-warning" viewBox="0 0 16 16">
-                                        <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zM8 3.5a.5.5 0 0 1 .5.5v4.5h3a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h6 class="small text-muted mb-1">Pending</h6>
-                                    <span class="h5 mb-0 fw-bold">{{ $applications->where('status', 'pending')->count() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="card border-0 shadow-sm bg-success bg-opacity-10">
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-success bg-opacity-25 p-2 me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle text-success" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h6 class="small text-muted mb-1">Approved</h6>
-                                    <span class="h5 mb-0 fw-bold">{{ $applications->where('status', 'approved')->count() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="card border-0 shadow-sm bg-danger bg-opacity-10">
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-danger bg-opacity-25 p-2 me-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-circle text-danger" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h6 class="small text-muted mb-1">Rejected</h6>
-                                    <span class="h5 mb-0 fw-bold">{{ $applications->where('status', 'rejected')->count() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Applications Table Card -->
             <div class="card border-0 shadow-lg">
@@ -269,15 +196,15 @@
                             <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/>
                         </svg>
                     </div>
-                    <h4 class="fw-semibold mb-2">No Applications Yet</h4>
-                    <p class="text-muted mb-4">Get started by creating your first application.</p>
+                    <h4 class="fw-semibold mb-2">No Final Registration Form Yet</h4>
+                    <p class="text-muted mb-4">Get started by creating your Final Registration Form.</p>
                     <a href="{{ route('user.final_form.create') }}"
                        class="btn btn-success btn-lg rounded-pill px-5">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                         </svg>
-                        Create New Application
+                        Create
                     </a>
                 </div>
             </div>

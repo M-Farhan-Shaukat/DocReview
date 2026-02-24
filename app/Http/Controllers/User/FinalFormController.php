@@ -10,6 +10,26 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class FinalFormController extends Controller
 
 {
+    public function index()
+    {
+        $disableNewApplicationButton = false;
+        $applications = FinalForm::where('user_id', auth()->id());
+        if(count($applications->get()) > 0){
+            $disableNewApplicationButton = true;
+        }
+        $applications=$applications->latest()
+            ->paginate(10);
+        foreach ($applications as $application) {
+            $enableEditButton = false;
+//            if($application->status != 'approved'){
+//                $enableEditButton = true;
+//            }
+            $application->show_edit_button = $enableEditButton;
+        }
+
+        return view('user.finalDocument.index', compact('applications','disableNewApplicationButton'));
+    }
+
     public function create()
     {
         $user = auth()->user();

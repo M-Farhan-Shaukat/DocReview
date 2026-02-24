@@ -160,7 +160,7 @@
                     <div>
                         <h5 class="mb-1 fw-bold">Final Approved Document</h5>
                         <small class="text-muted">
-                            Your application has been approved. You can preview or download your final document below.
+                            Your application has been approved. You can now complete you final registration form .
                         </small>
                     </div>
                     <span class="badge bg-success">Approved</span>
@@ -176,9 +176,9 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <a href="{{ route('user.final_form.create') }}"
+                    <a href="{{ route('user.final_form.index') }}"
                        class="btn btn-primary">
-                        Submit Registration Form
+                        Continue Submitting Registration Form
                     </a>
                 </div>
 

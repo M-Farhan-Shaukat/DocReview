@@ -1,266 +1,953 @@
 @extends('user.layouts.app')
 
 @section('content')
-    <div class="container py-4">
+    <style>
+        /* ===========================
+       BASE
+       =========================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <!-- Header with navigation and status -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-            <div class="d-flex align-items-center">
-                <a href="{{ route('user.final_form.index') }}"
-                   class="btn btn-outline-secondary rounded-circle p-2 me-3"
-                   style="width: 40px; height: 40px;"
-                   title="Back to Applications">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
-                </a>
-                <div>
-                    <h3 class="fw-bold mb-1">📄 Application Details</h3>
-                    <p class="text-muted mb-0">Review your submitted information and documents</p>
+        :root {
+            --red:    #c0392b;
+            --red-dk: #962d22;
+            --gold:   #c8941e;
+            --gold-lt:#e5c540;
+            --tan:    #f5dfa0;
+            --dark:   #1e1e1e;
+        }
+
+        .body-wrapper {
+            font-family: "Arial", sans-serif;
+            background: #d8d8d8;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: #fff;
+            border: 5px solid var(--dark);
+            width: 820px;
+            max-width: 98%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        /* ===========================
+           HEADER
+           =========================== */
+        .header { width: 100%; }
+
+        /* --- Top Bar --- */
+        .top-bar {
+            display: flex;
+            align-items: stretch;
+            background: var(--dark);
+            min-height: 36px;
+            position: relative;
+        }
+        /* District box sits centered in the dark bar */
+        .district-box {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 20px 4px 18px;
+            height: 100%;
+            z-index: 2;
+            clip-path: polygon(6% 0, 94% 0, 88% 100%, 12% 100%);
+            min-width: 180px;
+            justify-content: center;
+        }
+        .district-label {
+            font-weight: 700;
+            font-size: 13.5px;
+            color: #111;
+            white-space: nowrap;
+        }
+        .district-input {
+            border: none;
+            border-bottom: 2px solid #333;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            color: #111;
+            padding: 1px 2px;
+            width: 80px;
+            font-weight: 600;
+        }
+        /* Left and right ends stay dark */
+        .top-mid { flex: 1; }
+
+        .reg-fee-ribbon {
+            background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+            color: #fff;
+            font-weight: 700;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.4;
+            padding: 3px 16px 3px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+            min-width: 155px;
+        }
+
+        /* --- Title Area --- */
+        .title-area {
+            display: flex;
+            align-items: center;
+            padding: 8px 14px 6px;
+            gap: 10px;
+        }
+        .clc-seal-wrap { flex-shrink: 0; }
+        .clc-logo { width: 82px; height: 82px; object-fit: contain; }
+
+        .title-text { flex: 1; text-align: center; }
+        .reg-form-label {
+            font-size: 12px;
+            color: #333;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: none;
+        }
+        .title {
+            color: var(--red);
+            font-size: 40px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.05;
+        }
+        .subtitle {
+            color: var(--gold);
+            font-style: italic;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* --- Project Banner --- */
+        .project-info {
+            background: var(--red);
+            color: #fff;
+            text-align: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 5px 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Meta Bar --- */
+        .meta-bar {
+            display: flex;
+            background: var(--dark);
+        }
+        .meta-item {
+            flex: 1;
+            color: #fff;
+            padding: 5px 14px;
+            font-weight: 700;
+            font-size: 13px;
+            border-right: 1px solid #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .meta-item:last-child { border-right: none; }
+        .meta-input {
+            flex: 1;
+            background: #fff;
+            border: none;
+            outline: none;
+            font-size: 12.5px;
+            color: #111;
+            padding: 2px 6px;
+            height: 22px;
+            font-weight: 600;
+        }
+
+        /* --- Logo Section --- */
+        /* img1.PNG already contains "Develop & Marketing by" text, so no extra label needed */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding: 6px 14px;
+            gap: 16px;
+            background: #fff;
+        }
+        .logo-left-group,
+        .logo-right-group {
+            display: flex;
+            align-items: center;
+        }
+        .amir-logo   { width: 215px; max-width: 100%; height: auto; object-fit: contain; }
+        .logo-amp    { font-size: 30px; font-weight: 900; color: var(--dark); flex-shrink: 0; }
+        .church-logo { width: 200px; max-width: 100%; height: auto; object-fit: contain; }
+
+        /* ===========================
+           FORM — EDITABLE INPUT FIELDS
+           =========================== */
+        .registration-form {
+            padding: 6px 14px 0;
+        }
+
+        /* Generic row */
+        .field-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            min-height: 24px;
+        }
+
+        /* Label text */
+        .fl {
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 12.5px;
+            color: #111;
+            flex-shrink: 0;
+            margin-right: 3px;
+        }
+        .fl.so  { margin-left: 10px; }
+        .fl.gap { margin-left: 16px; }
+
+        /* Editable underline input — replaces span fline */
+        .finput {
+            flex: 1;
+            border: none;
+            border-bottom: 1.5px solid #444;
+            outline: none;
+            background: transparent;
+            font-size: 12.5px;
+            font-family: inherit;
+            color: #111;
+            padding: 1px 3px;
+            min-width: 30px;
+        }
+        .finput:focus { border-bottom-color: var(--red); }
+
+        .pay-finput { flex: 1; min-width: 40px; }
+        .bk-finput  { max-width: 100px; flex: 1; }
+        .short-finput { width: 80px; flex: unset; }
+
+        /* --- CNIC Boxes --- */
+        .cnic-boxes {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            margin: 0 2px;
+        }
+        .cnic-boxes.sm .cb {
+            width: 15px;
+            height: 15px;
+            font-size: 10px;
+            padding: 0;
+        }
+        .cb {
+            display: inline-block;
+            width: 19px;
+            height: 19px;
+            border: 1.5px solid #333;
+            background: #fff;
+            text-align: center;
+            font-size: 12px;
+            padding: 0;
+            outline: none;
+            font-family: inherit;
+            font-weight: 700;
+            color: #111;
+        }
+        .cb:focus { border-color: var(--red); background: #fff8f8; }
+        .cd {
+            font-weight: 900;
+            font-size: 14px;
+            padding: 0 1px;
+            line-height: 1;
+            color: #222;
+        }
+
+        /* ===========================
+           PAYMENT SECTION
+           =========================== */
+        .payment-section {
+            border: 2px solid var(--red);
+            margin: 8px 0 8px;
+        }
+
+        .pay-table { width: 100%; border-collapse: collapse; }
+        .pay-table th,
+        .pay-table td {
+            border: 1px solid var(--red);
+            padding: 5px 9px;
+            font-size: 12.5px;
+            text-align: left;
+        }
+        .pay-table th {
+            background: var(--red);
+            color: #fff;
+            font-weight: 700;
+            width: 130px;
+        }
+        .pay-table td { background: #fff; }
+        .branch-val { width: 55px; }
+
+        .pay-lines { padding: 5px 10px 6px; font-size: 12.5px; }
+        .pay-line-text { margin-bottom: 4px; font-weight: 600; }
+
+        .pay-inline {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            margin-bottom: 4px;
+        }
+        .pay-lbl { font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+
+        .pay-bottom-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .pay-dated {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            flex: 1;
+            max-width: 200px;
+        }
+        .total-box {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            border: 2px solid var(--red);
+            padding: 3px 8px 3px;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--red);
+            white-space: nowrap;
+        }
+
+        /* ===========================
+           ATTACHMENTS ROW
+           =========================== */
+        .attachments-row {
+            display: flex;
+            align-items: stretch;
+            border: 2px solid var(--red);
+            margin-bottom: 8px;
+        }
+        .attach-label {
+            background: var(--red);
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            min-width: 150px;
+            line-height: 1.5;
+            flex-shrink: 0;
+        }
+        .attach-boxes { display: flex; flex: 1; }
+        .abox {
+            flex: 1;
+            border-left: 2px solid var(--red);
+            padding: 8px 6px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11.5px;
+            color: var(--red);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            gap: 4px;
+        }
+        .abox label {
+            cursor: pointer;
+        }
+        .f-input-file {
+            font-size: 10px;
+            width: 100%;
+            color: #555;
+        }
+
+        /* ===========================
+           BOOKING ROW
+           =========================== */
+        .booking-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .bk-lbl { white-space: nowrap; flex-shrink: 0; }
+        .bk-line { flex: 1; min-width: 60px; }
+        .mgL { margin-left: 12px; }
+
+        .office-only {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===========================
+           FOOTER STRIP
+           =========================== */
+        .footer-strip {
+            border: 2px solid var(--red);
+            margin-bottom: 0;
+        }
+
+        /* Gold title bar */
+        .footer-header {
+            background: var(--tan);
+            border-bottom: 2px solid var(--red);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 8px;
+            gap: 6px;
+        }
+        .fh-gold-box {
+            width: 26px;
+            height: 22px;
+            background: var(--gold);
+            flex-shrink: 0;
+            display: inline-block;
+            border: 1px solid var(--gold-lt);
+        }
+        .fh-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--dark);
+            flex: 1;
+            text-align: center;
+        }
+        .fh-white-box {
+            width: 80px;
+            height: 22px;
+            background: #fff;
+            border: 1.5px solid var(--red);
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        /* Footer body: fields on left, verification+stamp on right */
+        .footer-body {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .footer-fields {
+            flex: 1;
+            padding: 6px 10px;
+        }
+
+        .footer-field-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: 12.5px;
+        }
+        .ffl {
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 12.5px;
+            flex-shrink: 0;
+        }
+        .ffl.mgL { margin-left: 12px; }
+
+        /* Footer-specific underline — flex child */
+        .footer-field-row .fline { min-width: 60px; }
+
+        /* Note */
+        .note {
+            font-size: 11px;
+            line-height: 1.55;
+            color: #222;
+            margin-top: 5px;
+        }
+
+        /* Right sidebar: Verification + Stamp/Sign */
+        .footer-right-sidebar {
+            display: flex;
+            align-items: stretch;
+            border-left: 2px solid var(--red);
+            flex-shrink: 0;
+        }
+
+        /* Vertical "Verification" text column */
+        .verif-col {
+            width: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--red);
+            background: #fff;
+        }
+        .verif-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--dark);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* Stamp / Sign column */
+        .stamp-sign-col {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 8px 6px;
+            gap: 8px;
+        }
+        .ss-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        .ss-line {
+            width: 70px;
+            border-bottom: 1.5px solid #333;
+            display: inline-block;
+        }
+        .ss-lbl {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* ===========================
+           CONTACT BAR
+           =========================== */
+        .contact-bar {
+            background: #fff;
+            color: var(--red);
+            text-align: center;
+            padding: 8px 14px;
+            font-size: 13px;
+            line-height: 1.8;
+            border-top: 2px solid var(--red);
+            font-weight: 600;
+        }
+        .contact-bar strong { font-weight: 900; }
+
+        /* ===========================
+           RESPONSIVE
+           =========================== */
+        @media (max-width: 680px) {
+            .form-container { width: 100%; }
+            .title { font-size: 26px; }
+            .amir-logo, .church-logo { width: 140px; }
+            .clc-logo { width: 58px; height: 58px; }
+            .footer-right-sidebar { flex-direction: column; }
+            .booking-row { flex-wrap: wrap; }
+        }
+
+    </style>
+    <div class="body-wrapper">
+        <div class="form-container">
+
+            <!-- ===== HEADER ===== -->
+            <form class="registration-form" method="POST"
+                  action="{{ route('user.final-form.store') }}"
+                  enctype="multipart/form-data">
+                @csrf
+                <div class="header">
+                    <!-- Top Bar: District centered, gold ribbon right -->
+                    <div class="top-bar">
+                        <div class="district-box">
+                            <span class="district-label">District</span>
+                            <input type="text" class="district-input"
+                                   name="district"
+                                   readonly
+                                   value="{{$user->city}}" />
+                        </div>
+                        <div class="top-mid"></div>
+                        <div class="reg-fee-ribbon">Registration Fee<br/>1000 PKR Only</div>
+                    </div>
+
+                    <!-- Title Area -->
+                    <div class="title-area">
+                        <div class="clc-seal-wrap">
+                            <img src="{{ asset('images/logo.PNG') }}" class="clc-logo" alt="Christ Land City Logo" />
+                        </div>
+                        <div class="title-text">
+                            <p class="reg-form-label">Registration Form</p>
+                            <h1 class="title">CHRIST LAND CITY</h1>
+                            <p class="subtitle">A Gateway of Luxury Living</p>
+                        </div>
+                    </div>
+
+                    <!-- Project Info Banner -->
+                    <div class="project-info">
+                        04 MARLA (1088 Sq Ft) HOUSING PROJECT FOR PAKISTANI HOMELESS CHRISTIAN FAMILIES
+                    </div>
+
+                    <!-- Registration No. / Security Code Bar -->
+                    <div class="meta-bar">
+                        <div class="meta-item">
+                            <span class="meta-lbl">Registration No.</span>
+                            <input type="text" class="meta-input"
+                                   name="registration_no"
+                                   readonly
+                                   value="{{ $application->registration_no }}" />
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-lbl">Security Code</span>
+                            <input type="text" class="meta-input"
+                                   name="security_code"
+                                   readonly
+
+                                   value="{{ $application->security_code }}" />
+                        </div>
+                    </div>
+
+                    <!-- Logo Row -->
+                    <div class="logo-section">
+                        <div class="logo-left-group">
+                            <img src="{{ asset('images/img1.PNG') }}" class="amir-logo" alt="Amir Sultan Get Home Services" />
+                        </div>
+                        <div class="logo-amp">&amp;</div>
+                        <div class="logo-right-group">
+                            <img src="{{ asset('images/img2.PNG') }}" class="church-logo" alt="Methodist Church of Pakistan" />
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div>
-                @if($application->status == 'pending')
-                    <span class="badge bg-warning bg-opacity-25 text-warning px-4 py-3 rounded-pill fs-6">
-                        <span class="dot bg-warning me-2"></span> Pending Review
-                    </span>
-                @elseif($application->status == 'approved')
-                    <span class="badge bg-success bg-opacity-25 text-success px-4 py-3 rounded-pill fs-6">
-                        <span class="dot bg-success me-2"></span> Approved
-                    </span>
-                @elseif($application->status == 'rejected')
-                    <span class="badge bg-danger bg-opacity-25 text-danger px-4 py-3 rounded-pill fs-6">
-                        <span class="dot bg-danger me-2"></span> Rejected
-                    </span>
-                @else
-                    <span class="badge bg-secondary bg-opacity-25 text-secondary px-4 py-3 rounded-pill fs-6">
-                        {{ ucfirst($application->status) }}
-                    </span>
-                @endif
-            </div>
-        </div>
+                <!-- /header -->
 
-        <!-- Main Application Details Card -->
-        <div class="card border-0 shadow-lg mb-4 overflow-hidden">
-            <div class="card-header bg-white py-3 border-0">
-                <div class="d-flex align-items-center">
-                    <div class="bg-primary bg-opacity-10 rounded-3 p-2 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle text-primary" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                        </svg>
-                    </div>
-                    <h5 class="fw-semibold mb-0">Application Overview</h5>
-                </div>
-            </div>
-            <div class="card-body p-4">
-                <!-- Application Info Cards Row -->
-                <div class="row g-3 mb-4">
-                    <div class="col-md-4">
-                        <div class="bg-light rounded-4 p-3 h-100">
-                            <small class="text-muted text-uppercase fw-semibold">Application ID</small>
-                            <div class="d-flex align-items-center mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-hash text-primary me-2" viewBox="0 0 16 16">
-                                    <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-.975l.516-2.492c.058-.25-.078-.405-.348-.405-.227 0-.36.148-.402.32l-.52 2.577h-1.765l.516-2.492c.058-.25-.078-.405-.348-.405-.227 0-.36.148-.402.32l-.52 2.577H6.28c-.406 0-.61.225-.61.532 0 .313.188.524.61.524h1.18l-.515 2.524H5.877c-.402 0-.602.222-.602.516 0 .313.187.53.602.53h1.09l-.504 2.45c-.058.242.074.405.34.405.227 0 .36-.148.398-.32l.52-2.535h1.765zm.79-3.178.515-2.524h-1.76l-.516 2.524h1.76z"/>
-                                </svg>
-                                <span class="fs-4 fw-bold">#{{ $application->id }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bg-light rounded-4 p-3 h-100">
-                            <small class="text-muted text-uppercase fw-semibold">Submitted</small>
-                            <div class="d-flex align-items-center mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar-check text-success me-2" viewBox="0 0 16 16">
-                                    <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.0z"/>
-                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                                </svg>
-                                <span class="fw-semibold">{{ $application->created_at->format('d M Y') }}</span>
-                                <span class="text-muted ms-2 small">{{ $application->created_at->format('h:i A') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bg-light rounded-4 p-3 h-100">
-                            <small class="text-muted text-uppercase fw-semibold">Last Updated</small>
-                            <div class="d-flex align-items-center mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-clock-history text-info me-2" viewBox="0 0 16 16">
-                                    <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zM8 3.5a.5.5 0 0 1 .5.5v4.5h3a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/>
-                                </svg>
-                                <span>{{ $application->updated_at->format('d M Y h:i A') }}</span>
-                            </div>
-                        </div>
-                    </div>
+                <!-- ===== FORM SECTION ===== -->
+
+
+                <!-- Name of Applicant -->
+                <div class="field-row">
+                    <span class="fl">Name of Applicant</span>
+                    <input type="text" class="finput"
+                           name="name"
+                           readonly
+                           value="{{ $user->name }}" />
                 </div>
 
-                <!-- User Information Section -->
-                <div class="mb-5">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-primary bg-opacity-10 rounded-2 p-2 me-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person-badge text-primary" viewBox="0 0 16 16">
-                                <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803A4.2 4.2 0 0 0 3 13.294V2.5z"/>
-                            </svg>
-                        </div>
-                        <h5 class="fw-semibold mb-0">Personal Information</h5>
+                <!-- Applicant CNIC + S/O -->
+                @php
+                    $cnic = preg_replace('/\D/', '', $application->cnic ?? '');
+                @endphp
+
+                <div class="field-row">
+                    <span class="fl">Applicant CNIC</span>
+
+                    <div class="cnic-boxes">
+                        @for($i = 0; $i < 5; $i++)
+                            <input type="text" class="cb" maxlength="1"
+                                   value="{{ $cnic[$i] ?? '' }}" readonly />
+                        @endfor
+
+                        <span class="cd">-</span>
+
+                        @for($i = 5; $i < 12; $i++)
+                            <input type="text" class="cb" maxlength="1"
+                                   value="{{ $cnic[$i] ?? '' }}" readonly />
+                        @endfor
+
+                        <span class="cd">-</span>
+
+                        <input type="text" class="cb" maxlength="1"
+                               value="{{ $cnic[12] ?? '' }}" readonly />
                     </div>
 
-                    <div class="row g-3">
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">Full Name</small>
-                                <strong>{{ $application->name }}</strong>
-                            </div>
+                    <span class="fl so">S/o, D/O, W/O.</span>
+                    <input type="text" class="finput"
+                           value="{{ $application->guardian_name ?? '' }}" readonly />
+                </div>
+
+                <!-- Current Mailing Address -->
+                <div class="field-row">
+                    <span class="fl">Current Mailing Address</span>
+                    <input type="text" class="finput"
+                           name="current_mailing_address"
+                           value="{{ $application->current_mailing_address }}" />
+                </div>
+
+                <!-- Permanent Mailing Address -->
+                <div class="field-row">
+                    <span class="fl">Permanent Mailing Address</span>
+                    <input type="text" class="finput"
+                           name="permanent_mailing_address"
+                           value="{{$application->permanent_mailing_address}}" />
+                </div>
+
+                <!-- Occupation + Email -->
+                <div class="field-row">
+                    <span class="fl">Occupation</span>
+                    <input type="text" class="finput"
+                           name="occupation"
+                           value="{{ $application->occupation}}" />
+                    <span class="fl gap">Email</span>
+                    <input type="email" class="finput"
+                           name="email"
+                           readonly
+                           value="{{ $user->email }}" />
+                </div>
+
+                <!-- Official Contact + Mobile -->
+                <div class="field-row">
+                    <span class="fl">Official Contact Number.</span>
+                    <input type="tel" class="finput"
+                           name="official_contact_number"
+                           value="{{ $application->official_contact_number }}" />
+                    <span class="fl gap">Mobile</span>
+                    <input type="tel" class="finput"
+                           name="mobile_number"
+                           value="{{  $application->mobile_number }}" />
+                </div>
+
+                <!-- ===== PAYMENT SECTION ===== -->
+                <div class="payment-section">
+                    <table class="pay-table">
+                        <tr>
+                            <th>Payment Method</th>
+                            <td colspan="3">Askari Bank Ltd</td>
+                        </tr>
+                        <tr>
+                            <th>Account Tittle:</th>
+                            <td colspan="3">Amir Sultan</td>
+                        </tr>
+                        <tr>
+                            <th>Account No:</th>
+                            <td>3010380 00 25 96</td>
+                            <th>Branch Code:</th>
+                            <td class="branch-val">0301</td>
+                        </tr>
+                    </table>
+                    <div class="pay-lines">
+                        <p class="pay-line-text">DD/Pay order/Cross Cheque / Cash Deposit</p>
+                        <div class="pay-inline">
+                            <span class="pay-lbl">Amount in words:</span>
+                            <input type="text" class="finput pay-finput"
+                                   name="amount_in_words"
+                                   readonly
+                                   value="Eleven Thousand Rupees Only" />
                         </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">Email Address</small>
-                                <strong>{{ $application->email }}</strong>
+                        <div class="pay-bottom-row">
+                            <div class="pay-dated">
+                                <span class="pay-lbl">Dated:</span>
+                                <input type="date" class="finput"
+                                       name="payment_date"
+                                       value="{{  $application->payment_date}}" />
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">Age</small>
-                                <strong>{{ $application->age }} years</strong>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">City</small>
-                                <strong>{{ $application->city }}</strong>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">Phone Number</small>
-                                <strong>{{ $application->phone }}</strong>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">CNIC</small>
-                                <strong>{{ $application->cnic }}</strong>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="border-0 bg-light p-3 rounded-3">
-                                <small class="text-muted d-block mb-1">Postal Code</small>
-                                <strong>{{ $application->postal_code }}</strong>
+                            <div class="total-box">
+                                <span>Total Amount PKR</span>
+                                <input type="text" class="finput short-finput"
+                                       name="total_amount"
+                                       readonly
+                                       value="11000" />/-
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- documents Section -->
-                <div>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-success bg-opacity-10 rounded-2 p-2 me-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-file-earmark-text text-success" viewBox="0 0 16 16">
-                                <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
-                                <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
-                            </svg>
+                <!-- ===== ATTACHMENTS ===== -->
+                <div class="attachments-row">
+                    <div class="attach-label">
+                        Documents to be attached<br />with this form
+                    </div>
+                    <div class="attach-boxes">
+                        <div class="abox">
+                            <label>Copy of member CNIC</label>
+                            <div class="file-preview"
+                                 style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
+                                @if($application->cnic_copy)
+                                    @php
+                                        $cnicFile = asset('storage/' . $application->cnic_copy);
+                                        $cnicExt = pathinfo($application->cnic_copy, PATHINFO_EXTENSION);
+                                    @endphp
+
+                                    @if(in_array(strtolower($cnicExt), ['jpg','jpeg','png','gif','webp']))
+                                        <img src="{{ $cnicFile }}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                                    @elseif(strtolower($cnicExt) === 'pdf')
+                                        <embed src="{{ $cnicFile }}" type="application/pdf" width="100%" height="100%" />
+                                    @else
+                                        <a href="{{ $cnicFile }}" target="_blank" style="text-decoration:none;color:#555;">Download File</a>
+                                    @endif
+                                @else
+                                    No file uploaded
+                                @endif
+                            </div>
                         </div>
-                        <h5 class="fw-semibold mb-0">Uploaded Documents</h5>
-                        <span class="badge bg-light text-dark ms-2">{{ $application->documents->count() }} files</span>
+
+                        <div class="abox">
+                            <label>Copy of deposit slip</label>
+                            <div class="file-preview"
+                                 style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
+                                @if($application->deposit_copy)
+                                    @php
+                                        $depositFile = asset('storage/' . $application->deposit_copy);
+                                        $depositExt = pathinfo($application->deposit_copy, PATHINFO_EXTENSION);
+                                    @endphp
+
+                                    @if(in_array(strtolower($depositExt), ['jpg','jpeg','png','gif','webp']))
+                                        <img src="{{ $depositFile }}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                                    @elseif(strtolower($depositExt) === 'pdf')
+                                        <embed src="{{ $depositFile }}" type="application/pdf" width="100%" height="100%" />
+                                    @else
+                                        <a href="{{ $depositFile }}" target="_blank" style="text-decoration:none;color:#555;">Download File</a>
+                                    @endif
+                                @else
+                                    No file uploaded
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== BOOKING ROW ===== -->
+                <div class="booking-row">
+                    <span class="bk-lbl">Booked By (Code)</span>
+                    <input type="text" class="finput bk-finput"
+                           name="booked_by"
+                           value="{{  $application->booked_by }}" />
+                    <span class="bk-lbl mgL">Date</span>
+                    <input type="date" class="finput bk-finput"
+                           name="booking_date"
+                           value="{{ $application->booking_date}}" />
+                    <span class="bk-lbl mgL">Applicant Signature</span>
+                    <input type="text" class="finput bk-finput"
+                           name="signature"
+                           value="{{ $application->signature}}" />
+                </div>
+                <div class="office-only">For Office Use Only</div>
+
+                <!-- ===== FOOTER STRIP ===== -->
+                <div class="footer-strip">
+
+                    <!-- Gold Title Bar -->
+                    <div class="footer-header">
+                        <span class="fh-gold-box"></span>
+                        <span class="fh-title">Christ Land City 04 Marla Home Form / Application #</span>
+                        <input type="text" class="box"  value="{{ $application->registration_no }}"/>
                     </div>
 
-                    @if($application->documents->count() > 0)
-                        <div class="row g-3">
-                            @foreach($application->documents as $index => $document)
-                                <div class="col-md-6">
-                                    <div class="card border-0 bg-light h-100">
-                                        <div class="card-body p-3">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-3">
-                                                    @php
-                                                        $extension = pathinfo($document->original_name, PATHINFO_EXTENSION);
-                                                    @endphp
-                                                    <div class="bg-white rounded-3 p-2 shadow-sm">
-                                                        @if(in_array(strtolower($extension), ['pdf']))
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-pdf text-danger" viewBox="0 0 16 16">
-                                                                <path d="M5.523 10.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.323.221c-.133.087-.28.186-.396.265.088-.084.184-.169.28-.25.203-.154.386-.304.58-.424.141-.087.297-.175.464-.262.107-.058.216-.114.323-.166l.003-.001a6.62 6.62 0 0 1 .513-.217 4.86 4.86 0 0 1 .593-.158c.255-.055.53-.09.817-.09.363 0 .708.062 1.025.173.382.131.683.336.892.59.218.266.347.601.347.994 0 .387-.125.714-.367.95-.245.241-.59.389-.978.389-.215 0-.414-.046-.598-.131a2.143 2.143 0 0 1-.497-.33c.037.097.106.19.207.289.184.19.426.342.712.438.276.094.586.141.906.141.407 0 .771-.09 1.06-.27.283-.18.498-.44.64-.744.138-.3.207-.65.207-1.045 0-.402-.069-.77-.208-1.073-.143-.309-.36-.55-.637-.726-.279-.176-.625-.265-1.005-.265-.343 0-.656.07-.932.194-.284.128-.54.291-.766.46-.087.066-.173.134-.256.202l.002.002c-.165.135-.324.276-.473.422-.119.118-.23.24-.334.363l-.005.006a8.93 8.93 0 0 1-.427-.437c-.14-.158-.282-.318-.414-.484l-.01-.013c-.152-.191-.292-.391-.414-.605-.097-.168-.171-.34-.222-.518-.05-.175-.078-.36-.078-.555 0-.232.036-.436.106-.618.072-.191.181-.358.328-.497.148-.138.339-.248.569-.322.233-.074.516-.111.838-.111.371 0 .69.063.953.19.264.126.473.305.622.532.145.223.225.488.225.79 0 .014-.002.028-.003.042l.014.003c.004-.043.006-.087.006-.131 0-.324-.087-.6-.246-.832a1.658 1.658 0 0 0-.679-.56 2.49 2.49 0 0 0-1.013-.21c-.427 0-.801.074-1.106.216-.301.142-.532.344-.683.589-.145.231-.219.506-.219.816 0 .24.04.46.115.66.073.194.177.37.307.52.128.147.28.274.448.376.16.097.334.173.518.222.183.05.373.075.566.075.192 0 .375-.02.547-.058.164-.036.324-.09.474-.158-.017.021-.034.041-.051.062l-.002.002c-.15.188-.314.363-.483.523-.164.155-.336.296-.51.418-.14.1-.278.187-.413.262-.146.082-.294.157-.443.226-.127.061-.254.118-.381.171l-.004.002zM14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                                            </svg>
-                                                        @elseif(in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-image text-primary" viewBox="0 0 16 16">
-                                                                <path d="M8.002 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                                                                <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z"/>
-                                                            </svg>
-                                                        @else
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark text-secondary" viewBox="0 0 16 16">
-                                                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                                                            </svg>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2">
-                                                        <div>
-                                                            <strong class="d-block mb-1">{{ $document->original_name }}</strong>
-                                                            <small class="text-muted">
-                                                                {{ $document->attachment->filename ?? 'Required Document' }}
-                                                            </small>
-                                                        </div>
-                                                        <a href="{{ route('user.document.preview', $document->id) }}"
-                                                           target="_blank"
-                                                           class="btn btn-sm btn-primary rounded-pill px-3">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-eye me-1" viewBox="0 0 16 16">
-                                                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                                            </svg>
-                                                            Preview
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <!-- Footer body -->
+                    <div class="footer-body">
+
+                        <div class="footer-fields">
+
+                            <div class="footer-field-row">
+                                <span class="ffl">Name:</span>
+                                <input type="text" class="finput"  value="{{ $user->name }}" /> />
+                                <span class="ffl mgL">S/O, D/O, W/O:</span>
+                                <input type="text" class="finput"  value="{{ $application->guardian_name }}"/>
+                            </div>
+
+
+
+
+                            <div class="footer-field-row">
+                                <span class="ffl">Applicant CNIC:</span>
+                                @php
+                                    $cnic = preg_replace('/\D/', '', $application->cnic ?? '');
+                                @endphp
+                                <div class="cnic-boxes">
+                                    @for($i = 0; $i < 5; $i++)
+                                        <input type="text" class="cb" maxlength="1"
+                                               value="{{ $cnic[$i] ?? '' }}" readonly />
+                                    @endfor
+
+                                    <span class="cd">-</span>
+
+                                    @for($i = 5; $i < 12; $i++)
+                                        <input type="text" class="cb" maxlength="1"
+                                               value="{{ $cnic[$i] ?? '' }}" readonly />
+                                    @endfor
+
+                                    <span class="cd">-</span>
+
+                                    <input type="text" class="cb" maxlength="1"
+                                           value="{{ $cnic[12] ?? '' }}" readonly />
                                 </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="alert alert-info bg-light border-0 d-flex align-items-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-circle me-3 text-info" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                            </svg>
-                            <span class="fw-semibold">No documents have been uploaded for this application.</span>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+                            </div>
 
-        <!-- Back Button -->
-        <div class="d-flex justify-content-center mt-4">
-            <a href="{{ route('user.final_form.index') }}"
-               class="btn btn-outline-secondary btn-lg rounded-pill px-5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>
-                Back to Applications List
-            </a>
+                            <p class="note">
+                                Note: Company &amp; The Methodist Church of Pakistan reserve the right to reject your
+                                application for providing any wrong information. Company is not responsible for any
+                                cash handling with any individual/Employee
+                            </p>
+                        </div>
+
+                        <!-- Right sidebar -->
+                        <div class="footer-right-sidebar">
+                            <div class="verif-col">
+                                <span class="verif-text">Verification</span>
+                            </div>
+                            <div class="stamp-sign-col">
+                                <div class="ss-item">
+                                    <span class="ss-line"></span>
+                                    <span class="ss-lbl">Stamp</span>
+                                </div>
+                                <div class="ss-item">
+                                    <span class="ss-line"></span>
+                                    <span class="ss-lbl">Sign</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== CONTACT BAR ===== -->
+                <div class="contact-bar">
+                    Raja Javed Plaza, First Floor, Main GT Road, Opp. Gate # 02, DHA Phase 2, Islamabad<br />
+                    Help line # <strong>+92 330 7778851</strong> &nbsp; <strong>+92 303 0366668</strong><br />
+                    Email: <strong>amirsultanpak74@gmail.com</strong>
+                </div>
+                <div style="text-align:center; margin:20px 0;">
+
+                </div>
+            </form>
         </div>
     </div>
+    <script>
 
-    <!-- Custom Styles -->
-    <style>
-        .bg-opacity-10 { background-color: rgba(var(--bs-primary-rgb), 0.1); }
-        .bg-opacity-25 { background-color: rgba(255,255,255,0.25); }
-        .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .rounded-4 { border-radius: 1rem; }
-        .card {
-            border-radius: 1.5rem;
-        }
-        .btn-rounded {
-            border-radius: 2rem;
-        }
-        @media (max-width: 576px) {
-            .container { padding-left: 12px; padding-right: 12px; }
-        }
-    </style>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const hiddenInput = document.getElementById('cnic_full');
+            const cnicValue = hiddenInput ? hiddenInput.value : '';
+
+            if (!cnicValue) return;
+
+            const boxes = document.querySelectorAll('.cnic-boxes .cb');
+
+            // Remove any non-digit characters just in case
+            const cleanCnic = cnicValue.replace(/\D/g, '');
+
+            boxes.forEach((box, index) => {
+                if (cleanCnic[index]) {
+                    box.value = cleanCnic[index];
+                }
+                box.readOnly = true; // make preview only
+            });
+
+        });
+    </script>
 @endsection

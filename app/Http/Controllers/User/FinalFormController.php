@@ -29,6 +29,14 @@ class FinalFormController extends Controller
 
         return view('user.finalDocument.index', compact('applications','disableNewApplicationButton'));
     }
+    public function show($id)
+    {
+        $application = FinalForm::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+        $user = auth()->user();
+        return view('user.finalDocument.show', compact('application','user'));
+    }
 
     public function create()
     {
@@ -148,7 +156,7 @@ class FinalFormController extends Controller
             ]);
         }
 
-        return redirect()->route('user.dashboard')
+        return redirect()->route('user.final_form.index')
             ->with('success', 'Form submitted successfully.');
     }
 }

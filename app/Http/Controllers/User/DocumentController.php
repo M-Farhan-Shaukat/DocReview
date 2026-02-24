@@ -41,8 +41,8 @@ class DocumentController extends Controller
             ->where('user_id', auth()->id())
             ->with('documents.attachment')
             ->firstOrFail();
-
-        return view('user.application.show', compact('application'));
+        $user = auth()->user();
+        return view('user.application.show', compact('application','user'));
     }
     // Show or create draft application
     public function applicationForm()

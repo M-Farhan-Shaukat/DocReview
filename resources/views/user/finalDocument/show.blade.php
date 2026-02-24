@@ -566,6 +566,13 @@
 
     </style>
     <div class="body-wrapper">
+        <div style="text-align:center; margin:20px 0;">
+            <a href="{{ route('user.form.download', $application->id) }}"
+               class="btn"
+               style="padding: 10px 20px; background: var(--red); color: #fff; font-weight: 700; text-decoration: none; border-radius: 4px;">
+                Download PDF
+            </a>
+        </div>
         <div class="form-container">
 
             <!-- ===== HEADER ===== -->

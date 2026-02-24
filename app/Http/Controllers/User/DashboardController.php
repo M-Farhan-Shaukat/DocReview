@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\FinalForm;
 use App\Models\GeneralDocuments;
 use App\Models\UserDownloadedDocuments;
 use Carbon\Carbon;
@@ -47,6 +48,7 @@ class DashboardController extends Controller
                     ->latest()
                     ->first();
             }
+            $showDownloadFinalForm = FinalForm::where('user_id',auth()->id())->first();
             return view('user.dashboard', compact(
                 'generalDocuments',
                 'userDocuments',
@@ -55,7 +57,8 @@ class DashboardController extends Controller
                 'approvedCount',
                 'disableChallanDownloadBtn',
                 'disableNewApplicationButton',
-                'finalDocument'
+                'finalDocument',
+                'showDownloadFinalForm'
             ));
 
         } catch (\Exception $e) {

@@ -59,7 +59,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-table text-primary me-2" viewBox="0 0 16 16">
                             <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
                         </svg>
-                        <h5 class="fw-semibold mb-0">Application History</h5>
+                        <h5 class="fw-semibold mb-0">Registration Form History</h5>
                         <span class="badge bg-light text-dark ms-2">{{ $applications->total() }} total</span>
                     </div>
                 </div>
@@ -70,8 +70,9 @@
                             <thead class="bg-light">
                             <tr>
                                 <th class="ps-4">#</th>
-                                <th>Application unique Id</th>
-                                <th>Status</th>
+                                <th>Registration #</th>
+                                <th>Applicant Name</th>
+                                <th>Applicant CNIC</th>
                                 <th>Submitted At</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -81,27 +82,13 @@
                                 <tr>
                                     <td class="ps-4 fw-medium">{{ $applications->firstItem() + $index }}</td>
                                     <td>
-                                        <span class="fw-semibold">{{ $application->unique_id }}</span>
+                                        <span class="fw-semibold">{{ $application->registration_no }}</span>
+                                    </td>    <td>
+                                        <span class="fw-semibold">{{ $application->name }}</span>
+                                    </td>    <td>
+                                        <span class="fw-semibold">{{ $application->cnic }}</span>
                                     </td>
-                                    <td>
-                                        @if($application->status == 'pending')
-                                            <span class="badge bg-warning bg-opacity-25 text-warning px-3 py-2 rounded-pill">
-                                                <span class="dot bg-warning me-1"></span> Pending
-                                            </span>
-                                        @elseif($application->status == 'approved')
-                                            <span class="badge bg-success bg-opacity-25 text-success px-3 py-2 rounded-pill">
-                                                <span class="dot bg-success me-1"></span> Approved
-                                            </span>
-                                        @elseif($application->status == 'rejected')
-                                            <span class="badge bg-danger bg-opacity-25 text-danger px-3 py-2 rounded-pill">
-                                                <span class="dot bg-danger me-1"></span> Rejected
-                                            </span>
-                                        @else
-                                            <span class="badge bg-secondary bg-opacity-25 text-secondary px-3 py-2 rounded-pill">
-                                                {{ ucfirst($application->status) }}
-                                            </span>
-                                        @endif
-                                    </td>
+
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-calendar3 text-muted me-2" viewBox="0 0 16 16">

@@ -650,26 +650,32 @@
         </div>
 
         <!-- Applicant CNIC + S/O -->
+        @php
+            $cnic = preg_replace('/\D/', '', $user->cnic ?? '');
+        @endphp
+
         <div class="field-row">
             <span class="fl">Applicant CNIC</span>
             <div class="cnic-boxes">
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <span class="cd">-</span>
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <input type="text" class="cb" maxlength="1" />
-                <span class="cd">-</span>
-                <input type="text" class="cb" maxlength="1" />
+                @for($i = 0; $i < 5; $i++)
+                    <input type="text" class="cb" maxlength="1"
+                           value="{{ $cnic[$i] ?? '' }}" readonly />
+                @endfor
 
-                <input type="hidden" name="cnic" id="cnic_full">
+                <span class="cd">-</span>
+
+                @for($i = 5; $i < 12; $i++)
+                    <input type="text" class="cb" maxlength="1"
+                           value="{{ $cnic[$i] ?? '' }}" readonly />
+                @endfor
+
+                <span class="cd">-</span>
+
+                <input type="text" class="cb" maxlength="1"
+                       value="{{ $cnic[12] ?? '' }}" readonly />
+                    <input type="hidden" class="finput"
+                           name="cnic"
+                           value="{{ $user->cnic }}" />
             </div>
             <span class="fl so">S/o, D/O, W/O.</span>
             <input type="text" class="finput"
@@ -771,14 +777,14 @@
             <div class="attach-boxes">
                 <div class="abox">
                     <label for="cnic_copy">Copy of member CNIC</label>
-                    <input type="file" id="cnic_copy" name="cnic_copy" class="f-input-file" />
+                    <input type="file" id="cnic_copy" name="cnic_copy" class="f-input-file"  required/>
                     <div class="file-preview" style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
                         Browse File
                     </div>
                 </div>
                 <div class="abox">
                     <label for="deposit_copy">Copy of deposit slip</label>
-                    <input type="file" id="deposit_copy" name="deposit_copy" class="f-input-file" />
+                    <input type="file" id="deposit_copy" name="deposit_copy" class="f-input-file" required/>
                     <div class="file-preview" style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
                         Browse File
                     </div>
@@ -810,7 +816,7 @@
             <div class="footer-header">
                 <span class="fh-gold-box"></span>
                 <span class="fh-title">Christ Land City 04 Marla Home Form / Application #</span>
-                <span class="fh-white-box"></span>
+                <input type="text" class="box" value="{{$application->unique_id }}" readonly/>
             </div>
 
             <!-- Footer body -->
@@ -820,25 +826,33 @@
 
                     <div class="footer-field-row">
                         <span class="ffl">Name:</span>
-                        <input type="text" class="finput" />
+                        <input type="text" class="finput" value="{{$user->name}}" readonly/>
                         <span class="ffl mgL">S/O, D/O, W/O:</span>
                         <input type="text" class="finput" />
                     </div>
 
                     <div class="footer-field-row">
                         <span class="ffl">Applicant CNIC:</span>
-                        <div class="cnic-boxes" data-cnic="true">
-                            @for($i=0;$i<5;$i++)
-                                <input type="text" class="cb" maxlength="1" />
+                        @php
+                            $cnic = preg_replace('/\D/', '', $user->cnic ?? '');
+                        @endphp
+                        <div class="cnic-boxes">
+                            @for($i = 0; $i < 5; $i++)
+                                <input type="text" class="cb" maxlength="1"
+                                       value="{{ $cnic[$i] ?? '' }}" readonly />
                             @endfor
-                            <span class="cd">-</span>
-                            @for($i=0;$i<7;$i++)
-                                <input type="text" class="cb" maxlength="1" />
-                            @endfor
-                            <span class="cd">-</span>
-                            <input type="text" class="cb" maxlength="1" />
 
-                            <input type="hidden" name="cnic" class="cnic-hidden">
+                            <span class="cd">-</span>
+
+                            @for($i = 5; $i < 12; $i++)
+                                <input type="text" class="cb" maxlength="1"
+                                       value="{{ $cnic[$i] ?? '' }}" readonly />
+                            @endfor
+
+                            <span class="cd">-</span>
+
+                            <input type="text" class="cb" maxlength="1"
+                                   value="{{ $cnic[12] ?? '' }}" readonly />
                         </div>
                     </div>
 
@@ -886,7 +900,7 @@
                 cursor:pointer;
                 font-size:14px;
             ">
-                Preview Application
+                Submit
             </button>
         </div>
     </form>

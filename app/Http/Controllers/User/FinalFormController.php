@@ -159,4 +159,17 @@ class FinalFormController extends Controller
         return redirect()->route('user.final_form.index')
             ->with('success', 'Form submitted successfully.');
     }
+
+    public function downloadPdf($id)
+    {
+        $application = FinalForm::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+        $user = auth()->user();
+        // Pass the same data as the preview
+        $pdf = Pdf::loadView('user.finalDocument.preview', compact('application', 'user'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('registration_form_'.$application->registration_no.'.pdf');
+    }
 }

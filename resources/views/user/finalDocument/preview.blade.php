@@ -1,6 +1,8 @@
-@extends('user.layouts.app')
-
-@section('content')
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         /* ===========================
        BASE
@@ -16,7 +18,7 @@
             --dark:   #1e1e1e;
         }
 
-        .body-wrapper {
+        body {
             font-family: "Arial", sans-serif;
             background: #d8d8d8;
             padding: 20px;
@@ -565,7 +567,8 @@
         }
 
     </style>
-    <div class="body-wrapper">
+</head>
+<body>
         <div class="form-container">
 
             <!-- ===== HEADER ===== -->
@@ -611,7 +614,7 @@
                             <input type="text" class="meta-input"
                                    name="registration_no"
                                    readonly
-                                   value="{{ $application->unique_id }}" />
+                                   value="{{ $application->registration_no }}" />
                         </div>
                         <div class="meta-item">
                             <span class="meta-lbl">Security Code</span>
@@ -619,7 +622,7 @@
                                    name="security_code"
                                    readonly
 
-                                   value="{{ $application->unique_id }}" />
+                                   value="{{ $application->security_code }}" />
                         </div>
                     </div>
 
@@ -650,31 +653,35 @@
                 </div>
 
                 <!-- Applicant CNIC + S/O -->
+                @php
+                    $cnic = preg_replace('/\D/', '', $application->cnic ?? '');
+                @endphp
+
                 <div class="field-row">
                     <span class="fl">Applicant CNIC</span>
-                    <div class="cnic-boxes">
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <span class="cd">-</span>
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <input type="text" class="cb" maxlength="1" />
-                        <span class="cd">-</span>
-                        <input type="text" class="cb" maxlength="1" />
 
-                        <input type="hidden" name="cnic" id="cnic_full">
+                    <div class="cnic-boxes">
+                        @for($i = 0; $i < 5; $i++)
+                            <input type="text" class="cb" maxlength="1"
+                                   value="{{ $cnic[$i] ?? '' }}" readonly />
+                        @endfor
+
+                        <span class="cd">-</span>
+
+                        @for($i = 5; $i < 12; $i++)
+                            <input type="text" class="cb" maxlength="1"
+                                   value="{{ $cnic[$i] ?? '' }}" readonly />
+                        @endfor
+
+                        <span class="cd">-</span>
+
+                        <input type="text" class="cb" maxlength="1"
+                               value="{{ $cnic[12] ?? '' }}" readonly />
                     </div>
+
                     <span class="fl so">S/o, D/O, W/O.</span>
                     <input type="text" class="finput"
-                           name="guardian_name"
-                           value="{{ old('guardian_name') }}" />
+                           value="{{ $application->guardian_name ?? '' }}" readonly />
                 </div>
 
                 <!-- Current Mailing Address -->
@@ -682,7 +689,7 @@
                     <span class="fl">Current Mailing Address</span>
                     <input type="text" class="finput"
                            name="current_mailing_address"
-                           value="{{ old('current_mailing_address') }}" />
+                           value="{{ $application->current_mailing_address }}" />
                 </div>
 
                 <!-- Permanent Mailing Address -->
@@ -690,7 +697,7 @@
                     <span class="fl">Permanent Mailing Address</span>
                     <input type="text" class="finput"
                            name="permanent_mailing_address"
-                           value="{{ old('permanent_mailing_address') }}" />
+                           value="{{$application->permanent_mailing_address}}" />
                 </div>
 
                 <!-- Occupation + Email -->
@@ -698,7 +705,7 @@
                     <span class="fl">Occupation</span>
                     <input type="text" class="finput"
                            name="occupation"
-                           value="{{ old('occupation') }}" />
+                           value="{{ $application->occupation}}" />
                     <span class="fl gap">Email</span>
                     <input type="email" class="finput"
                            name="email"
@@ -711,11 +718,11 @@
                     <span class="fl">Official Contact Number.</span>
                     <input type="tel" class="finput"
                            name="official_contact_number"
-                           value="{{ old('official_contact_number') }}" />
+                           value="{{ $application->official_contact_number }}" />
                     <span class="fl gap">Mobile</span>
                     <input type="tel" class="finput"
                            name="mobile_number"
-                           value="{{ old('mobile_number') }}" />
+                           value="{{  $application->mobile_number }}" />
                 </div>
 
                 <!-- ===== PAYMENT SECTION ===== -->
@@ -750,7 +757,7 @@
                                 <span class="pay-lbl">Dated:</span>
                                 <input type="date" class="finput"
                                        name="payment_date"
-                                       value="{{ old('payment_date') }}" />
+                                       value="{{  $application->payment_date}}" />
                             </div>
                             <div class="total-box">
                                 <span>Total Amount PKR</span>
@@ -770,17 +777,48 @@
                     </div>
                     <div class="attach-boxes">
                         <div class="abox">
-                            <label for="cnic_copy">Copy of member CNIC</label>
-                            <input type="file" id="cnic_copy" name="cnic_copy" class="f-input-file" />
-                            <div class="file-preview" style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
-                                Browse File
+                            <label>Copy of member CNIC</label>
+                            <div class="file-preview"
+                                 style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
+                                @if($application->cnic_copy)
+                                    @php
+                                        $cnicFile = asset('storage/' . $application->cnic_copy);
+                                        $cnicExt = pathinfo($application->cnic_copy, PATHINFO_EXTENSION);
+                                    @endphp
+
+                                    @if(in_array(strtolower($cnicExt), ['jpg','jpeg','png','gif','webp']))
+                                        <img src="{{ $cnicFile }}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                                    @elseif(strtolower($cnicExt) === 'pdf')
+                                        <embed src="{{ $cnicFile }}" type="application/pdf" width="100%" height="100%" />
+                                    @else
+                                        <a href="{{ $cnicFile }}" target="_blank" style="text-decoration:none;color:#555;">Download File</a>
+                                    @endif
+                                @else
+                                    No file uploaded
+                                @endif
                             </div>
                         </div>
+
                         <div class="abox">
-                            <label for="deposit_copy">Copy of deposit slip</label>
-                            <input type="file" id="deposit_copy" name="deposit_copy" class="f-input-file" />
-                            <div class="file-preview" style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
-                                Browse File
+                            <label>Copy of deposit slip</label>
+                            <div class="file-preview"
+                                 style="position:relative;width:100%;height:100px;overflow:hidden;border:1px dashed #ccc;border-radius:4px;margin-top:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555;">
+                                @if($application->deposit_copy)
+                                    @php
+                                        $depositFile = asset('storage/' . $application->deposit_copy);
+                                        $depositExt = pathinfo($application->deposit_copy, PATHINFO_EXTENSION);
+                                    @endphp
+
+                                    @if(in_array(strtolower($depositExt), ['jpg','jpeg','png','gif','webp']))
+                                        <img src="{{ $depositFile }}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                                    @elseif(strtolower($depositExt) === 'pdf')
+                                        <embed src="{{ $depositFile }}" type="application/pdf" width="100%" height="100%" />
+                                    @else
+                                        <a href="{{ $depositFile }}" target="_blank" style="text-decoration:none;color:#555;">Download File</a>
+                                    @endif
+                                @else
+                                    No file uploaded
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -791,15 +829,15 @@
                     <span class="bk-lbl">Booked By (Code)</span>
                     <input type="text" class="finput bk-finput"
                            name="booked_by"
-                           value="{{ old('booked_by') }}" />
+                           value="{{  $application->booked_by }}" />
                     <span class="bk-lbl mgL">Date</span>
                     <input type="date" class="finput bk-finput"
                            name="booking_date"
-                           value="{{ old('booking_date') }}" />
+                           value="{{ $application->booking_date}}" />
                     <span class="bk-lbl mgL">Applicant Signature</span>
                     <input type="text" class="finput bk-finput"
                            name="signature"
-                           value="{{ old('signature') }}" />
+                           value="{{ $application->signature}}" />
                 </div>
                 <div class="office-only">For Office Use Only</div>
 
@@ -810,7 +848,7 @@
                     <div class="footer-header">
                         <span class="fh-gold-box"></span>
                         <span class="fh-title">Christ Land City 04 Marla Home Form / Application #</span>
-                        <span class="fh-white-box"></span>
+                        <input type="text" class="box"  value="{{ $application->registration_no }}"/>
                     </div>
 
                     <!-- Footer body -->
@@ -820,25 +858,36 @@
 
                             <div class="footer-field-row">
                                 <span class="ffl">Name:</span>
-                                <input type="text" class="finput" />
+                                <input type="text" class="finput"  value="{{ $user->name }}" /> />
                                 <span class="ffl mgL">S/O, D/O, W/O:</span>
-                                <input type="text" class="finput" />
+                                <input type="text" class="finput"  value="{{ $application->guardian_name }}"/>
                             </div>
+
+
+
 
                             <div class="footer-field-row">
                                 <span class="ffl">Applicant CNIC:</span>
-                                <div class="cnic-boxes" data-cnic="true">
-                                    @for($i=0;$i<5;$i++)
-                                        <input type="text" class="cb" maxlength="1" />
+                                @php
+                                    $cnic = preg_replace('/\D/', '', $application->cnic ?? '');
+                                @endphp
+                                <div class="cnic-boxes">
+                                    @for($i = 0; $i < 5; $i++)
+                                        <input type="text" class="cb" maxlength="1"
+                                               value="{{ $cnic[$i] ?? '' }}" readonly />
                                     @endfor
-                                    <span class="cd">-</span>
-                                    @for($i=0;$i<7;$i++)
-                                        <input type="text" class="cb" maxlength="1" />
-                                    @endfor
-                                    <span class="cd">-</span>
-                                    <input type="text" class="cb" maxlength="1" />
 
-                                    <input type="hidden" name="cnic" class="cnic-hidden">
+                                    <span class="cd">-</span>
+
+                                    @for($i = 5; $i < 12; $i++)
+                                        <input type="text" class="cb" maxlength="1"
+                                               value="{{ $cnic[$i] ?? '' }}" readonly />
+                                    @endfor
+
+                                    <span class="cd">-</span>
+
+                                    <input type="text" class="cb" maxlength="1"
+                                           value="{{ $cnic[12] ?? '' }}" readonly />
                                 </div>
                             </div>
 
@@ -876,97 +925,33 @@
                     Email: <strong>amirsultanpak74@gmail.com</strong>
                 </div>
                 <div style="text-align:center; margin:20px 0;">
-                    <button type="submit"
-                            style="
-                background:#c0392b;
-                color:#fff;
-                padding:10px 30px;
-                border:none;
-                font-weight:700;
-                cursor:pointer;
-                font-size:14px;
-            ">
-                        Preview Application
-                    </button>
+
                 </div>
             </form>
         </div>
     </div>
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
-            // find all CNIC boxes (supports multiple forms)
-            document.querySelectorAll('.cnic-boxes[data-cnic="true"]').forEach(cnicContainer => {
-                const cnicBoxes = cnicContainer.querySelectorAll('.cb');
-                const cnicHidden = cnicContainer.querySelector('.cnic-hidden');
-                const form = cnicContainer.closest('form');
 
-                // Auto-advance + backspace
-                cnicBoxes.forEach((box, i) => {
-                    box.addEventListener('input', () => {
-                        if (box.value.length === 1 && i + 1 < cnicBoxes.length) {
-                            cnicBoxes[i + 1].focus();
-                        }
-                    });
-                    box.addEventListener('keydown', (e) => {
-                        if (e.key === 'Backspace' && box.value === '' && i > 0) {
-                            cnicBoxes[i - 1].focus();
-                        }
-                    });
-                });
+            const hiddenInput = document.getElementById('cnic_full');
+            const cnicValue = hiddenInput ? hiddenInput.value : '';
 
-                // Populate hidden CNIC before form submission
-                if(form){
-                    form.addEventListener('submit', () => {
-                        let cnic = '';
-                        cnicBoxes.forEach(box => cnic += box.value.trim());
-                        cnicHidden.value = cnic;
-                    });
+            if (!cnicValue) return;
+
+            const boxes = document.querySelectorAll('.cnic-boxes .cb');
+
+            // Remove any non-digit characters just in case
+            const cleanCnic = cnicValue.replace(/\D/g, '');
+
+            boxes.forEach((box, index) => {
+                if (cleanCnic[index]) {
+                    box.value = cleanCnic[index];
                 }
+                box.readOnly = true; // make preview only
             });
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.f-input-file').forEach(input => {
-                const previewDiv = input.closest('.abox').querySelector('.file-preview');
 
-                // hide default input
-                input.style.position = 'absolute';
-                input.style.width = '1px';
-                input.style.height = '1px';
-                input.style.opacity = 0;
-                input.style.zIndex = -1;
-
-                // click on preview div triggers file input
-                previewDiv.addEventListener('click', () => input.click());
-
-                input.addEventListener('change', function () {
-                    previewDiv.innerHTML = ''; // clear previous
-
-                    const file = this.files[0];
-                    if (!file) {
-                        previewDiv.textContent = 'Browse File';
-                        return;
-                    }
-
-                    // if image, show thumbnail
-                    if (file.type.startsWith('image/')) {
-                        const img = document.createElement('img');
-                        img.src = URL.createObjectURL(file);
-                        img.style.maxWidth = '100%';
-                        img.style.maxHeight = '100%';
-                        img.style.objectFit = 'contain';
-                        previewDiv.appendChild(img);
-                    } else {
-                        // else show filename
-                        const fileName = document.createElement('div');
-                        fileName.textContent = file.name;
-                        fileName.style.fontSize = '12px';
-                        fileName.style.fontWeight = '600';
-                        fileName.style.textAlign = 'center';
-                        fileName.style.wordBreak = 'break-word';
-                        previewDiv.appendChild(fileName);
-                    }
-                });
-            });
         });
     </script>
-@endsection
+</body>
+</html>

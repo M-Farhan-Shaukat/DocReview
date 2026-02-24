@@ -178,18 +178,6 @@ class ApplicationController extends Controller
             ->latest()
             ->first();
 
-        if ($finalDocument && $application->user) {
-
-            $filePath = storage_path('app/public/' . $finalDocument->file_path);
-
-            if (file_exists($filePath)) {
-                Mail::to($application->user->email)
-                    ->send(new FinalDocumentMail(
-                        $application->user,
-                        $filePath
-                    ));
-            }
-        }
 
         return redirect()
             ->route('admin.applications.index')

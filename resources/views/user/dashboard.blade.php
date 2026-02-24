@@ -180,6 +180,11 @@
                        class="btn btn-primary">
                         Continue Submitting Registration Form
                     </a>
+                    @if($showDownloadFinalForm)
+                    <a href="{{ route('user.form.download', $showDownloadFinalForm->id) }}"
+                       class="btn btn-primary">
+Download                    </a>
+                        @endif
                 </div>
 
             </div>

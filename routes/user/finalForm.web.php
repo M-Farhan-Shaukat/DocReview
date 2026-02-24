@@ -24,3 +24,6 @@ Route::post('/final-form/preview', [FinalFormController::class, 'preview'])
 
 Route::post('/final-form/store', [FinalFormController::class, 'store'])
     ->name('final-form.store');
+
+Route::get('/user/form/download/{application}', [FinalFormController::class, 'downloadPdf'])
+    ->name('form.download');

@@ -1,653 +1,342 @@
 @extends('user.layouts.app')
 
 @section('content')
-<style>
-    /* ===========================
-   BASE
-   =========================== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-        --red:    #c0392b;
-        --red-dk: #962d22;
-        --gold:   #c8941e;
-        --gold-lt:#e5c540;
-        --tan:    #f5dfa0;
-        --dark:   #1e1e1e;
-    }
+        :root {
+            --red: #c0392b;
+            --red-dk: #962d22;
+            --gold: #c8941e;
+            --gold-lt: #e5c540;
+            --tan: #f5dfa0;
+            --dark: #1e1e1e;
+            --gray-bg: #d8d8d8;
+        }
 
-    .body-wrapper {
-        font-family: "Arial", sans-serif;
-        background: #d8d8d8;
-        padding: 20px;
-    }
+        body { background: var(--gray-bg); font-family: Arial, Helvetica, sans-serif; }
 
-    .form-container {
-        background: #fff;
-        border: 5px solid var(--dark);
-        width: 820px;
-        max-width: 98%;
-        margin: 0 auto;
-        overflow: hidden;
-    }
+        .form-container {
+            background: white;
+            border: 4px solid var(--dark);
+            width: 850px;
+            max-width: 98%;
+            margin: 25px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
 
-    /* ===========================
-       HEADER
-       =========================== */
-    .header { width: 100%; }
+        /* Top Bar */
+        .top-bar {
+            background: var(--dark);
+            height: 38px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .district-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 4px 18px;
+            font-weight: bold;
+            font-size: 13.5px;
+            border: 1px solid #aaa;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+        }
+        .district-box input {
+            border: none;
+            border-bottom: 2px dotted #333;
+            width: 90px;
+            text-align: center;
+            font-weight: bold;
+            background: transparent;
+        }
+        .reg-fee-ribbon {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 4px 20px 4px 35px;
+            display: flex;
+            align-items: center;
+            clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+        }
 
-    /* --- Top Bar --- */
-    .top-bar {
-        display: flex;
-        align-items: stretch;
-        background: var(--dark);
-        min-height: 36px;
-        position: relative;
-    }
-    /* District box sits centered in the dark bar */
-    .district-box {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
-        background: #fff;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 20px 4px 18px;
-        height: 100%;
-        z-index: 2;
-        clip-path: polygon(6% 0, 94% 0, 88% 100%, 12% 100%);
-        min-width: 180px;
-        justify-content: center;
-    }
-    .district-label {
-        font-weight: 700;
-        font-size: 13.5px;
-        color: #111;
-        white-space: nowrap;
-    }
-    .district-input {
-        border: none;
-        border-bottom: 2px solid #333;
-        background: transparent;
-        outline: none;
-        font-size: 13px;
-        color: #111;
-        padding: 1px 2px;
-        width: 80px;
-        font-weight: 600;
-    }
-    /* Left and right ends stay dark */
-    .top-mid { flex: 1; }
+        /* Title Area */
+        .title-area {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            gap: 15px;
+        }
+        .clc-logo { width: 90px; height: 90px; }
+        .title-text { text-align: center; flex: 1; }
+        .reg-form-label { font-size: 13px; color: #444; font-weight: bold; }
+        .title { color: var(--red); font-size: 38px; font-weight: 900; letter-spacing: 1.5px; margin: 4px 0; }
+        .subtitle { color: var(--gold); font-size: 15px; font-weight: bold; font-style: italic; }
 
-    .reg-fee-ribbon {
-        background: linear-gradient(135deg, var(--gold-lt), var(--gold));
-        color: #fff;
-        font-weight: 700;
-        font-size: 11px;
-        text-align: center;
-        line-height: 1.4;
-        padding: 3px 16px 3px 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
-        min-width: 155px;
-    }
+        .project-info {
+            background: var(--red);
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px;
+        }
 
-    /* --- Title Area --- */
-    .title-area {
-        display: flex;
-        align-items: center;
-        padding: 8px 14px 6px;
-        gap: 10px;
-    }
-    .clc-seal-wrap { flex-shrink: 0; }
-    .clc-logo { width: 82px; height: 82px; object-fit: contain; }
+        /* Meta Bar (Reg No & Security) */
+        .meta-bar {
+            background: var(--dark);
+            display: flex;
+            color: white;
+            font-weight: bold;
+            font-size: 13.5px;
+        }
+        .meta-item {
+            flex: 1;
+            padding: 8px 15px;
+            border-right: 2px solid #444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .meta-item:last-child { border-right: none; }
+        .meta-input {
+            flex: 1;
+            background: white;
+            border: none;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 13px;
+        }
 
-    .title-text { flex: 1; text-align: center; }
-    .reg-form-label {
-        font-size: 12px;
-        color: #333;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: none;
-    }
-    .title {
-        color: var(--red);
-        font-size: 40px;
-        font-weight: 900;
-        letter-spacing: 2px;
-        line-height: 1.05;
-    }
-    .subtitle {
-        color: var(--gold);
-        font-style: italic;
-        font-size: 14px;
-        font-weight: 700;
-    }
+        /* Logos */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            gap: 25px;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+        }
+        .amir-logo { width: 240px; height: auto; }
+        .amp { font-size: 42px; font-weight: 900; color: var(--dark); }
+        .church-logo { width: 220px; height: auto; }
 
-    /* --- Project Banner --- */
-    .project-info {
-        background: var(--red);
-        color: #fff;
-        text-align: center;
-        font-size: 11.5px;
-        font-weight: 700;
-        padding: 5px 8px;
-        letter-spacing: 0.5px;
-    }
+        /* Form Fields */
+        .registration-form { padding: 15px 20px; }
+        .field-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .fl { font-weight: bold; white-space: nowrap; margin-right: 6px; flex-shrink: 0; }
+        .finput {
+            flex: 1;
+            border: none;
+            border-bottom: 2px dotted #333;
+            background: transparent;
+            padding: 3px 4px;
+            font-size: 13px;
+            min-width: 50px;
+        }
+        .finput:focus { border-bottom: 2px solid var(--red); outline: none; }
 
-    /* --- Meta Bar --- */
-    .meta-bar {
-        display: flex;
-        background: var(--dark);
-    }
-    .meta-item {
-        flex: 1;
-        color: #fff;
-        padding: 5px 14px;
-        font-weight: 700;
-        font-size: 13px;
-        border-right: 1px solid #555;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .meta-item:last-child { border-right: none; }
-    .meta-input {
-        flex: 1;
-        background: #fff;
-        border: none;
-        outline: none;
-        font-size: 12.5px;
-        color: #111;
-        padding: 2px 6px;
-        height: 22px;
-        font-weight: 600;
-    }
+        .cnic-boxes { display: flex; gap: 3px; align-items: center; }
+        .cb {
+            width: 22px;
+            height: 24px;
+            border: 1.5px solid #333;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .cd { font-weight: bold; font-size: 16px; padding: 0 4px; }
 
-    /* --- Logo Section --- */
-    /* img1.PNG already contains "Develop & Marketing by" text, so no extra label needed */
-    .logo-section {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-top: 2px solid var(--gold);
-        border-bottom: 2px solid var(--gold);
-        padding: 6px 14px;
-        gap: 16px;
-        background: #fff;
-    }
-    .logo-left-group,
-    .logo-right-group {
-        display: flex;
-        align-items: center;
-    }
-    .amir-logo   { width: 215px; max-width: 100%; height: auto; object-fit: contain; }
-    .logo-amp    { font-size: 30px; font-weight: 900; color: var(--dark); flex-shrink: 0; }
-    .church-logo { width: 200px; max-width: 100%; height: auto; object-fit: contain; }
+        /* Payment */
+        .payment-section {
+            border: 3px solid var(--red);
+            margin: 12px 0;
+            padding: 0;
+        }
+        .pay-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pay-table th, .pay-table td {
+            border: 1px solid var(--red);
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+        .pay-table th {
+            background: var(--red);
+            color: white;
+            font-weight: bold;
+            width: 140px;
+        }
+        .pay-lines { padding: 8px 12px; }
+        .pay-inline { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+        .total-box {
+            border: 3px solid var(--red);
+            padding: 6px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: var(--red);
+        }
 
-    /* ===========================
-       FORM — EDITABLE INPUT FIELDS
-       =========================== */
-    .registration-form {
-        padding: 6px 14px 0;
-    }
+        /* Attachments */
+        .attachments-row {
+            display: flex;
+            border: 3px solid var(--red);
+            margin: 12px 0;
+        }
+        .attach-label {
+            background: var(--red);
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            width: 180px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+        .attach-boxes { flex: 1; display: flex; }
+        .abox {
+            flex: 1;
+            border-left: 3px solid var(--red);
+            padding: 12px;
+            text-align: center;
+            background: white;
+        }
+        .f-input-file { width: 100%; margin-top: 6px; font-size: 12px; }
 
-    /* Generic row */
-    .field-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 6px;
-        min-height: 24px;
-    }
+        /* Booking */
+        .booking-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
 
-    /* Label text */
-    .fl {
-        white-space: nowrap;
-        font-weight: 700;
-        font-size: 12.5px;
-        color: #111;
-        flex-shrink: 0;
-        margin-right: 3px;
-    }
-    .fl.so  { margin-left: 10px; }
-    .fl.gap { margin-left: 16px; }
+        /* Footer */
+        .footer-strip { border: 3px solid var(--red); }
+        .footer-header {
+            background: var(--tan);
+            border-bottom: 3px solid var(--red);
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        .fh-gold-box { width: 30px; height: 24px; background: var(--gold); border: 2px solid var(--gold-lt); }
+        .fh-title { flex: 1; text-align: center; font-size: 14px; }
+        .footer-body { display: flex; }
+        .footer-fields { flex: 1; padding: 10px; }
+        .footer-right-sidebar {
+            width: 140px;
+            border-left: 3px solid var(--red);
+            display: flex;
+        }
+        .verif-col {
+            width: 30px;
+            background: white;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            font-weight: bold;
+            font-size: 11px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stamp-sign-col { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 20px; }
+        .ss-item { text-align: center; }
+        .ss-line { width: 100%; border-bottom: 2px solid #333; height: 20px; }
 
-    /* Editable underline input — replaces span fline */
-    .finput {
-        flex: 1;
-        border: none;
-        border-bottom: 1.5px solid #444;
-        outline: none;
-        background: transparent;
-        font-size: 12.5px;
-        font-family: inherit;
-        color: #111;
-        padding: 1px 3px;
-        min-width: 30px;
-    }
-    .finput:focus { border-bottom-color: var(--red); }
+        .note { font-size: 11.5px; margin-top: 8px; line-height: 1.4; }
 
-    .pay-finput { flex: 1; min-width: 40px; }
-    .bk-finput  { max-width: 100px; flex: 1; }
-    .short-finput { width: 80px; flex: unset; }
+        .contact-bar {
+            background: white;
+            color: var(--red);
+            text-align: center;
+            padding: 12px;
+            font-size: 13.5px;
+            font-weight: bold;
+            border-top: 3px solid var(--red);
+        }
 
-    /* --- CNIC Boxes --- */
-    .cnic-boxes {
-        display: inline-flex;
-        align-items: center;
-        gap: 2px;
-        flex-shrink: 0;
-        margin: 0 2px;
-    }
-    .cnic-boxes.sm .cb {
-        width: 15px;
-        height: 15px;
-        font-size: 10px;
-        padding: 0;
-    }
-    .cb {
-        display: inline-block;
-        width: 19px;
-        height: 19px;
-        border: 1.5px solid #333;
-        background: #fff;
-        text-align: center;
-        font-size: 12px;
-        padding: 0;
-        outline: none;
-        font-family: inherit;
-        font-weight: 700;
-        color: #111;
-    }
-    .cb:focus { border-color: var(--red); background: #fff8f8; }
-    .cd {
-        font-weight: 900;
-        font-size: 14px;
-        padding: 0 1px;
-        line-height: 1;
-        color: #222;
-    }
+        @media (max-width: 768px) {
+            .form-container { width: 100%; }
+            .title { font-size: 28px; }
+            .logo-section { flex-wrap: wrap; gap: 10px; }
+            .footer-body { flex-direction: column; }
+            .footer-right-sidebar { width: 100%; border-left: none; border-top: 3px solid var(--red); }
+            .verif-col { writing-mode: horizontal-tb; transform: none; height: 30px; width: auto; }
+        }
+    </style>
 
-    /* ===========================
-       PAYMENT SECTION
-       =========================== */
-    .payment-section {
-        border: 2px solid var(--red);
-        margin: 8px 0 8px;
-    }
+    <div class="form-container">
+        <form method="POST" action="{{ route('user.final-form.store') }}" enctype="multipart/form-data">
+            @csrf
 
-    .pay-table { width: 100%; border-collapse: collapse; }
-    .pay-table th,
-    .pay-table td {
-        border: 1px solid var(--red);
-        padding: 5px 9px;
-        font-size: 12.5px;
-        text-align: left;
-    }
-    .pay-table th {
-        background: var(--red);
-        color: #fff;
-        font-weight: 700;
-        width: 130px;
-    }
-    .pay-table td { background: #fff; }
-    .branch-val { width: 55px; }
-
-    .pay-lines { padding: 5px 10px 6px; font-size: 12.5px; }
-    .pay-line-text { margin-bottom: 4px; font-weight: 600; }
-
-    .pay-inline {
-        display: flex;
-        align-items: flex-end;
-        gap: 5px;
-        margin-bottom: 4px;
-    }
-    .pay-lbl { font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-
-    .pay-bottom-row {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 10px;
-    }
-    .pay-dated {
-        display: flex;
-        align-items: flex-end;
-        gap: 5px;
-        flex: 1;
-        max-width: 200px;
-    }
-    .total-box {
-        display: flex;
-        align-items: flex-end;
-        gap: 6px;
-        border: 2px solid var(--red);
-        padding: 3px 8px 3px;
-        font-weight: 700;
-        font-size: 12px;
-        color: var(--red);
-        white-space: nowrap;
-    }
-
-    /* ===========================
-       ATTACHMENTS ROW
-       =========================== */
-    .attachments-row {
-        display: flex;
-        align-items: stretch;
-        border: 2px solid var(--red);
-        margin-bottom: 8px;
-    }
-    .attach-label {
-        background: var(--red);
-        color: #fff;
-        font-weight: 700;
-        font-size: 12px;
-        padding: 8px 10px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        min-width: 150px;
-        line-height: 1.5;
-        flex-shrink: 0;
-    }
-    .attach-boxes { display: flex; flex: 1; }
-    .abox {
-        flex: 1;
-        border-left: 2px solid var(--red);
-        padding: 8px 6px;
-        text-align: center;
-        font-weight: 700;
-        font-size: 11.5px;
-        color: var(--red);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-        gap: 4px;
-    }
-    .abox label {
-        cursor: pointer;
-    }
-    .f-input-file {
-        font-size: 10px;
-        width: 100%;
-        color: #555;
-    }
-
-    /* ===========================
-       BOOKING ROW
-       =========================== */
-    .booking-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 4px;
-        font-size: 12.5px;
-        font-weight: 700;
-        margin-bottom: 2px;
-    }
-    .bk-lbl { white-space: nowrap; flex-shrink: 0; }
-    .bk-line { flex: 1; min-width: 60px; }
-    .mgL { margin-left: 12px; }
-
-    .office-only {
-        text-align: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
-    }
-
-    /* ===========================
-       FOOTER STRIP
-       =========================== */
-    .footer-strip {
-        border: 2px solid var(--red);
-        margin-bottom: 0;
-    }
-
-    /* Gold title bar */
-    .footer-header {
-        background: var(--tan);
-        border-bottom: 2px solid var(--red);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 4px 8px;
-        gap: 6px;
-    }
-    .fh-gold-box {
-        width: 26px;
-        height: 22px;
-        background: var(--gold);
-        flex-shrink: 0;
-        display: inline-block;
-        border: 1px solid var(--gold-lt);
-    }
-    .fh-title {
-        font-weight: 700;
-        font-size: 13px;
-        color: var(--dark);
-        flex: 1;
-        text-align: center;
-    }
-    .fh-white-box {
-        width: 80px;
-        height: 22px;
-        background: #fff;
-        border: 1.5px solid var(--red);
-        flex-shrink: 0;
-        display: inline-block;
-    }
-
-    /* Footer body: fields on left, verification+stamp on right */
-    .footer-body {
-        display: flex;
-        align-items: stretch;
-    }
-
-    .footer-fields {
-        flex: 1;
-        padding: 6px 10px;
-    }
-
-    .footer-field-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 6px;
-        margin-bottom: 6px;
-        font-size: 12.5px;
-    }
-    .ffl {
-        white-space: nowrap;
-        font-weight: 700;
-        font-size: 12.5px;
-        flex-shrink: 0;
-    }
-    .ffl.mgL { margin-left: 12px; }
-
-    /* Footer-specific underline — flex child */
-    .footer-field-row .fline { min-width: 60px; }
-
-    /* Note */
-    .note {
-        font-size: 11px;
-        line-height: 1.55;
-        color: #222;
-        margin-top: 5px;
-    }
-
-    /* Right sidebar: Verification + Stamp/Sign */
-    .footer-right-sidebar {
-        display: flex;
-        align-items: stretch;
-        border-left: 2px solid var(--red);
-        flex-shrink: 0;
-    }
-
-    /* Vertical "Verification" text column */
-    .verif-col {
-        width: 22px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-right: 1px solid var(--red);
-        background: #fff;
-    }
-    .verif-text {
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--dark);
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    /* Stamp / Sign column */
-    .stamp-sign-col {
-        width: 80px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        padding: 8px 6px;
-        gap: 8px;
-    }
-    .ss-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 3px;
-    }
-    .ss-line {
-        width: 70px;
-        border-bottom: 1.5px solid #333;
-        display: inline-block;
-    }
-    .ss-lbl {
-        font-size: 11.5px;
-        font-weight: 700;
-        color: var(--dark);
-    }
-
-    /* ===========================
-       CONTACT BAR
-       =========================== */
-    .contact-bar {
-        background: #fff;
-        color: var(--red);
-        text-align: center;
-        padding: 8px 14px;
-        font-size: 13px;
-        line-height: 1.8;
-        border-top: 2px solid var(--red);
-        font-weight: 600;
-    }
-    .contact-bar strong { font-weight: 900; }
-
-    /* ===========================
-       RESPONSIVE
-       =========================== */
-    @media (max-width: 680px) {
-        .form-container { width: 100%; }
-        .title { font-size: 26px; }
-        .amir-logo, .church-logo { width: 140px; }
-        .clc-logo { width: 58px; height: 58px; }
-        .footer-right-sidebar { flex-direction: column; }
-        .booking-row { flex-wrap: wrap; }
-    }
-
-</style>
-<div class="body-wrapper">
-<div class="form-container">
-
-    <!-- ===== HEADER ===== -->
-    <form class="registration-form" method="POST"
-          action="{{ route('user.final-form.store') }}"
-          enctype="multipart/form-data">
-        @csrf
-        <div class="header">
-        <!-- Top Bar: District centered, gold ribbon right -->
-        <div class="top-bar">
-            <div class="district-box">
-                <span class="district-label">District</span>
-                <input type="text" class="district-input"
-                       name="district"
-                       readonly
-                       value="{{$user->city}}" />
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="district-box">
+                    District: <input type="text" name="district" value="{{ $user->city }}" readonly>
+                </div>
+                <div class="reg-fee-ribbon">Registration Fee<br>1000 PKR Only</div>
             </div>
-            <div class="top-mid"></div>
-            <div class="reg-fee-ribbon">Registration Fee<br/>1000 PKR Only</div>
-        </div>
 
-        <!-- Title Area -->
-        <div class="title-area">
-            <div class="clc-seal-wrap">
-                <img src="{{ asset('images/logo.PNG') }}" class="clc-logo" alt="Christ Land City Logo" />
+            <!-- Title Area -->
+            <div class="title-area">
+                <img src="{{ asset('images/logo.PNG') }}" class="clc-logo" alt="CLC Logo">
+                <div class="title-text">
+                    <div class="reg-form-label">Registration Form</div>
+                    <div class="title">CHRIST LAND CITY</div>
+                    <div class="subtitle">A Gateway of Luxury Living</div>
+                </div>
             </div>
-            <div class="title-text">
-                <p class="reg-form-label">Registration Form</p>
-                <h1 class="title">CHRIST LAND CITY</h1>
-                <p class="subtitle">A Gateway of Luxury Living</p>
+
+            <div class="project-info">
+                04 MARLA (1088 Sq Ft) HOUSING PROJECT FOR PAKISTANI HOMELESS CHRISTIAN FAMILIES
             </div>
-        </div>
 
-        <!-- Project Info Banner -->
-        <div class="project-info">
-            04 MARLA (1088 Sq Ft) HOUSING PROJECT FOR PAKISTANI HOMELESS CHRISTIAN FAMILIES
-        </div>
-
-        <!-- Registration No. / Security Code Bar -->
-        <div class="meta-bar">
-            <div class="meta-item">
-                <span class="meta-lbl">Registration No.</span>
-                <input type="text" class="meta-input"
-                       name="registration_no"
-                       readonly
-                       value="{{ $application->unique_id }}" />
+            <!-- Meta Bar -->
+            <div class="meta-bar">
+                <div class="meta-item">
+                    Registration No. <input type="text" class="meta-input" name="registration_no" value="{{ $application->unique_id }}" readonly>
+                </div>
+                <div class="meta-item">
+                    Security Code <input type="text" class="meta-input" name="security_code" value="{{ $application->unique_id }}" readonly>
+                </div>
             </div>
-            <div class="meta-item">
-                <span class="meta-lbl">Security Code</span>
-                <input type="text" class="meta-input"
-                       name="security_code"
-                       readonly
 
-                       value="{{ $application->unique_id }}" />
+            <!-- Logos -->
+            <div class="logo-section">
+                <img src="{{ asset('images/img1.PNG') }}" class="amir-logo" alt="Amir Sultan">
+                <div class="amp">&</div>
+                <img src="{{ asset('images/img2.PNG') }}" class="church-logo" alt="Methodist Church">
             </div>
-        </div>
 
-        <!-- Logo Row -->
-        <div class="logo-section">
-            <div class="logo-left-group">
-                <img src="{{ asset('images/img1.PNG') }}" class="amir-logo" alt="Amir Sultan Get Home Services" />
-            </div>
-            <div class="logo-amp">&amp;</div>
-            <div class="logo-right-group">
-                <img src="{{ asset('images/img2.PNG') }}" class="church-logo" alt="Methodist Church of Pakistan" />
-            </div>
-        </div>
-
-    </div>
-    <!-- /header -->
-
-    <!-- ===== FORM SECTION ===== -->
-
-
-        <!-- Name of Applicant -->
-        <div class="field-row">
-            <span class="fl">Name of Applicant</span>
-            <input type="text" class="finput"
-                    name="name"
-                   readonly
-                    value="{{ $user->name }}" />
-        </div>
+            <!-- Form Fields (same as your code, just spacing adjusted) -->
+            <div class="registration-form">
+                <div class="field-row">
+                    <span class="fl">Name of Applicant</span>
+                    <input type="text" class="finput" name="name" value="{{ $user->name }}" readonly>
+                </div>
 
         <!-- Applicant CNIC + S/O -->
         @php
@@ -952,35 +641,4 @@
             // click on preview div triggers file input
             previewDiv.addEventListener('click', () => input.click());
 
-            input.addEventListener('change', function () {
-                previewDiv.innerHTML = ''; // clear previous
-
-                const file = this.files[0];
-                if (!file) {
-                    previewDiv.textContent = 'Browse File';
-                    return;
-                }
-
-                // if image, show thumbnail
-                if (file.type.startsWith('image/')) {
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.style.maxWidth = '100%';
-                    img.style.maxHeight = '100%';
-                    img.style.objectFit = 'contain';
-                    previewDiv.appendChild(img);
-                } else {
-                    // else show filename
-                    const fileName = document.createElement('div');
-                    fileName.textContent = file.name;
-                    fileName.style.fontSize = '12px';
-                    fileName.style.fontWeight = '600';
-                    fileName.style.textAlign = 'center';
-                    fileName.style.wordBreak = 'break-word';
-                    previewDiv.appendChild(fileName);
-                }
-            });
-        });
-    });
-</script>
 @endsection

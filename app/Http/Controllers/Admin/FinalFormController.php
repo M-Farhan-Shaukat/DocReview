@@ -178,9 +178,8 @@ class FinalFormController extends Controller
     public function downloadPdf($id)
     {
         $application = FinalForm::where('id', $id)
-            ->where('user_id', auth()->id())
             ->firstOrFail();
-        $user = auth()->user();
+        $user = User::where('id',$application->user_id)->first();
         // Pass the same data as the preview
         $pdf = Pdf::loadView('user.finalDocument.preview', compact('application', 'user'))
             ->setPaper('a4', 'portrait');

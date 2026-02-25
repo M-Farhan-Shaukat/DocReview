@@ -15,7 +15,7 @@ class FinalFormController extends Controller
         $disableNewApplicationButton = false;
         $applications = FinalForm::where('user_id', auth()->id());
         if(count($applications->get()) > 0){
-            $disableNewApplicationButton = true;
+//            $disableNewApplicationButton = true;
         }
         $applications=$applications->latest()
             ->paginate(10);
@@ -81,7 +81,6 @@ class FinalFormController extends Controller
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'district' => 'required',
             'registration_no' => 'required',
@@ -168,7 +167,13 @@ class FinalFormController extends Controller
         $user = auth()->user();
         // Pass the same data as the preview
         $pdf = Pdf::loadView('user.finalDocument.preview', compact('application', 'user'))
-            ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'dpi' => 96,
+                'defaultFont' => 'sans-serif',
+            ]);
 
         return $pdf->download('registration_form_'.$application->registration_no.'.pdf');
     }

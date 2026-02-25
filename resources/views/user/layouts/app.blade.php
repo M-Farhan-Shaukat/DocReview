@@ -437,12 +437,10 @@
         <!-- Mobile Header - UNIFIED Visible only on mobile -->
         <div class="d-md-none mobile-header">
             <div class="mobile-header-brand">
-                <div class="brand-icon">
-                    <i class="bi bi-person-circle"></i>
-                </div>
+
                 <div>
                     <div class="sidebar-brand mb-0">Document System</div>
-                    <small class="text-white-50" style="font-size: 0.7rem;">User Panel</small>
+{{--                    <small class="text-white-50" style="font-size: 0.7rem;">User Panel</small>--}}
                 </div>
             </div>
             <button class="btn btn-link mobile-nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSidebar" aria-expanded="false" aria-label="Toggle navigation">
@@ -463,12 +461,10 @@
                         <div class="d-flex flex-column p-4">
                             <!-- Brand -->
                             <div class="d-flex align-items-center mb-4">
-                                <div class="bg-white rounded-3 p-2 me-2 shadow">
-                                    <i class="bi bi-person-circle text-primary fs-4"></i>
-                                </div>
+
                                 <div>
                                     <div class="sidebar-brand">Document System</div>
-                                    <small class="text-white-50">User Panel</small>
+{{--                                    <small class="text-white-50">User Panel</small>--}}
                                 </div>
                             </div>
 

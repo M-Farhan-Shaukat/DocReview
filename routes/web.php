@@ -5,7 +5,7 @@ use App\Http\Controllers\RedirectController;
 
 // Public home redirect
 Route::get('/', function () {
-    return view('welcome'); // Create a welcome page or redirect to login
+    return view('user.auth.login'); // Create a welcome page or redirect to login
 });
 
 // Include user routes

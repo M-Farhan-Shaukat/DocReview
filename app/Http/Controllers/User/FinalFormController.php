@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
+use App\Mail\FinalFormPdfMail;
 use App\Models\Application;
 use App\Models\FinalForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class FinalFormController extends Controller
 
@@ -154,7 +156,8 @@ class FinalFormController extends Controller
                 'deposit_copy' => $path,
             ]);
         }
-
+        // send PDF email to user
+        Mail::to($finalForm->email)->send(new FinalFormPdfMail($finalForm));
         return redirect()->route('user.final_form.index')
             ->with('success', 'Form submitted successfully.');
     }

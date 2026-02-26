@@ -199,14 +199,19 @@ Download                    </a>
                 <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                         <h5 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-file-earmark-text text-primary me-2"></i>
-                            Official Documents
+{{--                            <i class="bi bi-file-earmark-text text-primary me-2"></i>--}}
+                           Step 1
                         </h5>
                         <span class="badge bg-primary px-3 py-2 rounded-pill">{{ $generalDocuments->count() }} Available</span>
                     </div>
                 </div>
                 <div class="card-body p-4 pt-0">
                     @if($generalDocuments->count() > 0)
+                        <h5 class="card-title mb-0 fw-semibold">
+                            <i class="bi bi-file-earmark-text text-primary me-2"></i>
+                            Official Documents
+                        </h5>
+                    <p>Please Download These Documents to further proceed</p>
                         <div class="row g-3">
                             @foreach($generalDocuments as $doc)
                                 <div class="col-md-6">
@@ -262,13 +267,80 @@ Download                    </a>
                 </div>
             </div>
 
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <h5 class="card-title mb-0 fw-semibold">
+                            Step 2
+                        </h5>
+                    </div>
+                </div>
+                <div class="card-body p-4 pt-0">
+
+                    @if($generalDocuments->count() > 0)
+                        <h5 class="card-title mb-0 fw-semibold">
+                           Instructions To fill these documents
+                        </h5>
+                        <div class="row g-3">
+                            @foreach($generalDocuments as $doc)
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 hover-shadow transition">
+                                        <div class="d-flex align-items-center">
+                                            <div class="file-icon-wrapper me-3">
+                                                @if($doc->type == 'agreement')
+                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
+                                                        <i class="bi bi-file-pdf fs-4 text-danger"></i>
+                                                    </div>
+                                                @elseif($doc->type == 'challan')
+                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
+                                                        <i class="bi bi-receipt fs-4 text-success"></i>
+                                                    </div>
+                                                @else
+                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
+                                                        <i class="bi bi-file-earmark fs-4 text-secondary"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">{{ $doc->title }}</strong>
+                                                <small class="text-muted">{{ strtoupper($doc->type) }}</small>
+                                            </div>
+                                        </div>
+
+                                        @if($doc->type == 'agreement')
+                                            <a href="{{ route('user.agreement.download') }}" class="btn btn-primary btn-sm rounded-pill px-3">
+                                                <i class="bi bi-download me-1"></i> Download
+                                            </a>
+                                        @elseif($doc->type == 'challan')
+                                            <a href="{{ route('user.challan.download') }}"
+                                               class="btn btn-success btn-sm rounded-pill px-3 {{ $disableChallanDownloadBtn ? 'disabled' : '' }}"
+                                                {{ $disableChallanDownloadBtn ? 'aria-disabled=true' : '' }}>
+                                                <i class="bi bi-download me-1"></i> Download
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <div class="empty-state-wrapper">
+                                <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                                    <i class="bi bi-file-earmark-x fs-1 text-muted"></i>
+                                </div>
+                                <h6 class="fw-semibold mb-2">No Official Documents</h6>
+                                <p class="text-muted small mb-0">Check back later for updates</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
             <!-- Your Uploaded Documents Card -->
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                         <h5 class="card-title mb-0 fw-semibold">
-                            <i class="bi bi-cloud-upload text-success me-2"></i>
-                            Your Uploaded Documents
+                           Step 3
                         </h5>
                         <div>
                             <span class="badge bg-light text-dark me-2">{{ $userDocuments->count() }} Total</span>
@@ -276,6 +348,10 @@ Download                    </a>
                         </div>
                     </div>
                 </div>
+                <h5 class="card-title mb-0 fw-semibold">
+                    <i class="bi bi-cloud-upload text-success me-2"></i>
+                    Your Uploaded Documents
+                </h5>
                 <div class="card-body p-4 pt-2">
                     @if($userDocuments->count() > 0)
                         <!-- Desktop Table View -->

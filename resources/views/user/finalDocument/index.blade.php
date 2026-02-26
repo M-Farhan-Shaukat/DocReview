@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-
+                    @if($approvedApplication)
                     <div class="col-12 col-sm-6 text-sm-end">
                         <a href="{{ route('user.final_form.create') }}"
                            class="btn btn-light btn-lg rounded-pill px-4 shadow-sm {{ $disableNewApplicationButton ? 'disabled' : '' }}"  {{ $disableNewApplicationButton  ? 'aria-disabled=true' : '' }}>
@@ -30,6 +30,7 @@
                             Create
                         </a>
                     </div>
+                        @endif
                 </div>
             </div>
         </div>
@@ -185,6 +186,8 @@
                     </div>
                     <h4 class="fw-semibold mb-2">No Final Registration Form Yet</h4>
                     <p class="text-muted mb-4">Get started by creating your Final Registration Form.</p>
+                    @if(!$approvedApplication)<p class="text-muted mb-4">Please Submit your Application with attached challan.</p> @else
+
                     <a href="{{ route('user.final_form.create') }}"
                        class="btn btn-success btn-lg rounded-pill px-5">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
@@ -194,6 +197,7 @@
                         Create
                     </a>
                 </div>
+                @endif
             </div>
         @endif
     </div>

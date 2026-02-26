@@ -16,7 +16,7 @@
                                 <i class="bi bi-person-plus fs-2 text-white"></i>
                             </div>
                         </div>
-                        <h3 class="fw-bold mb-1">Create Account</h3>
+                        <h3 class="fw-bold mb-1">Become a Member</h3>
                         <p class="text-muted small">Join our community today</p>
                     </div>
 

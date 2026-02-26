@@ -17,7 +17,7 @@ class FinalFormController extends Controller
         $disableNewApplicationButton = false;
         $applications = FinalForm::where('user_id', auth()->id());
         if(count($applications->get()) > 0){
-//            $disableNewApplicationButton = true;
+            $disableNewApplicationButton = true;
         }
         $applications=$applications->latest()
             ->paginate(10);
@@ -28,8 +28,10 @@ class FinalFormController extends Controller
 //            }
             $application->show_edit_button = $enableEditButton;
         }
+        $approvedApplication = Application::where('user_id', auth()->id())->where('status','approved')->first();
 
-        return view('user.finalDocument.index', compact('applications','disableNewApplicationButton'));
+
+        return view('user.finalDocument.index', compact('applications','disableNewApplicationButton','approvedApplication'));
     }
     public function show($id)
     {

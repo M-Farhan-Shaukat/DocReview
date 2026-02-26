@@ -102,32 +102,29 @@
                         </button>
 
                         <!-- Demo Credentials (Remove in production) -->
-                        <div class="alert alert-light bg-light border-0 p-3 rounded-3 mt-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="bi bi-info-circle text-primary me-2"></i>
-                                <span class="small fw-semibold">Demo Credentials</span>
-                            </div>
-                            <div class="row g-2 small text-muted">
-                                <div class="col-6">
-                                    <div><strong>Admin:</strong> admin@example.com</div>
-                                    <div class="font-monospace">••••••••</div>
-                                </div>
-                                <div class="col-6">
-                                    <div><strong>Manager:</strong> manager@example.com</div>
-                                    <div class="font-monospace">••••••••</div>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div class="alert alert-light bg-light border-0 p-3 rounded-3 mt-4">--}}
+{{--                            <div class="d-flex align-items-center mb-2">--}}
+{{--                                <i class="bi bi-info-circle text-primary me-2"></i>--}}
+{{--                                <span class="small fw-semibold">Demo Credentials</span>--}}
+{{--                            </div>--}}
+{{--                            <div class="row g-2 small text-muted">--}}
+{{--                                <div class="col-6">--}}
+{{--                                    <div><strong>Admin:</strong> admin@example.com</div>--}}
+{{--                                    <div class="font-monospace">••••••••</div>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-6">--}}
+{{--                                    <div><strong>Manager:</strong> manager@example.com</div>--}}
+{{--                                    <div class="font-monospace">••••••••</div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </form>
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="text-center mt-4">
-                <p class="small text-muted mb-0">
-                    <i class="bi bi-shield-lock me-1"></i>
-                    Secure SSL Encrypted Connection
-                </p>
+               
                 <p class="small text-muted mt-1">
                     &copy; {{ date('Y') }} Admin Panel. All rights reserved.
                 </p>

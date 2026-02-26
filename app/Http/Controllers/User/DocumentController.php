@@ -27,7 +27,7 @@ class DocumentController extends Controller
             ->paginate(10);
         foreach ($applications as $application) {
             $enableEditButton = false;
-            if($application->status != 'approved'){
+            if($application->status == 'rejected' || $application->status == 'pending'){
                 $enableEditButton = true;
             }
             $application->show_edit_button = $enableEditButton;

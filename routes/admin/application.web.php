@@ -14,5 +14,7 @@ Route::post('/applications/{id}/approve',[ApplicationController::class, 'approve
 
 // Reject
 Route::post('/applications/{id}/reject',[ApplicationController::class, 'reject'])->name('applications.rejected');
+Route::post('/applications/{id}/onhold',[ApplicationController::class, 'onhold'])->name('applications.onhold');
+Route::post('/applications/{id}/recommended',[ApplicationController::class, 'recommended'])->name('applications.recommended');
 
 Route::get('/documents/{id}/preview',[ApplicationController::class, 'preview'])->name('document.preview');

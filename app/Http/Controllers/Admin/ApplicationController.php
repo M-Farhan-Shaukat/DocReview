@@ -201,7 +201,39 @@ class ApplicationController extends Controller
             ->route('admin.applications.index')
             ->with('success', 'Application rejected successfully.');
     }
+    public function onhold(Request $request, $id)
+    {
 
+        $request->validate([
+            'onhold_remarks' => 'required|string|max:500'
+        ]);
+
+        $application = Application::findOrFail($id);
+
+        $application->status = 'onhold';
+        $application->onhold_remarks = $request->onhold_remarks;
+        $application->save();
+
+        return redirect()
+            ->route('admin.applications.index')
+            ->with('success', 'Application marked Onhold successfully.');
+    }
+    public function recommended(Request $request, $id)
+    {
+        $request->validate([
+            'recommended_remarks' => 'required|string|max:500'
+        ]);
+
+        $application = Application::findOrFail($id);
+
+        $application->status = 'recommended';
+        $application->recommended_remarks = $request->recommended_remarks;
+        $application->save();
+
+        return redirect()
+            ->route('admin.applications.index')
+            ->with('success', 'Application marked recommended successfully.');
+    }
     public function preview($id)
     {
         $document = UserDocument::findOrFail($id);

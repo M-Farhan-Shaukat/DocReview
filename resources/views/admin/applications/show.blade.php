@@ -127,7 +127,7 @@
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        @if($application->status == 'pending')
+{{--                        @if($application->status == 'pending')--}}
                             <div class="alert alert-info bg-light border-0 d-flex align-items-center mb-4">
                                 <i class="bi bi-info-circle fs-4 me-3 text-info"></i>
                                 <div>
@@ -176,8 +176,57 @@
                                         </form>
                                     </div>
                                 </div>
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <form action="{{ route('admin.applications.onhold', $application->id) }}"
+                                              method="POST"
+                                              id="holdForm">
+                                            @csrf
+                                            <label class="fw-semibold mb-2 small text-uppercase text-muted">
+                                                <i class="bi bi-chat-text me-1"></i>
+                                                OnHols Remarks
+                                            </label>
+                                            <textarea name="onhold_remarks"
+                                                      rows="3"
+                                                      class="form-control mb-3 border-0 shadow-sm"
+                                                      placeholder="Please provide a remarks for onhold this application..."
+                                                      required></textarea>
+
+                                            <button type="button"
+                                                    class="btn btn-secondary w-100 py-3 d-flex align-items-center justify-content-center"
+                                                    onclick="confirmOnhold()">
+                                                <i class="bi bi-pause-circle fs-5 me-2 text-black"></i>
+                                                Onhold this Application
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>   <div class="card border-0 bg-light">
+                                    <div class="card-body p-3">
+                                        <form action="{{ route('admin.applications.recommended', $application->id) }}"
+                                              method="POST"
+                                              id="recommendedForm">
+                                            @csrf
+                                            <label class="fw-semibold mb-2 small text-uppercase text-muted">
+                                                <i class="bi bi-chat-text me-1"></i>
+                                                Recommended Remarks
+                                            </label>
+                                            <textarea name="recommended_remarks"
+                                                      rows="3"
+                                                      class="form-control mb-3 border-0 shadow-sm"
+                                                      placeholder="Please provide a Remarks og Recommendation..."
+                                                      required></textarea>
+
+                                            <button type="button"
+                                                    class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center"
+                                                    onclick="confirmRecommend()">
+                                                <i class="bi bi-award fs-5 me-2 text-info"></i>
+                                                Recommend Application
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        @else
+                       {{-- @else
                             <div class="text-center py-4">
                                 <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
                                     @if($application->status == 'approved')
@@ -196,7 +245,7 @@
                                     Back to List
                                 </a>
                             </div>
-                        @endif
+                        @endif--}}
                     </div>
                 </div>
             </div>
@@ -562,6 +611,52 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('rejectForm').submit();
+                }
+            });
+        }
+
+        function confirmOnhold() {
+            Swal.fire({
+                title: 'Hold Application?',
+                text: "Are you sure you want to Hold this application? Please ensure you've provided a valid reason.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Hold',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+                background: '#f8f9fa',
+                backdrop: `
+                    rgba(0, 0, 0, 0.4)
+                    left top
+                    no-repeat
+                `
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('holdForm').submit();
+                }
+            });
+        }function confirmRecommend() {
+            Swal.fire({
+                title: 'Recommend Application?',
+                text: "Are you sure you want to Recomment this application? Please ensure you've provided a valid reason.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Recommend',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+                background: '#f8f9fa',
+                backdrop: `
+                    rgba(0, 0, 0, 0.4)
+                    left top
+                    no-repeat
+                `
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('recommendedForm').submit();
                 }
             });
         }

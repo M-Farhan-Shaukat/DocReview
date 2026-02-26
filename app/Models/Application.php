@@ -22,6 +22,8 @@ class Application extends Model
         'unique_id',
         'postal_code',
         'rejection_reason',
+        'onhold_remarks',
+        'recommended_remarks',
         'status',
     ];
 

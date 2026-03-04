@@ -286,6 +286,166 @@
             .footer-right-sidebar { width: 100%; border-left: none; border-top: 3px solid var(--red); }
             .verif-col { writing-mode: horizontal-tb; transform: none; height: 30px; width: auto; }
         }
+        /* ===========================
+   MOBILE RESPONSIVE ONLY
+   =========================== */
+        @media (max-width: 768px) {
+
+            .form-container {
+                width: 100% !important;
+                margin: 10px auto !important;
+                border-width: 2px;
+            }
+
+            .title-area {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .clc-logo {
+                width: 70px;
+                height: auto;
+            }
+
+            .title {
+                font-size: 24px !important;
+            }
+
+            .subtitle {
+                font-size: 13px;
+            }
+
+            .meta-bar {
+                flex-direction: column;
+            }
+
+            .meta-item {
+                border-right: none !important;
+                border-bottom: 2px solid #444;
+            }
+
+            .logo-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .amir-logo,
+            .church-logo {
+                width: 160px;
+            }
+
+            .field-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .finput {
+                width: 100%;
+            }
+
+            .attachments-row {
+                flex-direction: column;
+            }
+
+            .attach-label {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .attach-boxes {
+                flex-direction: column;
+            }
+
+            .booking-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-body {
+                flex-direction: column;
+            }
+
+            .footer-right-sidebar {
+                width: 100%;
+                border-left: none !important;
+                border-top: 3px solid var(--red);
+            }
+
+            .verif-col {
+                writing-mode: horizontal-tb !important;
+                transform: none !important;
+                width: 100%;
+                height: 30px;
+            }
+
+            .reg-fee-ribbon {
+                font-size: 9px;
+                padding: 4px 10px 4px 20px;
+            }
+
+            .district-box {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+        }
+        /* ===========================
+   DOMPDF SAFE STYLES
+   =========================== */
+        @media print {
+
+            body {
+                background: #ffffff !important;
+            }
+
+            .form-container {
+                width: 100% !important;
+                box-shadow: none !important;
+            }
+
+            /* Remove unsupported features */
+            .district-box {
+                clip-path: none !important;
+                border-radius: 4px;
+            }
+
+            .reg-fee-ribbon {
+                clip-path: none !important;
+                background: var(--gold) !important;
+            }
+
+            .logo-section,
+            .meta-bar,
+            .field-row,
+            .attachments-row,
+            .booking-row,
+            .footer-body {
+                display: block !important;
+            }
+
+            .meta-item,
+            .abox {
+                display: block !important;
+                width: 100% !important;
+                border-right: none !important;
+            }
+
+            .footer-right-sidebar {
+                border-left: none !important;
+                width: 100% !important;
+            }
+
+            .verif-col {
+                writing-mode: horizontal-tb !important;
+                transform: none !important;
+            }
+
+            .f-input-file,
+            button {
+                display: none !important;
+            }
+        }
     </style>
 
     <div class="form-container">

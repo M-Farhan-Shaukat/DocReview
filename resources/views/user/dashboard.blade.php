@@ -282,45 +282,7 @@ Download                    </a>
                            Instructions To fill these documents
                         </h5>
                         <div class="row g-3">
-                            @foreach($generalDocuments as $doc)
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 hover-shadow transition">
-                                        <div class="d-flex align-items-center">
-                                            <div class="file-icon-wrapper me-3">
-                                                @if($doc->type == 'agreement')
-                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
-                                                        <i class="bi bi-file-pdf fs-4 text-danger"></i>
-                                                    </div>
-                                                @elseif($doc->type == 'challan')
-                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
-                                                        <i class="bi bi-receipt fs-4 text-success"></i>
-                                                    </div>
-                                                @else
-                                                    <div class="bg-white p-2 rounded-3 shadow-sm">
-                                                        <i class="bi bi-file-earmark fs-4 text-secondary"></i>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <div>
-                                                <strong class="d-block">{{ $doc->title }}</strong>
-                                                <small class="text-muted">{{ strtoupper($doc->type) }}</small>
-                                            </div>
-                                        </div>
-
-                                        @if($doc->type == 'agreement')
-                                            <a href="{{ route('user.agreement.download') }}" class="btn btn-primary btn-sm rounded-pill px-3">
-                                                <i class="bi bi-download me-1"></i> Download
-                                            </a>
-                                        @elseif($doc->type == 'challan')
-                                            <a href="{{ route('user.challan.download') }}"
-                                               class="btn btn-success btn-sm rounded-pill px-3 {{ $disableChallanDownloadBtn ? 'disabled' : '' }}"
-                                                {{ $disableChallanDownloadBtn ? 'aria-disabled=true' : '' }}>
-                                                <i class="bi bi-download me-1"></i> Download
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
+                           <p>Some instructions here</p>
                         </div>
                     @else
                         <div class="text-center py-4">

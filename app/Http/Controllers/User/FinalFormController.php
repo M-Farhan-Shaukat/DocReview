@@ -172,13 +172,7 @@ class FinalFormController extends Controller
         $user = auth()->user();
         // Pass the same data as the preview
         $pdf = Pdf::loadView('user.finalDocument.preview', compact('application', 'user'))
-            ->setPaper('a4', 'portrait')
-            ->setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isRemoteEnabled' => true,
-                'dpi' => 96,
-                'defaultFont' => 'sans-serif',
-            ]);
+            ->setPaper('a4', 'portrait');
 
         return $pdf->download('registration_form_'.$application->registration_no.'.pdf');
     }

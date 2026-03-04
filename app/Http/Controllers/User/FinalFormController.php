@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\FinalFormPdfMail;
 use App\Models\Application;
 use App\Models\FinalForm;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -169,11 +170,20 @@ class FinalFormController extends Controller
         $application = FinalForm::where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
-        $user = auth()->user();
-        // Pass the same data as the preview
-        $pdf = Pdf::loadView('user.finalDocument.preview', compact('application', 'user'))
-            ->setPaper('a4', 'portrait');
 
-        return $pdf->download('registration_form_'.$application->registration_no.'.pdf');
+        $user = auth()->user();
+
+        $pdf = \Barryvdh\Snappy\Facades\SnappyPdf::loadView(
+            'user.finalDocument.preview',
+            compact('application', 'user')
+        )
+            ->setPaper('a4', 'portrait')
+            ->setOption('enable-local-file-access', true)
+            ->setOption('encoding', 'UTF-8');
+
+        return response()->streamDownload(
+            fn () => print($pdf->output()),
+            'registration_form_' . $application->registration_no . '.pdf'
+        );
     }
 }
